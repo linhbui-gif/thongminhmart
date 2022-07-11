@@ -1,0 +1,148 @@
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #898989;
+}
+.an {
+    display: block;
+    display: -webkit-box;
+    height: 16px*1.3*3;
+    font-size: 16px;
+    line-height: 1.3;
+    -webkit-line-clamp: 3;  /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top:10px;
+}
+.htit {
+    display: block;
+    display: -webkit-box;
+    height: 16px*1.3*3;
+    font-size: 20px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;  /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top:10px;
+}
+p.copyright {
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 14px;
+}
+.rss.d-flex {
+    align-items: center;
+    justify-content: center;
+}
+.tiny-cop {
+    width: 95%;
+}
+button.btn.btn-default.bbtn-block {
+    border-radius: 8px;
+}
+.details-img {
+    /* margin: 0 auto; */
+    text-align: center;
+}
+p.details-line {
+    /* line-height: 0px; */
+    margin-bottom: 0;
+}
+._2tga._8j9v {
+    border-radius: 5px;
+    font-size: 11px;
+    height: 20px;
+    padding: 0 4px;
+}
+.fb-like.mt.fb_iframe_widget {
+    margin-top: 6px;
+}
+.socials-share a {
+    padding: 3px 10px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.socials-share span.fa {
+    margin-right: 3px;
+}
+
+
+.bg-twitter {
+    background: #2a99ed;
+}
+
+.bg-twitter:hover, .bg-twitter:focus {
+    background: #268ad5;
+}
+
+.bg-pinterest {
+    background: #cb1e26;
+}
+
+.bg-pinterest:hover, .bg-pinterest:focus {
+    background: #ae0e15;
+}
+img.ctn-img {
+    width: 120px;
+    margin-top: 10px;
+}
+a.ml-2.title-img {
+    font-size: 14px;
+    color: black;
+}
+.details-left-ctn{
+    margin-bottom: 10px;
+}
+.details-bd{
+    border-bottom: 1px solid black;
+}
+.fz{
+    font-weight: 500;
+    font-size: 16px;
+    /* color: black; */
+}
+.fz-1{
+    font-weight: 500;
+    font-size: 23px;
+}
+.fz-2{
+    font-size: italic;
+}
+.cl{
+    font-weight: 500;
+    font-size: 16px;
+    color: black;
+}
+.content.details {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.txt{
+    text-align: center;
+}
+/*img {*/
+/*    width: 100%;*/
+/*}*/
+.coaching-card-title {
+    height: 50px;
+}
+.coaching-card-img {
+    /* margin-bottom: 30px; */
+    height: 202px;
+}
+.d-md-block {
+    display: block!important;
+}
+@media (max-width:768px) {
+    .coaching-card-img {
+        /* margin-bottom: 30px; */
+        height: auto;
+    }
+    .d-md-block {
+        display: block!important;
+    }
+}
