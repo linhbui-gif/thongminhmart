@@ -2,7 +2,7 @@
 @section('content')
 <!--    --><?php
 //
-    dd(session('cart')  );
+//    dd(session('cart')  );
 //        ?>
 
     @if(!empty(session('cart')))
