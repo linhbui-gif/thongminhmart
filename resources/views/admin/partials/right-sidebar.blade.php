@@ -34,11 +34,11 @@ $routeName = \Request::route()->getName();
              <li class="header">Workshop</li>
             @can('bank.index')
                 <li @if (in_array($routeName, ['admin.bank.index', 'admin.bank.create'])) class="active" @endif><a href="{{ route('admin.bank.index') }}"><i
-                            class="fa fa-print"></i><span>Bank management</span></a></li>
+                            class="fa fa-print"></i><span>Quản lý ngân hàng</span></a></li>
             @endcan
             @can('config.edit')
                 <li @if (in_array($routeName, ['admin.config.edit'])) class="active" @endif><a href="{{ route('admin.config.edit') }}"><i
-                            class="fa fa-print"></i><span>Config</span></a></li>
+                            class="fa fa-print"></i><span>Cấu hình chung</span></a></li>
             @endcan
 {{--            @can('customer.index')--}}
 {{--                <li @if (in_array($routeName, ['admin.customer.index', 'admin.customer.create'])) class="active" @endif><a href="{{ route('admin.customer.index') }}"><i--}}
@@ -50,26 +50,26 @@ $routeName = \Request::route()->getName();
 {{--            @endcan--}}
             @can('page.index')
                 <li @if (in_array($routeName, ['admin.page.index', 'admin.page.create'])) class="active" @endif><a href="{{ route('admin.page.index') }}"><i
-                            class="fa fa-print"></i><span>Pages</span></a></li>
+                            class="fa fa-print"></i><span>Quản lý trang tĩnh</span></a></li>
             @endcan
 
             @canany(['blog_posts.index', 'blog_categories.index', 'blog_tags.index'])
                 <li class="treeview @if (in_array($routeName, ['admin.blog_posts.index', 'admin.blog_posts.create', 'admin.blog_categories.index', 'admin.blog_categories.create', 'admin.blog_tags.index', 'admin.blog_tags.create'])) active @endif">
-                    <a href="#"><i class="fa fa-tag"></i><span>Blog</span> <span class="pull-right-container"><i
+                    <a href="#"><i class="fa fa-tag"></i><span>Bài viết</span> <span class="pull-right-container"><i
                                 class="fa fa-angle-left pull-right"></i></span></a>
                     <ul class="treeview-menu">
                         @can('blog_posts.index')
-                            <li @if (in_array($routeName, ['admin.blog_posts.index', 'admin.blog_posts.create'])) class="active" @endif><a href="{{ route('admin.blog_posts.index') }}">Posts</a></li>
+                            <li @if (in_array($routeName, ['admin.blog_posts.index', 'admin.blog_posts.create'])) class="active" @endif><a href="{{ route('admin.blog_posts.index') }}">Danh sách bài viết</a></li>
                         @endcan
 
                         @can('blog_categories.index')
-                            <li @if (in_array($routeName, ['admin.blog_categories.index', 'admin.blog_categories.create'])) class="active" @endif><a href="{{ route('admin.blog_categories.index') }}">Categories</a>
+                            <li @if (in_array($routeName, ['admin.blog_categories.index', 'admin.blog_categories.create'])) class="active" @endif><a href="{{ route('admin.blog_categories.index') }}">Danh mục</a>
                             </li>
                         @endcan
 
-                        @can('blog_tags.index')
-                            <li @if (in_array($routeName, ['admin.blog_tags.index', 'admin.blog_tags.create'])) class="active" @endif><a href="{{ route('admin.blog_tags.index') }}">Tags</a></li>
-                        @endcan
+{{--                        @can('blog_tags.index')--}}
+{{--                            <li @if (in_array($routeName, ['admin.blog_tags.index', 'admin.blog_tags.create'])) class="active" @endif><a href="{{ route('admin.blog_tags.index') }}">Tags</a></li>--}}
+{{--                        @endcan--}}
                     </ul>
                 </li>
             @endcanany
@@ -87,11 +87,11 @@ $routeName = \Request::route()->getName();
                                           'admin.color.index',
                                           'admin.color.create',
                                           ])) active @endif">
-                    <a href="#"><i class="fa fa-product-hunt"></i><span>Products</span> <span
+                    <a href="#"><i class="fa fa-product-hunt"></i><span>Sản phẩm</span> <span
                             class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                     <ul class="treeview-menu">
                         @can('product_products.index')
-                            <li @if (in_array($routeName, ['admin.product_products.index', 'admin.product_products.create'])) class="active" @endif><a href="{{ route('admin.product_products.index') }}">Products</a>
+                            <li @if (in_array($routeName, ['admin.product_products.index', 'admin.product_products.create'])) class="active" @endif><a href="{{ route('admin.product_products.index') }}">Danh sách sản phẩm</a>
                             </li>
                         @endcan
                             @can('size.index')

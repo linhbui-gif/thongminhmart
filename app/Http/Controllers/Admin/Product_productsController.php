@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helper\Common;
+use App\Helper\Log;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Product_products as MainModel;
 use Illuminate\Support\Facades\Hash;
@@ -45,8 +47,8 @@ class Product_productsController extends AdminController
                 [ 'label' => 'Mô tả tóm tắt' ,'name' => 'short_description', 'type' => 'ckeditor'],
                 [ 'label' => 'Nội dung' ,'name' => 'content', 'type' => 'ckeditor'],
                 [ 'label' => 'Danh mục' ,'name' => 'category_id', 'type' => 'select', 'data_source' => \App\Product_category::class, 'foreign_key' => 'category_id' ],
-                [ 'label' => 'Chọn màu' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Color::class, 'foreign_key' => 'color_id' ],
-                [ 'label' => 'Chọn size' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Size::class, 'foreign_key' => 'size_id' ],
+//                [ 'label' => 'Chọn màu' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Color::class, 'foreign_key' => 'color_id' ],
+//                [ 'label' => 'Chọn size' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Size::class, 'foreign_key' => 'size_id' ],
                 [ 'label' => 'Tags' ,'name' => 'tag_id', 'type' => 'tag','data_source' => \App\Product_tags::class,  'foreign_key' => 'tags'],
 //                [ 'label' => 'Loại sản phẩm', 'name' => 'type', 'type' => 'select', 'data_source' =>
 //                    [
@@ -56,6 +58,7 @@ class Product_productsController extends AdminController
 //                ],
                 [ 'label' => 'Số thứ tự' ,'name' => 'order_no', 'type' => 'number'],
                 [ 'label' => 'Status' ,'name' => 'status', 'type' => 'status'],
+                [ 'label' => 'Video Upload' ,'name' => 'video_link', 'type' => 'file'],
                 [ 'label' => 'Picture' ,'name' => 'url_picture', 'type' => 'file_from_url'],
 //                [ 'label' => 'Gallery' ,'name' => 'gallery', 'type' => 'gallery'],
 
@@ -89,21 +92,21 @@ class Product_productsController extends AdminController
                 [ 'label' => 'Meta Keywords' ,'name' => 'meta_keywords', 'type' => 'text'],
             ]
         ],
-        'general_tab_ko' => [
-            'label_tab' => 'General (Korean)',
-            'items' => [
-                [ 'label' => 'Name' ,'name' => 'name_ko', 'type' => 'text'],
-                [ 'label' => 'Mô tả tóm tắc' ,'name' => 'short_description_ko', 'type' => 'ckeditor'],
-            ]
-        ],
-        'seo_tab_ko' => [
-            'label_tab' => 'Meta (Korean)',
-            'items' => [
-                [ 'label' => 'Meta title' ,'name' => 'meta_title_ko', 'type' => 'text'],
-                [ 'label' => 'Meta description' ,'name' => 'meta_description_ko', 'type' => 'textarea'],
-                [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords_ko', 'type' => 'text'],
-            ]
-        ]
+//        'general_tab_ko' => [
+//            'label_tab' => 'General (Korean)',
+//            'items' => [
+//                [ 'label' => 'Name' ,'name' => 'name_ko', 'type' => 'text'],
+//                [ 'label' => 'Mô tả tóm tắc' ,'name' => 'short_description_ko', 'type' => 'ckeditor'],
+//            ]
+//        ],
+//        'seo_tab_ko' => [
+//            'label_tab' => 'Meta (Korean)',
+//            'items' => [
+//                [ 'label' => 'Meta title' ,'name' => 'meta_title_ko', 'type' => 'text'],
+//                [ 'label' => 'Meta description' ,'name' => 'meta_description_ko', 'type' => 'textarea'],
+//                [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords_ko', 'type' => 'text'],
+//            ]
+//        ]
     ];
     protected $searchList = [
         'all' => 'Search By All',
@@ -126,71 +129,125 @@ class Product_productsController extends AdminController
         view()->share("controllerName", $this->controllerName);
         $this->model = new MainModel();
     }
+    public function store(Request $request)
+    {
+
+        $this->validateStore($request);
+        $product = new MainModel();
+        $data = [];
+        foreach($request->contents as $k => $sections){
+            foreach($sections as $k_1 => $section){
+                $data[$k][$k_1] = $section;
+            }
+        }
+        $product->name = $request->name;
+        $product->price_base = $request->price_base;
+        $product->price_final = $request->price_final;
+        $product->short_description = $request->short_description;
+        $product->category_id = $request->category_id;
+        $product->slug = $request->slug;
+        $product->content = $request->content;
+        $product->status = isset($request->status) && $request->status != null ? "active" : "inactive";
+        $product->meta_title = $request->meta_title;
+        $product->meta_description = $request->meta_description;
+        $product->meta_keywords = $request->meta_keywords;
+        $product->url_picture = $request->url_picture;
+        $product->order_no = $request->order_no;
+        $product->ts_kt = serialize($data);
+        if(isset($request->video_link)){
+            if(preg_match("#mp4#", $_FILES['video_link']['type'])){
+                $video_upload = $request->file('video_link');
+
+                if(isset($video_upload))
+                {
+                    $videoName  = \Str::random(10).'.'.$video_upload->getClientOriginalExtension();
+
+                    if(!\Storage::disk('public')->exists('video-intro'))
+                    {
+                        \Storage::disk('public')->makeDirectory('video-intro');
+                    }
+
+                    \Storage::disk('public')->putFileAs('video-intro',$video_upload,$videoName);
+                } else {
+                    $videoName = $product->video_link;
+                }
+                $product->video_link = $videoName;
+            }
+        }
+        $product->save();
+        Session::flash('success', 'Bạn đã thêm mới thành công');
+        return redirect()->route('admin.' . $this->controllerName . ".index" );
+    }
+  public function update(Request $request, $id)
+  {
+     $this->validateUpdate($request, $id);
+     $product = MainModel::findOrFail($id);
+      $content = unserialize($product->ts_kt);
+      $data = [];
+      foreach($request->contents as $k => $sections){
+          foreach($sections as $k_1 => $section){
+              if(is_object($section)){
+                  $section = $this->uploadThumb($section);
+              }
+              $data[$k][$k_1] = $section;
+          }
+      }
+
+      if(is_array($content)){
+          foreach($content as $k => $sections){
+              foreach($sections as $k_1 => $section){
+                  if(!isset($data[$k][$k_1])){
+                      $data[$k][$k_1] = $content[$k][$k_1];
+                  }
+              }
+          }
+      }
+      $product->name = $request->name;
+      $product->price_base = $request->price_base;
+      $product->price_final = $request->price_final;
+      $product->short_description = $request->short_description;
+      $product->category_id = $request->category_id;
+      $product->slug = $request->slug;
+      $product->content = $request->content;
+      $product->status = isset($request->status) && $request->status != null ? "active" : "inactive";
+      $product->meta_title = $request->meta_title;
+      $product->meta_description = $request->meta_description;
+      $product->meta_keywords = $request->meta_keywords;
+      $product->url_picture = $request->url_picture;
+      $product->order_no = $request->order_no;
+      $product->ts_kt = serialize($data);
+      if(isset($request->video_link)){
+          if(preg_match("#mp4#", $_FILES['video_link']['type'])){
+              $video_upload = $request->file('video_link');
+
+              if(isset($video_upload))
+              {
+                  $videoName  = \Str::random(10).'.'.$video_upload->getClientOriginalExtension();
+
+                  if(!\Storage::disk('public')->exists('video-intro'))
+                  {
+                      \Storage::disk('public')->makeDirectory('video-intro');
+                  }
+
+                  \Storage::disk('public')->putFileAs('video-intro',$video_upload,$videoName);
+              } else {
+                  $videoName = $product->video_link;
+              }
+              $product->video_link = $videoName;
+          }
+      }
+      $product->save();
+      Session::flash('success', 'Bạn đã thêm mới thành công');
+      return redirect()->route('admin.' . $this->controllerName . ".index" );
+  }
+
     // option validate Store
     protected function validateStore(Request $request){
-//        $request->validate([
-//            'name' => 'required',
-//            'short_description' => "required",
-//            'price_base' => "required|integer",
-//            'price_final' => "required|integer",
-////            'picture' => "required",
-////            'type' => "required",
-//            'category_id' => "exists:product_categories,id",
-//            'warehouse_id' => "exists:warehouse,id",
-//            'quantity' => 'required|integer',
-//            'slug' => 'required'
-//        ],[
-//            'required' => ":attribute không được để trống",
-//            'min' => ":attribute ít nhất :min ký tự",
-//            'max' => ":attribute vượt quá :max ký tự",
-//            'exists' => ":attribute phải được chọn",
-//            'integer' => ":attribute phải là số hợp lệ"
-//        ],[
-//            'name' => 'Tên',
-//            'short_description' => 'Mô tả ngắn',
-//            'content' => 'Nội dung',
-//            'price_base' => 'Giá cơ bản',
-//            'price_final' => 'Giá chính thức',
-//            'picture' => 'Hình ảnh',
-//            'gallery' => 'Danh sách hình ảnh',
-////            'type' => 'Loại sản phẩm',
-//            'category_id' => 'Danh mục',
-//            'warehouse_id' => 'Kho hàng',
-//            'quantity' => 'Số lượng'
-//        ]);
+
     }
     // option validate Update
     protected function validateUpdate(Request $request, $id = ""){
 
-//        $request->validate([
-//            'name' => 'required',
-//            'short_description' => "required",
-//            'price_base' => "required|integer",
-//            'price_final' => "required|integer",
-//
-////            'type' => "required",
-//            'category_id' => "exists:product_categories,id",
-//            'warehouse_id' => "exists:warehouse,id",
-//            'quantity' => 'required|integer',
-//            'slug' => 'required'
-//        ],[
-//            'required' => ":attribute không được để trống",
-//            'min' => ":attribute ít nhất :min ký tự",
-//            'max' => ":attribute vượt quá :max ký tự",
-//            'exists' => ":attribute phải được chọn",
-//        ],[
-//            'name' => 'Tên',
-//            'short_description' => 'Mô tả ngắn',
-//            'content' => 'Nội dung',
-//            'price_base' => 'Giá cơ bản',
-//            'price_final' => 'Giá chính thức',
-//            'picture' => 'Hình ảnh',
-//            'gallery' => 'Danh sách hình ảnh',
-////            'type' => 'Loại sản phẩm',
-//            'category_id' => 'Danh mục',
-//            'warehouse_id' => 'Kho hàng',
-//            'quantity' => 'Số lượng'
-//        ]);
     }
 
 }
