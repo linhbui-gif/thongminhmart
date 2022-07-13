@@ -125,7 +125,7 @@ class ProductController extends Controller
     public function productDetail($product_slug)
     {
         $product = Product_products::where('slug', $product_slug)->where('status', 'active')->first();
-        if ($product) {
+        if (isset($product->category->id)) {
             $idCategory = $product->category->id;
         }
 
@@ -133,7 +133,9 @@ class ProductController extends Controller
             abort(404);
         }
         $data['product'] = $product;
-        $data['productSameCategory'] = Product_products::where('category_id', $idCategory)->where('status', 'active')->get();
+        if (isset($idCategory)){
+            $data['productSameCategory'] = Product_products::where('category_id', $idCategory)->where('status', 'active')->get();
+        }
         return view(config("edushop.end-user.pathView") . "productDetail")->with($data);
     }
 

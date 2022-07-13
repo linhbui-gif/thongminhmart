@@ -258,16 +258,6 @@ class Course_coursesController extends AdminController
             $course->thumbnail_intro = $picture_name;
         }
         if(isset($request->video_intro)){
-            // check extension
-
-//            if($_FILES['video_intro']['type'] == "application/x-zip-compressed" || $_FILES['video_intro']['type'] == "application/zip" ){
-//                $name = $request->video_intro->getClientOriginalName();
-//                $pathVideo = storage_path() . "/app/public/tmp_intro/" . $name;
-//                if(!file_exists($pathVideo)){
-//                    $request->video_intro->storeAs('/public/tmp_intro/', $name);
-//                    \App\Jobs\UploaderVideoIntro::dispatch($name,$id);
-//                }
-//            }
             if(preg_match("#mp4#", $_FILES['video_intro']['type'])){
                 $name = pathinfo($_FILES['video_intro']['name'], PATHINFO_FILENAME);
                 $vimeo = Vimeo::connection('main');
