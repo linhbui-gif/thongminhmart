@@ -20,7 +20,8 @@
           $blogs = \App\blog_posts::where('status','active')->orderBy('order_no','asc')->limit(3)->get();
           \App\Helper\Common::putToCache('blogs',$blogs);
         }
-       $lastItemBlog = \App\blog_posts::where('status','active')->orderBy('id','desc')->first()->id;
+
+        $lastItemBlog = \App\blog_posts::where('status','active')->orderBy('id','desc')->first()->id;
     @endphp
 
     <?php
@@ -36,7 +37,6 @@
             {{ csrf_field() }}
             <div class="row" id="post_data">
             </div>
-
         </div>
     </div>
 

@@ -61,12 +61,15 @@
 <?php
  $colors = \App\Color::where('status','active')->get();
  $sizes = \App\Size::where('status','active')->get();
-
+$page_content = unserialize($product->ts_kt);
 ?>
 <div class="container">
     <div class="row">
         <div class="col-5">
-            <img width="100%" src="{{$product->url_picture}}" alt="">
+{{--            <img width="100%" src="{{$product->url_picture}}" alt="">--}}
+            <video width="100%"  controls>
+                <source src="{{asset('storage/video-intro/'.$product->video_link)}}" type="video/mp4">
+            </video>
         </div>
         <div class="col-7">
             <h3>{{$product->name}}</h3>
@@ -112,6 +115,26 @@
                 </div>
             </div>
 
+<div class="row">
+    <div class="col-6">
+        <ul class="list-group">
+        @for($stt = 1; $stt < 10; $stt++)
+            @if(isset($page_content['tieu_chi_' . $stt]))
+                @php
+                    $item = $page_content['tieu_chi_' . $stt];
+                @endphp
+                    @if(isset($item['name']) && isset($item['description']))
+                    <li class="list-group-item">
+                        <span>{{@$item['name']}}</span> {{@$item['description']}}
+                    </li>
+                    @else
+                         {{" "}}
+                    @endif
+            @endif
+        @endfor
+        </ul>
+    </div>
+</div>
         </div>
     </div>
 </div>
