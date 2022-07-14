@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 require "admin.php";
-
 Route::middleware("locale")->namespace('Enduser')->group(function(){
     /*------ End-user -------*/
 

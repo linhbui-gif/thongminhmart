@@ -38,6 +38,7 @@ class ProductController extends Controller
         $products = $category->products()->where('product_products.status', 'active')->orderBy('order_no', 'asc')->get();
         $data['products'] = $products;
         $data['category'] = $category;
+        
         return view(config("edushop.end-user.pathView") . "productListByCategory")->with($data);
     }
 
@@ -136,6 +137,7 @@ class ProductController extends Controller
         if (isset($idCategory)){
             $data['productSameCategory'] = Product_products::where('category_id', $idCategory)->where('status', 'active')->get();
         }
+        // dd($data);   
         return view(config("edushop.end-user.pathView") . "productDetail")->with($data);
     }
 
