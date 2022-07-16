@@ -8,6 +8,7 @@ use App\Product_tags;
 use App\Comment;
 use Illuminate\Http\Request;
 use App\Product_products;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -77,21 +78,24 @@ class ProductController extends Controller
         if(!empty($cart[$request->product_id])) {
 
             if(!empty($cart[$request->product_id]['options'])) {
-                foreach ($cart[$request->product_id]['options'] as $k => &$options) {
+                foreach ($cart[$request->product_id]['options'] as $k => $options) {
                             if ((int)$options['color'] === (int)$request->color_id && (int)$options['size'] === (int)$request->size_id) {
+//                                dd("123");
                                 $cart[$request->product_id]['options'][$k]['quantity'] = (int)$options['quantity'] + (int)$request->quantity;
                                 session()->put('cart', $cart);
                             } else {
-
-                                array_push($cart[$request->product_id]['options'],
-                                    [
-                                        "name" => $product->name,
-                                        "quantity" => (int)$request->quantity,
-                                        "price" => $product->price_final,
-                                        "image" => $product->url_picture,
-                                        "color" => $request->color_id,
-                                        "size" => $request->size_id,
-                                    ]);
+                                $arrayPush = [
+                                    "name" => $product->name,
+                                    "quantity" => (int)$request->quantity,
+                                    "price" => $product->price_final,
+                                    "image" => $product->url_picture,
+                                    "color" => $request->color_id,
+                                    "size" => $request->size_id,
+                                ];
+//                                dd(!in_array($arrayPush, $cart[$request->product_id]['options']));
+                                if(!in_array($arrayPush, $cart[$request->product_id]['options'], true)){
+                                    array_push($cart[$request->product_id]['options'], $arrayPush);
+                                }
                                 $cart[$request->product_id]['options'][$k] = $options;
                                 session()->put('cart', $cart);
                             }
@@ -124,7 +128,7 @@ class ProductController extends Controller
    }
     public function productDetail($product_slug)
     {
-        $product = Product_products::where('slug', $product_slug)->where('status', 'active')->first();
+        $product = DB::table('product_products')->select(['name','url_picture','slug','video_link','price_base','price_final','content','meta_title','meta_description','ts_kt','id'])->where('slug', $product_slug)->where('status', 'active')->first();
         if (isset($product->category->id)) {
             $idCategory = $product->category->id;
         }

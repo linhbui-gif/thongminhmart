@@ -28,134 +28,137 @@
       $banners = \App\Banner::where('type',1)->where('status','active')->where('location','banner_home')->orderBy('order_no','asc')->get();
       \App\Helper\Common::putToCache('banner_home',$banners);
     }
-    $productsBanner = \App\Product_products::where('status','active')->orderBy('order_no','asc')->get();
-    if(!$productsBanner) {
-      $productsBanner = \App\Product_products::where('status','active')->orderBy('order_no','asc')->get();
-      \App\Helper\Common::putToCache('product_asc',$productsBanner);
-    }
-    $products= \App\Product_products::where('status','active')->orderBy('order_no','asc')->get();
+    $products= \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->orderBy('order_no','desc')->get();
     if(!$products) {
-      $products = \App\Product_products::where('status','active')->orderBy('order_no','desc')->get();
+    $products= \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->orderBy('order_no','desc')->get();
       \App\Helper\Common::putToCache('product_main',$products);
     }
-    $bannerTeam= \App\Banner::where('type',0)->where('status','active')->where('location','banner_team')->orderBy('order_no','asc')->get();
-    $bannerPartner = \App\Banner::where('type',0)->where('status','active')->where('location','banner_partner')->orderBy('order_no','asc')->get();
-    $postFeatures = \App\blog_posts::where('status','active')->orderBy('order_no','asc')->limit(6)->get();
+    $categoryProducts = \Illuminate\Support\Facades\DB::table("product_categories")->select(['name','url_picture','slug'])->where('status','active')->orderBy('id','desc')->get();
 @endphp
 @section('content')
-   @include('enduser.page.pages.home.slider',['nameCarousel' => "slider-carsoule", "data" => $banners ])
-   <div class="container">
-       <div class="space-medium">
-           <div class="carousel ">
-               <div class="owl-carousel carousel-2 owl-theme">
-                   <!-- carousel-item -->
-                   @include('enduser.page.components.product-hozizon',["data" => $productsBanner ])
-                   <!-- /.carousel-item -->
-               </div>
-           </div>
-       </div>
-   </div>
-   <div class="space-medium bg-light">
-       <!-- News section -->
+   @include('enduser.page.pages.home.slider',["data" => $banners ])
+   <div class="ProductCategory">
        <div class="container">
-           <div class="row">
-               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                   <div class="section-title mb60">
-                       <!-- section title start-->
-                       <h2>SẢN PHẨM CHÍNH</h2>
+           <div class="ProductCategory-wrapper">
+               <div class="Card">
+                   <div class="Card-header flex items-center justify-between">
+                       <div class="Card-header-title">Danh mục sản phẩm</div>
+{{--                       <a class="Card-header-see-more" href="#">Xem thêm</a>--}}
                    </div>
-                   <!-- /.section title start-->
-               </div>
-           </div>
-           <div class="row">
-               @include('enduser.page.components.product-items',["data" => $products ])
-           </div>
-       </div>
-   </div>
-   <div class="container">
-       <div class="space-medium">
-           <div class="row">
-               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                   <div class="section-title mb60">
-                       <!-- section title start-->
-                       <h2>SỰ KIỆN NỔI BẬT</h2>
-                   </div>
-                   <!-- /.section title start-->
-               </div>
-           </div>
-           <div class="carousel ">
-               <div class="owl-carousel carousel-1 owl-theme">
-                   <!-- carousel-item -->
-                   @if(!empty($postFeatures))
-                       @foreach($postFeatures as $v)
-                   <div class="item">
-                       <div class="carousel-img">
-                           <a href="{{route('new.newDetail',['slug'=>$v->slug])}}"><img src="{{$v->url_picture}}" alt="" class="img-fluid"></a>
-                           <div class="overlay-category">
-                               <p class="category-overlay-text text-center">
-                                   {{$v->name}}
-                               </p>
+                   <div class="Card-body">
+                       <div class="ProductCategory-list owl-carousel desktop" id="ProductCategory-carousel">
+                           @if(!empty($categoryProducts))
+                               @foreach($categoryProducts as $k => $data)
+                           <div class="item">
+                               @include('enduser.page.components.category-list',["data" => $data ])
+                           </div>
+                               @endforeach
+                           @endif
+                       </div>
+                       <div class="ProductCategory-list mobile">
+                           <div class="row">
+                               @if(!empty($categoryProducts))
+                                   @foreach($categoryProducts as $k => $cateMobile)
+                               <div class="col-3">
+                                   <div class="ProductCategory-list-item ">
+                                       @include('enduser.page.components.category-list',["data" => $cateMobile ])
+                                   </div>
+                               </div>
+                                   @endforeach
+                               @endif
                            </div>
                        </div>
                    </div>
-                   @endforeach
-               @endif
-                   <!-- /.carousel-item -->
                </div>
            </div>
        </div>
    </div>
-   <div class="space-medium">
+   <div class="ProductList">
        <div class="container">
-           <div class="row">
-               <div class="offset-lg-2 col-lg-8 col-md-12 col-sm-12 col-xs-12">
-                   <div class="section-title text-center mb60">
-                       <!-- section title start-->
-                       <h2>Khách hàng nói gì về chúng tôi?</h2>
-                       <!-- /.section title start-->
+           <div class="ProductCategory-wrapper">
+               <div class="Card">
+                   <div class="Card-header flex items-center justify-between">
+                       <div class="Card-header-title">Gợi ý hôm nay</div>
                    </div>
-               </div>
-           </div>
-           <div class="row">
-               @if(!empty($bannerTeam))
-               @foreach($bannerTeam as $k => $v)
-               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                   <div class="card-testimonial card-testimonial-light">
-                       <!-- card testimonial start -->
-                       <div class="card-testimonial-img"><img width="90px" height="90px"  src="{{$v->picture}}" alt="{{$v->name}}"
-                                                              class="rounded-circle"></div>
-                       <div class="card-testimonial-content">
-                           <p class="card-testimonial-text">{!! $v->description !!}</p>
+                   <div class="Card-body">
+                       {{ csrf_field() }}
+                       <div class="ProductList-list flex flex-wrap" id="product_data">
                        </div>
-                       <div class="card-testimonial-info">
-                           <h4 class="card-testimonial-name">{{$v->title}}</h4>
+                       <div class="ProductList-loadmore" >
+                           <div class="Button outline-primary middle" id="ProductList-loadmore"></div>
                        </div>
                    </div>
-                   <!-- /.card testimonial start -->
                </div>
-               @endforeach
-               @endif
            </div>
        </div>
    </div>
-   <div class="space-medium pdb0">
-       <div class="container">
-           <div class="row">
-               <div class="col-xl-12">
-                   <h2>ĐỐI TÁC NỔI BẬT</h2>
-               </div>
-               @foreach($bannerPartner as $k => $v)
-               <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-6">
-                   <div class="partner-logo">
-                       <!-- partner logo -->
-                       <img src="{{$v->picture}}"
-                            alt="{{$v->name}}"
-                            class="img-fluid grayscale">
-                   </div>
-                   <!-- /.partner logo -->
-               </div>
-               @endforeach
-           </div>
-       </div>
-   </div>
+
 @stop
+@section('script')
+    <script>
+        $(document).ready(function(){
+
+            var _token = $('input[name="_token"]').val();
+            load_data('', _token);
+            function load_data(id="", _token)
+            {
+                $.ajax({
+                    url:"{{ route('ajaxProduct') }}",
+                    method:"POST",
+                    data:{id:id, _token:_token},
+                    success:function(data)
+                    {
+                        console.log(data)
+                        if (data.length){
+                            $('#load_more_button').remove();
+                            $('#product_data').append(data[0]);
+                            $('#ProductList-loadmore').append(data[1]);
+                            ConfigVideoProduct();
+                        }
+                    }
+                })
+            }
+            function ConfigVideoProduct(){
+                const products = document.querySelectorAll(".ProductBox");
+                products.forEach((item) => {
+                    const video = item.querySelector(".ProductBox-video");
+                    const loading = item.querySelector(".ProductBox-video-loading");
+                    const srcVideo = video.dataset.src;
+
+                    const startVideo = () => {
+                        if (!video.src) {
+                            video.addEventListener("loadeddata", () => {
+                                video.classList.add("loaded");
+                                loading.classList.add("loaded");
+                            });
+                            video.src = srcVideo;
+                        }
+
+                        loading.classList.add("active");
+                        video.classList.add("active");
+                        video.play();
+                    };
+
+                    const endVideo = () => {
+                        loading.classList.remove("active");
+                        video.classList.remove("active");
+                        video.pause();
+                        video.currentTime = 0;
+                    };
+
+                    item.addEventListener("mousemove", startVideo);
+                    item.addEventListener("touchstart", startVideo);
+                    item.addEventListener("mouseleave", endVideo);
+                    item.addEventListener("touchend", endVideo);
+                });
+            }
+            $(document).on('click', '#load_more_button', function(){
+                var id = $(this).data('id');
+                $('#load_more_button').html('<b>Loading...</b>');
+                load_data(id, _token);
+            });
+
+        });
+
+    </script>
+@endsection

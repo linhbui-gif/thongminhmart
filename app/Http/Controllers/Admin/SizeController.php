@@ -31,7 +31,7 @@ class SizeController extends AdminController
             'label_tab' => 'General',
             'items' => [
                 [ 'label' => 'Name' ,'name' => 'name', 'type' => 'text'],
-//                [ 'name' => 'order_no', 'label' => 'Số thứ tự', 'type' => 'text'],
+                [ 'name' => 'product_price', 'label' => 'Giá sản phẩm', 'type' => 'text'],
                 [ 'label' => 'Status' ,'name' => 'status', 'type' => 'status'],
             ]
         ]

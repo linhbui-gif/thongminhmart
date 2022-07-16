@@ -22,40 +22,48 @@
     ];
 
     ?>
-    @include("enduser.page.components.breb-crumb",['data' => $dataBreb])
-    <div class="content">
+    {{--    @include("enduser.page.components.breb-crumb",['data' => $dataBreb])--}}
+    <div class="Breadcrumb">
         <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="section-title mb60">
-                        <!-- section title start-->
-                        <h2>{{$category->name}}</h2>
+            <div class="Breadcrumb-wrapper">
+                <div class="Breadcrumb-list flex flex-wrap"><a class="Breadcrumb-list-item" href="/">Trang chủ</a>
+                    <div class="Breadcrumb-list-item arrow">
+                        <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
                     </div>
-                    <!-- /.section title start-->
-                </div>
-            </div>
-            <div class="row">
-                @if($products->count() > 0)
-                    @foreach($products as $product)
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
-                    <div class="coaching-card">
-                        <!-- coaching card -->
-                        <div class="coaching-card-img zoomimg">
-                            <a href="#"><img src="{{ @$product->url_picture }}" alt="" class="img-fluid w-100"></a>
-                        </div>
-                        <div class="coaching-card-body">
-                            <h2 class="coaching-card-title"><a href="#" class="title htit">{{$product->name}}</a></h2>
-                            <p class="an"> {!! $product->short_description !!}</p>
-                            <a href="#" class="btn btn-default">Đọc Thêm</a>
-                        </div>
+                    <a class="Breadcrumb-list-item" href="#">Sản phẩm theo danh mục</a>
+                    <div class="Breadcrumb-list-item arrow">
+                        <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
                     </div>
-                    <!-- /.coaching card -->
+                    <a class="Breadcrumb-list-item" href="#">{{$category->name}}</a>
                 </div>
-                    @endforeach
-                @endif
             </div>
         </div>
     </div>
-
-
+    <div class="ProductList">
+        <div class="container">
+            <div class="ProductCategory-wrapper">
+                <div class="Card">
+                    <div class="Card-header flex items-center justify-between">
+                        <div class="Card-header-title">{{$category->name}}</div>
+                    </div>
+                    <div class="Card-body">
+                        <div class="ProductList-list flex flex-wrap">
+                            @include('enduser.page.components.product-items', ['data' => $products])
+                        </div>
+                        <div class="ProductList-loadmore">
+                            <div class="Button outline-primary middle">
+                                <button class="Button-control flex items-center justify-center" type="button"><span
+                                        class="Button-control-title">Xem thêm</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
