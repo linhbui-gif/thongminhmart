@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Enduser;
 
+use App\Cart;
 use App\Http\Controllers\Controller;
 use App\Product_category;
 use App\Product_tags;
@@ -72,53 +73,92 @@ class ProductController extends Controller
 
     public function addCart(Request $request)
     {
-
-        $product = Product_products::findOrFail($request->product_id);
-        $cart = session()->get('cart', []);
-        if(!empty($cart[$request->product_id])) {
-
-            if(!empty($cart[$request->product_id]['options'])) {
-                foreach ($cart[$request->product_id]['options'] as $k => &$options) {
-                            if ((int)$options['color'] === (int)$request->color_id && (int)$options['size'] === (int)$request->size_id) {
-                                $cart[$request->product_id]['options'][$k]['quantity'] = (int)$options['quantity'] + (int)$request->quantity;
-                                session()->put('cart', $cart);
-                            } else {
-
-                                array_push($cart[$request->product_id]['options'],
-                                    [
-                                        "name" => $product->name,
-                                        "quantity" => (int)$request->quantity,
-                                        "price" => $product->price_final,
-                                        "image" => $product->url_picture,
-                                        "color" => $request->color_id,
-                                        "size" => $request->size_id,
-                                    ]);
-                                $cart[$request->product_id]['options'][$k] = $options;
-                                session()->put('cart', $cart);
-                            }
-
-                }
+        try {
+            // session()->forget('Cart');
+            $arrInput = $request->input();
+            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->AddCart($arrInput);
+            
+            if ($newCart->checkIsset != 0) {
+                $quanty = $request->quantity;
+                // $oldCart = Session('Cart') ? Session('Cart') : null;
+                // $newCartUd = new Cart($oldCart);
+                $newCart->UpdateItemCart($newCart->checkIsset, $quanty);
+                session()->put('Cart', $newCart);
+            } else {
+                session()->put('Cart', $newCart);
             }
-        } else {
-            $cart[$request->product_id] = [
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price_final,
-                "image" => $product->url_picture,
-                "options" => [
-                    $request->color_id => [
-                        "name" => $product->name,
-                        "quantity" =>  (int) $request->quantity,
-                        "price" => $product->price_final,
-                        "image" => $product->url_picture,
-                        "color" => $request->color_id,
-                        "size" => $request->size_id
-                    ]
-                ]
-            ];
-            session()->put('cart', $cart);
+            
+            // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
+            return view(config("edushop.end-user.pathView") . "productCart");
+        } catch (\Exception $e) {
+            dd($e);
         }
-            return redirect()->back()->with('success', 'Thêm sản phẩm vào giỏ hàng thành công');
+
+        // $product = Product_products::findOrFail($request->product_id);
+        // $cart = session()->get('cart', []);
+        // if(!empty($cart[$request->product_id])) {
+
+        //     if(!empty($cart[$request->product_id]['options'])) {
+        //         foreach ($cart[$request->product_id]['options'] as $k => &$options) {
+        //                     if ((int)$options['color'] === (int)$request->color_id && (int)$options['size'] === (int)$request->size_id) {
+        //                         $cart[$request->product_id]['options'][$k]['quantity'] = (int)$options['quantity'] + (int)$request->quantity;
+        //                         session()->put('cart', $cart);
+        //                     } else {
+
+        //                         array_push($cart[$request->product_id]['options'],
+        //                             [
+        //                                 "name" => $product->name,
+        //                                 "quantity" => (int)$request->quantity,
+        //                                 "price" => $product->price_final,
+        //                                 "image" => $product->url_picture,
+        //                                 "color" => $request->color_id,
+        //                                 "size" => $request->size_id,
+        //                             ]);
+        //                         $cart[$request->product_id]['options'][$k] = $options;
+        //                         session()->put('cart', $cart);
+        //                     }
+
+        //         }
+        //     }
+        // } else {
+        //     $cart[$request->product_id] = [
+        //         "name" => $product->name,
+        //         "quantity" => 1,
+        //         "price" => $product->price_final,
+        //         "image" => $product->url_picture,
+        //         "options" => [
+        //             $request->color_id => [
+        //                 "name" => $product->name,
+        //                 "quantity" =>  (int) $request->quantity,
+        //                 "price" => $product->price_final,
+        //                 "image" => $product->url_picture,
+        //                 "color" => $request->color_id,
+        //                 "size" => $request->size_id
+        //             ]
+        //         ]
+        //     ];
+        //     session()->put('cart', $cart);
+        // }
+        //     return redirect()->back()->with('success', 'Thêm sản phẩm vào giỏ hàng thành công');
+    }
+    public function delCart(Request $request){
+        try {
+            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->DeleteItemCart($request->id);
+            if (count($newCart->products) > 0) {
+                $request->session()->put('Cart', $newCart);
+            } else {
+                $request->session()->forget('Cart');
+            }
+
+            return view(config("edushop.end-user.pathView") . "productCart");
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
     }
    public function checkout(){
        return view(config("edushop.end-user.pathView") . "checkout");

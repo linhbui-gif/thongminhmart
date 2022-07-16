@@ -46,6 +46,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
     /* -- ORDER -- */
     Route::get('/gio-hang', 'ProductController@cart')->name('product.cart');
     Route::post('them-vao-gio-hang', 'ProductController@addCart')->name('product.addCart');
+    Route::post('delete-cart', 'ProductController@delCart')->name('product.delCart');
 //
     Route::delete('xoa-gio-hang', 'ProductController@remove')->name('product.deleteCart');
     Route::patch('cart/update','ProductController@updateCart')->name('product.updateCart');
