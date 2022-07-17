@@ -91,7 +91,9 @@ class ProductController extends Controller
             }
             
             // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
-            return view(config("edushop.end-user.pathView") . "productCart");
+            $productId = $request->productId;
+            
+            return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e);
         }

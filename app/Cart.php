@@ -24,17 +24,19 @@ class Cart
         $check = false;
         $id = $input['productId'] . '-' . $input['color'] . '-' . $input['size'];
         $newProduct = ['quanty' => 0, 'price' => $input['price'], 'productInfo' => $input];
-        if ($this->products) {
-            if (array_key_exists($id, $this->products)) {
+        // if ($this->products) {
+        //     dd(1);
+            if ($this->products && array_key_exists($id, $this->products)) {
                 $newProduct = $this->products[$id];
                 $check = true;
-            }
+            } else {
+            $newProduct['quanty'] += $input['quantity'];
+            $newProduct['price'] = $newProduct['quanty'] * $input['price'];
+            $this->products[$id] = $newProduct;
+            $this->totalPrice += $input['quantity'] * $input['price'];
+            $this->totalQuanty += $input['quantity'];
         }
-        $newProduct['quanty'] += $input['quantity'];
-        $newProduct['price'] = $newProduct['quanty'] * $input['price'];
-        $this->products[$id] = $newProduct;
-        $this->totalPrice += $input['quantity'] * $input['price'];
-        $this->totalQuanty += $input['quantity'];
+        
         if ($check) {
             $this->checkIsset = $id;
         } else {
