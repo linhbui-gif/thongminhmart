@@ -1,6 +1,4 @@
 <?php
-
-
 /* === User === */
 $prefix = "auth";
 $controllerName = "auth";

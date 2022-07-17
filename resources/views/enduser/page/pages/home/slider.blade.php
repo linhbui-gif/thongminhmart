@@ -1,13 +1,15 @@
-
 @if(!empty($data)))
-<div class="slider">
-    <!-- slider -->
-    <div class="{{$nameCarousel ?? $nameCarousel}} owl-carousel owl-theme">
-        @foreach($data as $v)
-        <div class="item">
-            <img src="{{$v->picture}}" alt="{{$v->name}}">
+<div class="Banner">
+    <div class="container">
+        <div class="Banner-wrapper">
+            <div class="owl-carousel" id="Banner-carousel">
+                @foreach($data as $v)
+                <div class="item">
+                    <div class="Banner-carousel-item"> <img src="{{$v->picture}}" alt="{{$v->name}}"></div>
+                </div>
+                @endforeach
+            </div>
         </div>
-        @endforeach
     </div>
 </div>
 @endif
