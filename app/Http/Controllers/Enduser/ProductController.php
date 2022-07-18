@@ -40,7 +40,7 @@ class ProductController extends Controller
         $products = $category->products()->where('product_products.status', 'active')->orderBy('order_no', 'asc')->get();
         $data['products'] = $products;
         $data['category'] = $category;
-        
+
         return view(config("edushop.end-user.pathView") . "productListByCategory")->with($data);
     }
 
@@ -80,7 +80,7 @@ class ProductController extends Controller
             $oldCart = Session('Cart') ? Session('Cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->AddCart($arrInput);
-            
+
             if ($newCart->checkIsset != 0) {
                 $quanty = $request->quantity;
                 // $oldCart = Session('Cart') ? Session('Cart') : null;
@@ -90,10 +90,10 @@ class ProductController extends Controller
             } else {
                 session()->put('Cart', $newCart);
             }
-            
+
             // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
             $productId = $request->productId;
-            
+
             return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e);
@@ -180,7 +180,7 @@ class ProductController extends Controller
         if (isset($idCategory)){
             $data['productSameCategory'] = Product_products::where('category_id', $idCategory)->where('status', 'active')->get();
         }
-        // dd($data);   
+        // dd($data);
         return view(config("edushop.end-user.pathView") . "productDetail")->with($data);
     }
 

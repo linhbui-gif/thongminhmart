@@ -14,7 +14,7 @@
                     <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round" />
                     </svg>
-                </div><a class="Breadcrumb-list-item" href="chi-tiet-san-pham.html">Chi tiết</a>
+                </div><a class="Breadcrumb-list-item" href="#">Chi tiết</a>
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
                 <div class="Card-body">
                     <div class="ProductDetailPage-detail-wrapper flex flex-wrap">
                         <div class="ProductDetailPage-detail-image"> <img src="{{ $product->url_picture }}" alt="">
-                            <video class="ProductDetailPage-detail-video" src="{{ asset('/assets/videos/video-product-1.mp4') }}" preload="auto" defaultmuted playsinline autoplay muted loop></video>
+                            <video class="ProductDetailPage-detail-video" src="{{asset('storage/video-intro/'.$product->video_link)}}" preload="auto" defaultmuted playsinline autoplay muted loop></video>
                             <div class="ProductDetailPage-detail-image-play"><img src="{{ asset('/assets/icons/icon-play.svg') }}" alt=""></div>
                         </div>
                         <div class="ProductDetailPage-detail-info">
@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="ProductDetailPage-detail-info-basic-item">
-                                    <div class="ProductDetailPage-detail-info-text">MSP: {{ $product->slug }}</div>
+                                    <div class="ProductDetailPage-detail-info-text">MSP: {{ $product->id }}</div>
                                 </div>
                             </div>
                             <form action="{{route('product.addCart')}}" method="POST">
@@ -265,6 +265,8 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
+                $('#quantity').val(1);
+                // alert('Thêm sản phẩm vào giỏ hàng thành công !!')
                 $('.delCartItem').click(function() {
                     var url = "{{route('product.delCart')}}";
                     var data = {
@@ -282,6 +284,8 @@
                         dataType: 'HTML',
                         success: function(data) {
                             $('#add_to_cart').html(data);
+                            $('#quantity').val(1);
+                            // alert('Xóa sản phẩm từ giỏ hàng thành công !!')
                         }
                     });
                 });
@@ -306,6 +310,7 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
+                // alert('Xóa sản phẩm từ giỏ hàng thành công !!')
             }
         });
     });
