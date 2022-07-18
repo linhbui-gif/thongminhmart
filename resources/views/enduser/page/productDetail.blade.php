@@ -50,7 +50,7 @@
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
-                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_base}}">
+                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_final}}">
                                 <input type="hidden" name="jsAvarta" id="jsAvarta" value="{{$product->url_picture}}">
                                 <input type="hidden" name="jsProductName" id="jsProductName" value="{{$product->name}}">
                                 <div class="ProductDetailPage-detail-info-options flex flex-wrap">
@@ -226,7 +226,7 @@
                                             <video class="ProductBox-video" data-src="{{ asset('/assets/videos/video-product-1.mp4') }}" muted="muted" loop="loop"></video>
                                         </div>
                                     </div>
-                                    <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['category'=>$productSame->slug])}}">{{ $productSame->name }}</a>
+                                    <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['id'=>$productSame->id])}}">{{ $productSame->name }}</a>
                                         <div class="ProductBox-price">
                                             <del>{{ $productSame->price_base ? number_format($productSame->price_base). 'đ' : '' }} </del><span>{{ $productSame->price_final ? number_format($productSame->price_final). 'đ' : '' }}</span>
                                         </div>
@@ -244,6 +244,7 @@
 </div>
 @endsection
 @section('script')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="">
     $('#addtocart').click(function() {
         var url = "{{route('product.addCart')}}";
@@ -282,6 +283,13 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
+                });
             }
         });
     });

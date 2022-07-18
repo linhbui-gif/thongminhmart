@@ -51,11 +51,18 @@ class ProductController extends Controller
 
     public function updateCart(Request $request)
     {
-        if ($request->id && $request->quantity) {
-            $cart = session()->get('cart');
-            $cart[$request->id]["quantity"] = $request->quantity;
-            session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
+        try {
+            $quanty = $request->quanty;
+            $id = $request->id;
+            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->UpdateItemCartToNumber($id, $quanty);
+            $request->session()->put('Cart', $newCart);
+
+            return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
         }
     }
 
@@ -92,7 +99,8 @@ class ProductController extends Controller
             
             // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
             $productId = $request->productId;
-            
+            // session()->flash('success', 'Đã thêm vào rỏ hàng');
+
             return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e);
@@ -157,6 +165,10 @@ class ProductController extends Controller
             }
             $productId = $request->productId;
 
+            if ($request->action) {
+                return redirect()->back()->with('success', 'Xóa sản phẩm khỏi giỏ hàng thành công');
+            }
+
             return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -166,9 +178,9 @@ class ProductController extends Controller
    public function checkout(){
        return view(config("edushop.end-user.pathView") . "checkout");
    }
-    public function productDetail($product_slug)
+    public function productDetail($id)
     {
-        $product = Product_products::where('slug', $product_slug)->where('status', 'active')->first();
+        $product = Product_products::where('id', $id)->where('status', 'active')->first();
         if (isset($product->category->id)) {
             $idCategory = $product->category->id;
         }

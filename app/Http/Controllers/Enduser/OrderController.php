@@ -174,6 +174,7 @@ class OrderController extends Controller
     }
     public function postCheckout(Request $request)
     {
+        dd(321);
 
 
         $validate = [

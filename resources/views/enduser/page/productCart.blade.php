@@ -26,6 +26,13 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Xóa sản phẩm khỏi giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
+                });
             }
         });
     });
