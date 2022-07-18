@@ -1,26 +1,25 @@
 @extends("enduser.layout")
-
 @section('meta')
 
-    @include("enduser.meta",[
-    'title' => $_config->meta_title,
-    'description' => $_config->meta_description,
-    'link' => route('siteIndex'),
-    'img' => asset('images/logo2.png')
-    ])
+@include("enduser.meta",[
+'title' => $_config->meta_title,
+'description' => $_config->meta_description,
+'link' => route('siteIndex'),
+'img' => asset('images/logo2.png')
+])
 
 @stop
 @section('head')
-    @php
-        $locale = app()->getLocale();
+@php
+$locale = app()->getLocale();
 
-        if($locale == "vi") {
-            $page_content = unserialize($page->content);
-        }
-        else{
-             $page_content = unserialize($page->content_ko);
-        }
-    @endphp
+if($locale == "vi") {
+$page_content = unserialize($page->content);
+}
+else{
+$page_content = unserialize($page->content_ko);
+}
+@endphp
 @stop
 @php
     $banners = \App\Helper\Common::getFromCache('banner_home');

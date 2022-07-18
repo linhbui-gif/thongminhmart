@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
     @include("enduser.components.head")
 </head>
 

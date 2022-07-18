@@ -1,201 +1,65 @@
 @extends("enduser.layout")
 
-@section('meta')
 
-    @include("enduser.meta",[
-    'title' => $_config->meta_title,
-    'description' => $_config->meta_description,
-    'link' => route('siteAbout'),
-    'img' => asset('images/config/' . $_config->picture)
-    ])
-
-@stop
-@section('head')
-    @php
-        $locale = app()->getLocale();
-
-        if($locale == "vi") {
-            $page_content = unserialize($page->content);
-        }
-        else{
-             $page_content = unserialize($page->content_ko);
-        }
-    @endphp
-@stop
 @section('content')
-
-    @php
-        $banner = \App\Banner::where('type',0)->where('status','active')->where('location','banner_home')->orderBy('id','desc')->first();
-         $bannerAbout = \App\Banner::where('type',0)->where('status','active')->where('location','banner_about')->orderBy('id','desc')->first();
- $galleries = json_decode($bannerAbout->gallery,true);
-         $widgets = \App\Widget::where('location', 'timeline')->orderBy('order_no','desc')->get();
-    @endphp
-    <!-- Hero image starts here -->
-    <section class="hero-about">
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="hero-text">
-                            <h5>{{@$page_content['page_about']['name']}}</h5>
-                            <p>{{@$page_content['page_about']['description']}}</p>
-                        </div>
+<div class="AnotherInfoPage">
+    <div class="container">
+        <div class="AnotherInfoPage-wrapper">
+            <div class="Collapse">
+                <div class="Collapse-item">
+                    <div class="Collapse-item-header flex items-center justify-between">
+                        <div class="Collapse-item-header-title">Về chúng tôi</div>
+                        <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                            </svg></div>
+                    </div>
+                    <div class="Collapse-item-body style-content">
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi quae ab nam sapiente dolores laborum amet fuga velit nemo, voluptatibus reiciendis ratione ipsum a dolor enim dicta perferendis placeat quos!</p>
+                    </div>
+                </div>
+                <div class="Collapse-item">
+                    <div class="Collapse-item-header flex items-center justify-between">
+                        <div class="Collapse-item-header-title">Điều khoản chính sách</div>
+                        <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                            </svg></div>
+                    </div>
+                    <div class="Collapse-item-body style-content">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima blanditiis qui fuga deleniti deserunt! Modi consectetur reprehenderit nesciunt inventore, nobis voluptatum perspiciatis similique! Pariatur, laudantium quae optio consequuntur necessitatibus beatae?</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, laudantium veritatis! Corporis nihil aliquam ipsam, tempora, nesciunt enim quod id alias nulla magnam voluptas consequatur cumque reprehenderit blanditiis modi tenetur.</p>
+                    </div>
+                </div>
+                <div class="Collapse-item">
+                    <div class="Collapse-item-header flex items-center justify-between">
+                        <div class="Collapse-item-header-title">Thông tin liên hệ</div>
+                        <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                            </svg></div>
+                    </div>
+                    <div class="Collapse-item-body style-content">
+                        <p class="color-yellow-sea">CÔNG TY CỔ PHẦN TM&DV SMARTCHOISE</p>
+                        <ul>
+                            <li>Địa chỉ: 130A25 - Nghĩa Tân - Cầu Giấy - Hà Nộ</li>
+                            <li><a href="tel: 0932868585">Điện thoại: Zalo - 093 286 8585</a></li>
+                            <li><a href="mailto: thongminhmart@gmail.com">Email: thongminhmart@gmail.com</a></li>
+                            <li><a href="www.thongminhmart.vn">Website: www.thongminhmart.vn</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Collapse-item">
+                    <div class="Collapse-item-header flex items-center justify-between">
+                        <div class="Collapse-item-header-title">Kết nối với chúng tôi</div>
+                        <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                            </svg></div>
+                    </div>
+                    <div class="Collapse-item-body style-content">
+                        <div class="AnotherInfoPage-socials flex flex-wrap justify-center"><a class="AnotherInfoPage-socials-item" href="#" target="_blank"><img src="./assets/icons/icon-facebook.svg" alt=""></a><a class="AnotherInfoPage-socials-item" href="#" target="_blank"><img src="./assets/icons/icon-youtube.svg" alt=""></a><a class="AnotherInfoPage-socials-item" href="#" target="_blank"><img src="./assets/icons/icon-zalo.svg" alt=""></a><a class="AnotherInfoPage-socials-item" href="#" target="_blank"><img src="./assets/icons/icon-tiktok.svg" alt=""></a></div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Hero image ends here -->
-    <!--testimonial section start-->
-    <section class="testimonial_section mt-5 pt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <div class="title">
-                        <h2>{{$bannerAbout->name}}</h2>
-                    </div>
-                    <p>  {!! $bannerAbout->description !!}</p>
-                </div>
+    </div>
+</div>
 
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    @if(!empty($galleries))
-                        @foreach($galleries as $k => $v)
-                            <img class="img-fluid mb-3" src="{{$v}}" alt="">
-                        @endforeach
-                    @endif
-                </div>
-            </div>
-        </div>
-{{--        <div class="container">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-lg-6 col-md-6 pt-5">--}}
-{{--                    <div class="about-point">--}}
-{{--                        <img src="{{asset('enduser/aliga/images/about_icon_1.svg')}}" alt="">--}}
-{{--                        <h6>Luxury Yachts</h6>--}}
-{{--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore adipiscing elit dolore magna aliqua. Ut enim ad minim veniam.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-lg-6 col-md-6 pt-5">--}}
-{{--                    <div class="about-point">--}}
-{{--                        <img src="{{asset('enduser/aliga/images/about_icon_2.svg')}}" alt="">--}}
-{{--                        <h6>Experienced Team</h6>--}}
-{{--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore adipiscing elit dolore magna aliqua. Ut enim ad minim veniam.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-lg-6 col-md-6 pt-5">--}}
-{{--                    <div class="about-point">--}}
-{{--                        <img src="{{asset('enduser/aliga/images/about_icon_3.svg')}}" alt="">--}}
-{{--                        <h6>Quick Service</h6>--}}
-{{--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore adipiscing elit dolore magna aliqua. Ut enim ad minim veniam.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="col-lg-6 col-md-6 pt-5">--}}
-{{--                    <div class="about-point">--}}
-{{--                        <img src="{{asset('enduser/aliga/images/about_icon_4.svg')}}" alt="">--}}
-{{--                        <h6>Best Destinations</h6>--}}
-{{--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore adipiscing elit dolore magna aliqua. Ut enim ad minim veniam.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-    </section>
-    <!-- Yacht tab start here -->
-    <!-- Number starts here -->
-{{--    <section>--}}
-{{--        <div class="container-fluid number-bg">--}}
-{{--            <div class="container">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-lg-3 col-md-6 col-sm-6">--}}
-{{--                        <div class="number-single">--}}
-{{--                            <img src="{{asset('enduser/aliga/images/number_img_1.png')}}" class="img-fluid" alt="">--}}
-{{--                            <h1>1200+</h1>--}}
-{{--                            <p>Our Customer</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
-{{--                    <div class="col-lg-3 col-md-6 col-sm-6">--}}
-{{--                        <div class="number-single">--}}
-{{--                            <img src="{{asset('enduser/aliga/images/number_img_2.png')}}" class="img-fluid" alt="">--}}
-{{--                            <h1>51</h1>--}}
-{{--                            <p>Total Yachts</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
-{{--                    <div class="col-lg-3 col-md-6 col-sm-6">--}}
-{{--                        <div class="number-single">--}}
-{{--                            <img src="{{asset('enduser/aliga/images/number_img_3.png')}}" class="img-fluid" alt="">--}}
-{{--                            <h1>69</h1>--}}
-{{--                            <p>Our Locations</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
-{{--                    <div class="col-lg-3 col-md-6 col-sm-6">--}}
-{{--                        <div class="number-single">--}}
-{{--                            <img src="{{asset('enduser/aliga/images/number_img_4.png')}}" class="img-fluid" alt="">--}}
-{{--                            <h1>1800+</h1>--}}
-{{--                            <p>Total Tours</p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
-    <!-- Number ends here -->
-
-    <!-- Image Gallery starts here -->
-    <?php
-    $product = \App\Product_products::where('status','active')->first();
-    $galleries = json_decode($product->gallery,true);
-    ?>
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-center">
-                            <div class="title">
-                                <h2>{{$product->name}}</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @foreach($galleries as $k => $ga)
-                    <div class="col-lg-3 col-md-6 col-sm-6 gall-img">
-                        <a class="moto" href="{{ $ga }}">
-                            <img class="img-fluid" src="{{ $ga }}" alt="">
-                            <div class="zoom"><img src="{{asset('enduser/aliga/images/icon_zoom.svg')}}" alt=""></div>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    @php
-        $bannerPartner = \App\Banner::where('type',0)->where('status','active')->where('location','banner_partner')->orderBy('order_no','asc')->get();
-    @endphp
-    <section class="mar-bot">
-        <div class="container">
-            <div class="row">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12 text-center">
-                            <div class="title">
-                                <h2>{{@$page_content['partner']['name']}}</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @foreach($bannerPartner as $k => $v)
-                    <div class="col-lg-3 col-md-6 col-sm-6 client-single">
-                        {{--                    <img class="img-fluid" src="{{asset('enduser/aliga/images/client_1.jpg')}}" alt="">--}}
-                        <img class="img-fluid" src="{{$v->picture}}" alt="">
-                    </div>
-                @endforeach
-
-
-            </div>
-        </div>
-    </section>
 @stop
