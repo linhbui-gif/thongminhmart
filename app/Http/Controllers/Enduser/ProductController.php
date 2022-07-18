@@ -155,8 +155,9 @@ class ProductController extends Controller
             } else {
                 $request->session()->forget('Cart');
             }
+            $productId = $request->productId;
 
-            return view(config("edushop.end-user.pathView") . "productCart");
+            return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
