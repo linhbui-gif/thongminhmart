@@ -46,10 +46,10 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
     /* -- ORDER -- */
     Route::get('/gio-hang', 'ProductController@cart')->name('product.cart');
     Route::post('them-vao-gio-hang', 'ProductController@addCart')->name('product.addCart');
-    Route::post('delete-cart', 'ProductController@delCart')->name('product.delCart');
+    Route::get('delete-cart', 'ProductController@delCart')->name('product.delCart');
 //
     Route::delete('xoa-gio-hang', 'ProductController@remove')->name('product.deleteCart');
-    Route::patch('cart/update','ProductController@updateCart')->name('product.updateCart');
+    Route::get('cart/update','ProductController@updateCart')->name('product.updateCart');
     Route::get('/thanh-toan', 'ProductController@checkout')->name('product.checkout');
     Route::post('/thanh-toan', 'OrderController@postCheckout')->name('order.postCheckout');
 //
@@ -93,7 +93,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
     Route::post('/ajax/load-more', 'HomeController@ajaxLoadProduct')->name('ajaxProduct');
     /* -- PRODUCT -- */
     Route::get('/danh-sach-san-pham', 'ProductController@productList')->name('product.productList');
-    Route::get('/san-pham/chi-tiet-san-pham/{category}', 'ProductController@productDetail')->name('product.productDetail');
+    Route::get('/san-pham/chi-tiet-san-pham/{id}', 'ProductController@productDetail')->name('product.productDetail');
     Route::get('/san-pham/{slug_category}', 'ProductController@productListByCategory')->name('product.productListByCategory');
 //    Route::get('/product-lists/tag/{slug}', 'ProductController@productTagSlug')->name('product.productTagSlug');
 

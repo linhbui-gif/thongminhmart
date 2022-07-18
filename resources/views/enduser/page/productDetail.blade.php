@@ -50,7 +50,7 @@
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
-                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_base}}">
+                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_final}}">
                                 <input type="hidden" name="jsAvarta" id="jsAvarta" value="{{$product->url_picture}}">
                                 <input type="hidden" name="jsProductName" id="jsProductName" value="{{$product->name}}">
                                 <div class="ProductDetailPage-detail-info-options flex flex-wrap">
@@ -124,7 +124,7 @@
                                                 @if(!empty($value['productInfo']['productId']) && $value['productInfo']['productId'] == $product->id)
                                                 <div class="ProductDetailPage-detail-info-options-item-carts-item flex items-center">
                                                     <div class="ProductDetailPage-detail-info-options-item-carts-item-title">{{$value['quanty']??0}} sản phẩm - Màu sắc: {{$value['productInfo']['color']??''}} - Kích cỡ: {{$value['productInfo']['size']??''}}</div>
-                                                    <div class="ProductDetailPage-detail-info-options-item-carts-item-remove delCartItem" data-id="{{ $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'] }}"> <img src="{{ asset('/assets/icons/icon-x-yellow.svg') }}" alt=""></div>
+                                                    <div class="ProductDetailPage-detail-info-options-item-carts-item-remove delCartItem" data-productId="{{ $product->id }}" data-id="{{ $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'] }}"> <img src="{{ asset('/assets/icons/icon-x-yellow.svg') }}" alt=""></div>
                                                 </div>
                                                 @endif
                                                 @endforeach
@@ -148,7 +148,7 @@
                                     <div class="ProductDetailPage-detail-info-actions-item">
                                         <div class="Button primary middle">
                                             <a href="{{route('product.checkout')}}"><button class="Button-control flex items-center justify-center" type="button"><span class="Button-control-title">Mua ngay</span>
-                                            </button></a>
+                                                </button></a>
                                         </div>
                                     </div>
                                 </div>
@@ -226,7 +226,7 @@
                                             <video class="ProductBox-video" data-src="{{ asset('/assets/videos/video-product-1.mp4') }}" muted="muted" loop="loop"></video>
                                         </div>
                                     </div>
-                                    <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['category'=>$productSame->slug])}}">{{ $productSame->name }}</a>
+                                    <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['id'=>$productSame->id])}}">{{ $productSame->name }}</a>
                                         <div class="ProductBox-price">
                                             <del>{{ $productSame->price_base ? number_format($productSame->price_base). 'đ' : '' }} </del><span>{{ $productSame->price_final ? number_format($productSame->price_final). 'đ' : '' }}</span>
                                         </div>
@@ -244,7 +244,8 @@
 </div>
 @endsection
 @section('script')
-<script type="text/javascript">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="">
     $('#addtocart').click(function() {
         var url = "{{route('product.addCart')}}";
         var quantity = $('#quantity').val();
@@ -282,39 +283,25 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
-                $('.delCartItem').click(function() {
-                    var url = "{{route('product.delCart')}}";
-                    var data = {
-                        '_token': '{{ csrf_token() }}',
-                        'id': $(this).data('id')
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: data,
-                        dataType: 'HTML',
-                        success: function(data) {
-                            $('#add_to_cart').html(data);
-                        }
-                    });
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
                 });
-
             }
         });
     });
-    $('.delCartItem').click(function() {
+    $('.delCartItem').on('click', function() {
         var url = "{{route('product.delCart')}}";
         var data = {
             '_token': '{{ csrf_token() }}',
-            'id': $(this).data('id')
+            'id': $(this).data('id'),
+            'productId': $('#product_id').val()
         }
-
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: url,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -326,5 +313,6 @@
             }
         });
     });
+   
 </script>
 @stop

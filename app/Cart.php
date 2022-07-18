@@ -63,4 +63,16 @@ class Cart
             dd($e);
         }
     }
+
+    public function UpdateItemCartToNumber($id, $quanty)
+    {
+        $this->totalQuanty -= $this->products[$id]['quanty'];
+        $this->totalPrice -= $this->products[$id]['price'];
+
+        $this->products[$id]['quanty'] = $quanty;
+        $this->products[$id]['price'] = $quanty * $this->products[$id]['productInfo']['price'];
+
+        $this->totalQuanty += $this->products[$id]['quanty'];
+        $this->totalPrice += $this->products[$id]['price'];
+    }
 }

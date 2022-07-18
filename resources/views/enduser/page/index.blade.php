@@ -209,7 +209,7 @@ $postFeatures = \App\blog_posts::where('status','active')->orderBy('order_no','a
                                         <video class="ProductBox-video" data-src="./assets/videos/video-product-1.mp4" muted="muted" loop="loop"></video>
                                     </div>
                                 </div>
-                                <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['category'=>$product->slug])}}">{{ $product->name }}</a>
+                                <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['id'=>$product->id])}}">{{ $product->name }}</a>
                                     <div class="ProductBox-price">
                                         <del>{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }} </del><span>{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
                                     </div>
