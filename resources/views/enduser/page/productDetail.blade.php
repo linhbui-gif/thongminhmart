@@ -217,7 +217,7 @@
                     </div>
                     <div class="Card-body">
                         <div class="ProductList-list flex flex-wrap">
-                            @if($productSameCategory->isNotEmpty())
+                            @if(!empty($productSameCategory))
                             @foreach($productSameCategory as $productSame)
                             <div class="ProductList-list-item">
                                 <div class="ProductBox">
