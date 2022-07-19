@@ -3,6 +3,13 @@ use App\Helper\NhanhService;
 @endphp
 
 @extends("enduser.layout")
+@section('css')
+<style>
+    .alert-danger {
+        color: red;
+    }
+</style>
+@stop
 
 @section('content')
 @php
@@ -75,6 +82,17 @@ $fieldValue[$value] = old($value);
                 </div>
             </div>
             <form id="frmCheckout" class="authen-form" action="{{ route('order.postCheckout') }}" method="POST">
+            @csrf
+            @php
+                $classActiveForm = '';
+                $classActiveAddress = '';
+                if ($errors->has('name') || $errors->has('email') || $errors->has('phone') || $errors->has('address') || $errors->has('province_id') || $errors->has('district_id') || $errors->has('ward_id')) {
+                    $classActiveForm = 'active';
+                    $classActiveAddress = 'hide';
+                } elseif($errors->has('chooseAddressCurrent')){
+                    $classActiveForm = '';
+                }
+            @endphp
             <div class="Card">
                 <div class="Card-header">
                     <div class="Card-header-title color-black">Thông tin nhận hàng</div>
@@ -84,22 +102,39 @@ $fieldValue[$value] = old($value);
                         <div class="CheckoutPage-form-row">
                             <div class="CheckoutPage-form-row-control">
                                 <div class="Input middle">
-                                    <input class="Input-control" type="text" placeholder="Họ tên người nhận hàng *">
+                                    <input name="name" value="{{ $fieldValue['name'] }}"
+                                           class="@error('name') is-invalid @enderror Input-control" type="text"
+                                           placeholder="Họ tên người nhận hàng *">
                                 </div>
+                                @error('name')
+                                    <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                                    @enderror
                             </div>
                         </div>
                         <div class="CheckoutPage-form-row">
                             <div class="CheckoutPage-form-row-control">
                                 <div class="Input middle">
-                                    <input class="Input-control" type="text" placeholder="Số điện thoại *">
+                                    <input name="phone" value="{{ $fieldValue['phone'] }}"
+                                           class="@error('phone') is-invalid @enderror Input-control" type="text"
+                                           placeholder="Số điện thoại *">
+                                    
                                 </div>
+                                @error('phone')
+                                    <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                                    @enderror
                             </div>
                         </div>
                         <div class="CheckoutPage-form-row">
                             <div class="CheckoutPage-form-row-control">
                                 <div class="Input middle">
-                                    <input class="Input-control" type="text" placeholder="Địa chỉ email *">
+                                    <input name="email" value="{{ $fieldValue['email'] }}"
+                                           class="@error('email') is-invalid @enderror Input-control" type="text"
+                                           placeholder="Địa chỉ email *">
+                                    
                                 </div>
+                                @error('email')
+                                    <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                                    @enderror
                             </div>
                         </div>
                         <div class="CheckoutPage-form-row-address">
@@ -121,36 +156,44 @@ $fieldValue[$value] = old($value);
                                             </svg>
                                         </div>
                                     </div>
+                                    @error('province_id')
+                                    <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
+                                <input type="hidden" name="CityName">
+                                <input type="hidden" name="DistrictName">
+                                <input type="hidden" name="WardName">
                                 <div class="CheckoutPage-form-row-control">
                                     <div class="Select middle">
                                         <select value="{{ $fieldValue['district_id'] }}" name="district_id" class="@error('district_id') is-invalid @enderror Select-control" id="select_quan">
                                             <option value="default">Quận / huyện *</option>
                                         </select>
-                                        @error('district_id')
-                                        <div class="alert alert-danger  mt-2">{{ $message }}</div>
-                                        @enderror
+                                        
                                         <div class="Select-arrow">
                                             <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M12.9248 1L6.89488 7L0.864954 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
                                             </svg>
                                         </div>
                                     </div>
+                                    @error('district_id')
+                                        <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                                        @enderror
                                 </div>
                                 <div class="CheckoutPage-form-row-control">
                                     <div class="Select middle">
                                         <select name="ward_id" value="{{ $fieldValue['ward_id'] }}" class="@error('ward_id') is-invalid @enderror Select-control" id="select_phuong">
                                             <option value="default">Phường / xã *</option>
                                         </select>
-                                        @error('ward_id')
-                                        <div class="alert alert-danger  mt-2">{{ $message }}</div>
-                                        @enderror
+                                        
                                         <div class="Select-arrow">
                                             <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M12.9248 1L6.89488 7L0.864954 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
                                             </svg>
                                         </div>
                                     </div>
+                                    @error('ward_id')
+                                    <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="CheckoutPage-form-row-control">
                                     <div class="Input middle">
@@ -180,7 +223,7 @@ $fieldValue[$value] = old($value);
                     <div class="CheckoutPage-form-row half js-banking-info-check">
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="">
+                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="nhanh">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Giao nhanh</div>
@@ -189,7 +232,7 @@ $fieldValue[$value] = old($value);
                         </div>
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="">
+                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="cham">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Giao chậm</div>
@@ -198,7 +241,7 @@ $fieldValue[$value] = old($value);
                         </div>
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="">
+                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="cod">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Thanh toán khi nhận hàng</div>
@@ -207,7 +250,7 @@ $fieldValue[$value] = old($value);
                         </div>
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="banking">
+                                <input class="Radio-control" type="radio" name="shippingType" data-key="banking" value="bank">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Thanh toán chuyển khoản</div>
@@ -241,6 +284,8 @@ $fieldValue[$value] = old($value);
                     <div class="CheckoutPage-row flex justify-between items-center">
                         <div class="CheckoutPage-text">Phí vận chuyển: (miễn phí vận chuyển cho đơn hàng trị giá trên 1 triệu đồng)</div>
                         <div class="CheckoutPage-text medium nowrap">30 000 đ</div>
+                        <input type="hidden" name="ship" value="30000">
+                        <input type="hidden" name="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
                     </div>
                     <div class="CheckoutPage-row flex justify-between items-center">
                         <div class="CheckoutPage-text">Thành tiền:</div>
@@ -383,5 +428,135 @@ $fieldValue[$value] = old($value);
                 }
             });
         }
+        function getShippingFeeById(province, district) {
+            checkShip = false;
+            if (province == "" || district == "") {
+                $("#shipFee").text("Chưa xác định");
+                return;
+            }
+            $("body").append(
+                '<div id="overlay"><img class="img_spin" src="{{ asset('enduser/assets/images/spin.png') }}" alt=""></div>'
+            );
+
+            $.ajax({
+                url: '{{ route('ajax.getShipping') }}',
+                data: {
+                    'province_name': province,
+                    'district_name': district
+                },
+                dataType: 'html',
+                success: function (data) {
+
+                },
+                error: function () {
+                    alert('Lỗi tính phí vận chuyển');
+                    $("#overlay").remove();
+                }
+            });
+        }
+
+        function number_format(number, decimals, dec_point, thousands_point) {
+
+            if (number == null || !isFinite(number)) {
+                throw new TypeError("number is not valid");
+            }
+
+            if (!decimals) {
+                var len = number.toString().split('.').length;
+                decimals = len > 1 ? len : 0;
+            }
+
+            if (!dec_point) {
+                dec_point = '.';
+            }
+
+            if (!thousands_point) {
+                thousands_point = ',';
+            }
+
+            number = parseFloat(number).toFixed(decimals);
+
+            number = number.replace(".", dec_point);
+
+            var splitNum = number.split(dec_point);
+            splitNum[0] = splitNum[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands_point);
+            number = splitNum.join(dec_point);
+
+            return number;
+        }
+
+        $("input[name='address_id']").change(function () {
+            var id = $(this).val();
+            address_id = id;
+            getShippingFee();
+        });
+        $("input[name='inp_donvivanchuyen']").change(function () {
+            var id = $(this).val();
+            donvivanchuyen = id;
+            getShippingFee();
+            getShippingFeeById(province_name, district);
+        });
+        $(".btn-tinh-ship").click(function () {
+            var province = $("input[name='CityName']").val();
+            var district = $("input[name='DistrictName']").val();
+
+            if (province != "" && district != "") {
+                getShippingFeeById(province, district);
+            } else {
+                alert('Vui lòng chọn địa chỉ hợp lệ')
+            }
+        });
 </script>
+<script>
+        function submitCheckout() {
+            $("#frmCheckout").submit();
+        }
+
+        $("#select_coupon").change(function () {
+            var v = $(this).val();
+            if (v != "default") {
+                $("#inp_coupon").val(v);
+            }
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            var sub = $(".list-atm");
+            if ($("#mobile-banking").is(":checked")) {
+                sub.show(100);
+            } else {
+                resetForm();
+                sub.hide();
+            }
+            // get address
+            var address_id_old = $("input[name='address_id']").val();
+            if (address_id && address_id != "" && address_id != "0") {
+                address_id = address_id_old;
+                console.log('dia chi');
+                console.log(address_id);
+                getShippingFee();
+            }
+            var id_address = $("input[name='address_id']:checked").val();
+            if (id_address && id_address != null && id_address != "") {
+                address_id = id_address;
+                getShippingFee();
+            }
+
+
+        });
+        $("input[name='payment_method']").change(function () {
+            var checked = $("#mobile-banking").is(":checked");
+            var sub = $(".list-atm");
+            if (checked) {
+                sub.show(100);
+            } else {
+                resetForm();
+                sub.hide(100);
+            }
+        });
+
+        function resetForm() {
+            $(".list-atm .form-subitem input[type='radio']").prop("checked", false);
+        }
+    </script>
 @stop

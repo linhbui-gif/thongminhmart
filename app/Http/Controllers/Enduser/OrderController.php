@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Mail;
 use Session;
 use Illuminate\Support\Str;
 use App\OrderDetail;
+use App\OrderUser;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -174,51 +176,81 @@ class OrderController extends Controller
     }
     public function postCheckout(Request $request)
     {
-        dd(321);
+        try {
+            DB::beginTransaction();
+            $validate = [
+                'name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'required',
+                'address' => 'required',
+                'province_id' => 'required|exists:province,id',
+                'district_id' => 'required|exists:district,id',
+                'ward_id' => 'required|exists:ward,id',
+                // 'payment_method' => 'required|in:cod,bank'
+            ];
+        //    if ($request->payment_method == "bank") {
+        //        $validate['bank_payment'] = 'required|exists:bank,id';
+        //    }
+           $request->validate($validate, [
+               'required' => ':attribute không được rỗng',
+               'exists' => ':attribute không hợp lệ',
+               'min' => ':attribute phải có ít nhất :min kí tự',
+               'max' => ':attribute không vượt quá :max kí tự',
+               'in' => ':attribute không hợp lệ',
+           ], [
+               'name' => 'Họ và tên',
+               'phone' => 'Số điện thoại',
+               'address' => 'Địa chỉ',
+               'province_id' => 'Tỉnh/TP',
+               'district_id' => 'Quận/Huyện',
+               'ward_id' => 'Phường/xã',
+            //    'payment_method' => 'Phương thức thanh toán',
+            //    'bank_payment' => 'Ngân hàng'
+           ]);
+        //    dd($request->input());
+            // tạo địa chỉ cho đơn hàng
+            $address = new OrderAddress();
+            // $address->id = 3;
+            $address->fullname = $request->name;
+            $address->email = $request->email;
+            $address->phone = $request->phone;
+            $address->address = $request->address;
+            $address->province_id = $request->province_id;
+            $address->district_id = $request->district_id;
+            $address->ward_id = $request->ward_id;
+            $address->CityName = $request->CityName;
+            $address->DistrictName = $request->DistrictName;
+            $address->WardName = $request->WardName;
+            $address->save();
 
+            // tạo đơn hàng
+            $order = new Order();
+            // $address->id = 3;
+            $order->address_id = $address->id;
+            $order->pay_method = $request->shippingType??'cod';
+            // $order->bank = ;
+            $order->user_id = Auth::id();
+            $order->trangthai = 0;
+            $order->ship = $request->ship??0;
+            $order->total = $request->total??0;
+            $order->status = 'active';
+            $order->save();
 
-        $validate = [
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
-            'province_id' => 'required|exists:province,id',
-            'district_id' => 'required|exists:district,id',
-            'ward_id' => 'required|exists:ward,id',
-            'payment_method' => 'required|in:cod,bank'
-        ];
-//        if ($request->payment_method == "bank") {
-//            $validate['bank_payment'] = 'required|exists:bank,id';
-//        }
-//        $request->validate($validate, [
-//            'required' => ':attribute không được rỗng',
-//            'exists' => ':attribute không hợp lệ',
-//            'min' => ':attribute phải có ít nhất :min kí tự',
-//            'max' => ':attribute không vượt quá :max kí tự',
-//            'in' => ':attribute không hợp lệ',
-//        ], [
-//            'name' => 'Họ và tên',
-//            'phone' => 'Số điện thoại',
-//            'address' => 'Địa chỉ',
-//            'province_id' => 'Tỉnh/TP',
-//            'district_id' => 'Quận/Huyện',
-//            'ward_id' => 'Phường/xã',
-//            'payment_method' => 'Phương thức thanh toán',
-//            'bank_payment' => 'Ngân hàng'
-//        ]);
-        // tạo địa chỉ cho đơn hàng
-        $address = new OrderAddress();
-        $address->fullname = $request->name;
-        $address->email = $request->email;
-        $address->phone = $request->phone;
-        $address->address = $request->address;
-        $address->province_id = $request->province_id;
-        $address->district_id = $request->district_id;
-        $address->ward_id = $request->ward_id;
-        $address->CityName = $request->CityName;
-        $address->DistrictName = $request->DistrictName;
-        $address->WardName = $request->WardName;
-        $address->save();
+            // tạo đơn hàng cho user
+            $orderUser = new OrderUser();
+            $orderUser->order_id = $order->id;
+            $orderUser->user_id = Auth::id();
+            $orderUser->save();
+            // $this->sendMail($address);
+            // dd($address);
+            DB::commit();
+            return redirect()->back()->with('success', 'Đặt hàng thành công');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            throw new \Exception($e->getMessage());
+        }
+        
     }
 
     public function createDataPostGTKT($order_id)
@@ -460,8 +492,8 @@ class OrderController extends Controller
 
         Mail::send('enduser.mail.checkout', ['order' => $order], function ($message) use ($order) {
             //$message->to('thanhphonglx98@gmail.com', 'Thanh phong')->bcc('phongprolx98@gmail.com','Thanh Phong')->subject('Đơn hàng thành công');
-            $user = $order->user;
-            $message->to($user->email, $user->fullname())->bcc('linhbq68@wru.vn','Linh')->subject('Đơn hàng thành công');
+            // $user = $order->user;
+            $message->to($order->email, $order->fullname)->bcc('linhbq68@wru.vn','Linh')->subject('Đơn hàng thành công');
         });
     }
 
