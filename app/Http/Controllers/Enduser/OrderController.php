@@ -241,17 +241,40 @@ class OrderController extends Controller
             $orderUser->order_id = $order->id;
             $orderUser->user_id = Auth::id()??999;
             $orderUser->save();
+
+            // tạo chi tiết đơn hàng
+            $this->createOrderDetail($order->id);
             // $this->sendMail($address);
-            // dd($address);
             DB::commit();
             session()->forget('Cart');
             return redirect()->back()->with('success', 'Đặt hàng thành công');
         } catch (\Exception $e) {
             DB::rollBack();
-            
+            dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
         
+    }
+
+    public function createOrderDetail($orderId){
+        $oldCart = Session('Cart') ? Session('Cart') : null;
+        if ($oldCart) {
+            if (!empty($oldCart->products)) {
+                foreach($oldCart->products as $product) {
+                    $orderDetail = new OrderDetail();
+                    $orderDetail->product_name = $product['productInfo']['name'];
+                    $orderDetail->product_price = $product['productInfo']['price'];
+                    $orderDetail->quantity = $product['quanty'];
+                    $orderDetail->total = $product['price'];
+                    $orderDetail->product_id = $product['productInfo']['productId'];
+                    $orderDetail->type = 'product';
+                    $orderDetail->trangthai = 0;
+                    $orderDetail->status = 'active';
+                    $orderDetail->order_id = $orderId;
+                    $orderDetail->save();
+                }
+            }
+        }
     }
 
     public function createDataPostGTKT($order_id)
