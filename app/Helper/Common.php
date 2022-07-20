@@ -37,6 +37,41 @@ class Common {
         curl_close($curl);
         return json_decode($response, true);
     }
+    public static  function keywordsLike($likeConditions = [])
+    {
+
+        if (empty($likeConditions)) {
+
+           dd('hello');
+        } else {
+            // Get query like from JSON config
+
+//            $likeKeywords = $likeConditions['like_keywords'];
+//
+//            $likeKeywords = explode(',', $likeKeywords); // to array
+
+            $buildQuery = "";
+            if (!empty($likeConditions)){
+                foreach ($likeConditions as $index => $item) {
+
+//                    $slug = Str::slug(convertSpecialChar(trim($item)));
+                    $buildQuery .= "'%" . $item->slug; // . "%' OR s.keyword like ";
+
+                    if ($index < count($likeConditions) - 1) {
+                        $buildQuery .= "%' OR slug like ";
+                    }
+                }
+            }
+
+            $buildQuery .= "%' ";
+
+            // search from table searched LEFT JOIN table search_results
+            $query = "SELECT name, price_base, price_final from product_products where slug like $buildQuery ORDER BY id DESC limit 10";
+            dd($query);
+            $results = \DB::select(\DB::raw($query));
+            return $results;
+        }
+    }
     public static function getTotalTimeLesson($chapters){
 
         $totalGiay = 0;

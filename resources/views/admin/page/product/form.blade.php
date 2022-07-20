@@ -129,6 +129,27 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                @php
+                                                    $model = new \App\Product_tags();
+                                                    $items = $model->orderBy('id','desc')->get()->pluck('name','id')->toArray();
+                                                @endphp
+                                                <div class="form-group">
+                                                    <label for="hashtag">Nhập hashtag:</label>
+                                                    <select multiple="multiple" class="form-control tag_id" name="tag_id[]">
+                                                        <option value="default">-- Select tags --</option>
+                                                        @if ( isset($item->tags)  && count($item->tags) > 0)
+                                                                @foreach ($item->tags as $k => $tag)
+                                                                    <option value="{{ $k }}" selected >{{ $tag->name }}</option>
+                                                                @endforeach
+                                                        @else
+                                                            @foreach($items as $k => $name)
+                                                                <option value="{{ $k }}">{{ $name }}</option>
+                                                            @endforeach
+                                                        @endif
+
+
+                                                    </select>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="name">Video Upload:</label>
                                                     <input value="{{ old("video_link", @$item['video_link'] )  }}" name="video_link" type="file" class="form-control" id="video_link">
@@ -200,4 +221,11 @@
 @stop
 
 
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('.tag_id').select2();
+    });
 
+</script>
+@endsection

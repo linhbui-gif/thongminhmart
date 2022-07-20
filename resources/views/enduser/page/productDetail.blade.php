@@ -282,6 +282,23 @@
             $products= \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->orderBy('order_no','desc')->get();
             \App\Helper\Common::putToCache('product_main',$products);
         }
+        $dataProducts = [];
+        $productItem = \App\Product_products::find($product->id);
+//        if(!empty($productItem->tags)){
+//            $dataProducts = \App\Helper\Common::keywordsLike($productItem->tags);
+//        }
+//        $dataProducts = $productItem->tags;
+//        dd( json_decode($dataProducts, true));
+//        dd(implode(",", $dataProducts));
+
+        $query = \App\Product_products::query();
+        foreach ($productItem->tags as $term) {
+            $query->orWhere(function ($query) use ($term) {
+                $query->orWhere('name', 'LIKE', '%' . $term->name . '%');
+            });
+        }
+        $data['videokeyword'] = $query->limit(10)->latest()->get();
+        dd($data);
         ?>
         <div class="ProductList">
             <div class="container">
