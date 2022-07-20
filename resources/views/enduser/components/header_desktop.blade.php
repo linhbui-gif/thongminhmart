@@ -19,10 +19,11 @@
                         </div>
                         <div class="Header-info-search-icon"> <img src="{{ asset('/assets/icons/icon-search.svg') }}" alt=""></div>
                     </div>
+                    <a href="{{route('product.checkout')}}">
                     <div class="Header-info-cart flex items-center">
                         <div class="Header-info-cart-icon"> <img src="{{ asset('/assets/icons/icon-cart-gray.svg') }}" alt=""></div>
                         <div class="Header-info-cart-content"><span>Giỏ hàng</span><strong>0 đ</strong></div>
-                    </div>
+                    </div></a>
                 </div>
             </div>
         </div>
