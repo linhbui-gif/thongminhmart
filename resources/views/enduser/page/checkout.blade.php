@@ -223,7 +223,7 @@ $fieldValue[$value] = old($value);
                     <div class="CheckoutPage-form-row half js-banking-info-check">
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="nhanh">
+                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="ship_fast">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Giao nhanh</div>
@@ -232,7 +232,7 @@ $fieldValue[$value] = old($value);
                         </div>
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="cham">
+                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="ship_normal">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Giao chậm</div>
@@ -283,8 +283,8 @@ $fieldValue[$value] = old($value);
                 <div class="Card-body">
                     <div class="CheckoutPage-row flex justify-between items-center">
                         <div class="CheckoutPage-text">Phí vận chuyển: (miễn phí vận chuyển cho đơn hàng trị giá trên 1 triệu đồng)</div>
-                        <div class="CheckoutPage-text medium nowrap">30 000 đ</div>
-                        <input type="hidden" name="ship" value="30000">
+                        <div class="CheckoutPage-text medium nowrap" id="ship_fee">30 000 đ</div>
+                        <input type="hidden" name="ship" id="ship" value="30000">
                         <input type="hidden" name="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
                     </div>
                     <div class="CheckoutPage-row flex justify-between items-center">
@@ -323,7 +323,7 @@ $fieldValue[$value] = old($value);
             $("input[name='DistrictName']").val(district_name);
             $("input[name='WardName']").val('');
 
-            getShippingFeeById(province_name, district_name);
+            // getShippingFeeById(province_name, district_name);
         }
 
         function huyen(id_huyen) {
@@ -333,7 +333,7 @@ $fieldValue[$value] = old($value);
             $("input[name='DistrictName']").val(selectedText);
 
             $("input[name='WardName']").val('');
-            getShippingFeeById(province_name, district_name);
+            // getShippingFeeById(province_name, district_name);
         }
 
         var province_id = {!! json_encode(old('province_id')) !!};
@@ -352,6 +352,9 @@ $fieldValue[$value] = old($value);
         $("#select_tinh").change(function () {
             var id_tinh = $(this).val();
             tinh(id_tinh);
+            var type = $('input[name=shippingType]:checked').val();
+            var province = $('#select_tinh').find(':selected').text();
+            getPriceShipping(province, type);
         });
 
         function layHuyenTheoTinh(id_tinh) {
@@ -412,7 +415,7 @@ $fieldValue[$value] = old($value);
                     console.log(district_name);
                     $("input[name='DistrictName']").val(selectedText);
                     if (district_name != "" && province_name != "") {
-                        getShippingFeeById(province_name, district_name);
+                        // getShippingFeeById(province_name, district_name);
                     }
                     if (ward_id) {
                         $("#select_phuong").html(result);
@@ -488,75 +491,99 @@ $fieldValue[$value] = old($value);
         $("input[name='address_id']").change(function () {
             var id = $(this).val();
             address_id = id;
-            getShippingFee();
+            // getShippingFee();
         });
         $("input[name='inp_donvivanchuyen']").change(function () {
             var id = $(this).val();
             donvivanchuyen = id;
-            getShippingFee();
-            getShippingFeeById(province_name, district);
+            // getShippingFee();
+            // getShippingFeeById(province_name, district);
         });
         $(".btn-tinh-ship").click(function () {
             var province = $("input[name='CityName']").val();
             var district = $("input[name='DistrictName']").val();
 
             if (province != "" && district != "") {
-                getShippingFeeById(province, district);
+                // getShippingFeeById(province, district);
             } else {
                 alert('Vui lòng chọn địa chỉ hợp lệ')
             }
         });
+        $("input[name='shippingType']").click(function() {
+            var type = this.value ;
+            var province = $('#select_tinh').find(':selected').text();
+            getPriceShipping(province, type);
+        });
+        function getPriceShipping(province, type) {
+            $.ajax({
+                url: '{{ route('ajax.getPriceShipping') }}',
+                data: {
+                    'province_name': province,
+                    'type': type
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $('#ship_fee').text(data.fee_ship+'đ');
+                    $('#ship').val(data.fee_ship);
+                    console.log(data.fee_ship); return;
+                },
+                error: function () {
+                    // alert('Lỗi tính phí vận chuyển');
+                    $("#overlay").remove();
+                }
+            });
+        }
 </script>
 <script>
-        function submitCheckout() {
-            $("#frmCheckout").submit();
+    function submitCheckout() {
+        $("#frmCheckout").submit();
+    }
+
+    $("#select_coupon").change(function () {
+        var v = $(this).val();
+        if (v != "default") {
+            $("#inp_coupon").val(v);
+        }
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        var sub = $(".list-atm");
+        if ($("#mobile-banking").is(":checked")) {
+            sub.show(100);
+        } else {
+            resetForm();
+            sub.hide();
+        }
+        // get address
+        var address_id_old = $("input[name='address_id']").val();
+        if (address_id && address_id != "" && address_id != "0") {
+            address_id = address_id_old;
+            console.log('dia chi');
+            console.log(address_id);
+            // getShippingFee();
+        }
+        var id_address = $("input[name='address_id']:checked").val();
+        if (id_address && id_address != null && id_address != "") {
+            address_id = id_address;
+            // getShippingFee();
         }
 
-        $("#select_coupon").change(function () {
-            var v = $(this).val();
-            if (v != "default") {
-                $("#inp_coupon").val(v);
-            }
-        })
-    </script>
-    <script>
-        $(document).ready(function () {
-            var sub = $(".list-atm");
-            if ($("#mobile-banking").is(":checked")) {
-                sub.show(100);
-            } else {
-                resetForm();
-                sub.hide();
-            }
-            // get address
-            var address_id_old = $("input[name='address_id']").val();
-            if (address_id && address_id != "" && address_id != "0") {
-                address_id = address_id_old;
-                console.log('dia chi');
-                console.log(address_id);
-                getShippingFee();
-            }
-            var id_address = $("input[name='address_id']:checked").val();
-            if (id_address && id_address != null && id_address != "") {
-                address_id = id_address;
-                getShippingFee();
-            }
 
-
-        });
-        $("input[name='payment_method']").change(function () {
-            var checked = $("#mobile-banking").is(":checked");
-            var sub = $(".list-atm");
-            if (checked) {
-                sub.show(100);
-            } else {
-                resetForm();
-                sub.hide(100);
-            }
-        });
-
-        function resetForm() {
-            $(".list-atm .form-subitem input[type='radio']").prop("checked", false);
+    });
+    $("input[name='payment_method']").change(function () {
+        var checked = $("#mobile-banking").is(":checked");
+        var sub = $(".list-atm");
+        if (checked) {
+            sub.show(100);
+        } else {
+            resetForm();
+            sub.hide(100);
         }
-    </script>
+    });
+
+    function resetForm() {
+        $(".list-atm .form-subitem input[type='radio']").prop("checked", false);
+    }
+</script>
 @stop
