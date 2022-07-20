@@ -175,6 +175,17 @@ class Product_productsController extends AdminController
             }
         }
         $product->save();
+        // xử lý tag
+        if(isset($request->tag_id)  && count($request->tag_id) > 0 ){
+            $tag_id = [];
+            foreach($request->tag_id as $k => $v){
+                if(is_numeric ($v)){
+                    $tag_id[] = $v;
+                }
+            }
+            $this->model->tags()->attach($tag_id);
+        }
+
         Session::flash('success', 'Bạn đã thêm mới thành công');
         return redirect()->route('admin.' . $this->controllerName . ".index" );
     }
@@ -237,6 +248,15 @@ class Product_productsController extends AdminController
           }
       }
       $product->save();
+      if(isset($request->tag_id)  && count($request->tag_id) > 0 ){
+          $tag_id = [];
+          foreach($request->tag_id as $k => $v){
+              if(is_numeric ($v)){
+                  $tag_id[] = $v;
+              }
+          }
+          $product->tags()->sync($tag_id);
+      }
       Session::flash('success', 'Bạn đã thêm mới thành công');
       return redirect()->route('admin.' . $this->controllerName . ".index" );
   }
