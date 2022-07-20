@@ -229,7 +229,7 @@ class OrderController extends Controller
             $order->address_id = $address->id;
             $order->pay_method = $request->shippingType??'cod';
             // $order->bank = ;
-            $order->user_id = Auth::id();
+            $order->user_id = Auth::id()??999;
             $order->trangthai = 0;
             $order->ship = $request->ship??0;
             $order->total = $request->total??0;
@@ -239,11 +239,12 @@ class OrderController extends Controller
             // tạo đơn hàng cho user
             $orderUser = new OrderUser();
             $orderUser->order_id = $order->id;
-            $orderUser->user_id = Auth::id();
+            $orderUser->user_id = Auth::id()??999;
             $orderUser->save();
             // $this->sendMail($address);
             // dd($address);
             DB::commit();
+            session()->forget('Cart');
             return redirect()->back()->with('success', 'Đặt hàng thành công');
         } catch (\Exception $e) {
             DB::rollBack();
