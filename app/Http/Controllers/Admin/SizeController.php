@@ -23,6 +23,8 @@ class SizeController extends AdminController
     protected $listFields = [
         [ 'name' => 'id', 'label' => 'Id', 'type' => 'text'],
         [ 'name' => 'name', 'label' => 'Name', 'type' => 'text'],
+        [ 'name' => 'price_base', 'label' => 'Price Base', 'type' => 'text'],
+        [ 'name' => 'price_final', 'label' => 'Price Final', 'type' => 'text'],
         [ 'name' => 'created_at', 'label' => 'Created At', 'type' => 'datetime', 'format' => 'd/m/Y' ],
         [ 'name' => 'updated_at', 'label' => 'Updated At', 'type' => 'datetime', 'format' => 'd/m/Y' ],
     ];
@@ -31,6 +33,8 @@ class SizeController extends AdminController
             'label_tab' => 'General',
             'items' => [
                 [ 'label' => 'Name' ,'name' => 'name', 'type' => 'text'],
+                [ 'label' => 'Price Base' ,'name' => 'price_base', 'type' => 'text'],
+                [ 'label' => 'Price Final' ,'name' => 'price_final', 'type' => 'text'],
 //                [ 'name' => 'order_no', 'label' => 'Số thứ tự', 'type' => 'text'],
                 [ 'label' => 'Status' ,'name' => 'status', 'type' => 'status'],
             ]
