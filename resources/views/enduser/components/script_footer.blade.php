@@ -44,6 +44,13 @@
 @endif
 @if (Session::has('error'))
     <script>
-        toastr.error('{{ Session::get('error') }}', 'Thất bại');
+        // toastr.error('{{ Session::get('error') }}', 'Thất bại');
+        Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: '{{ Session::get('error') }}',
+            showConfirmButton: false,
+            timer: 1500
+        });
     </script>
 @endif
