@@ -189,7 +189,7 @@ class OrderController extends Controller
                 'province_id' => 'required|exists:province,id',
                 'district_id' => 'required|exists:district,id',
                 'ward_id' => 'required|exists:ward,id',
-                // 'payment_method' => 'required|in:cod,bank'
+                'payment_method' => 'required|in:cod,bank'
             ];
         // //    if ($request->payment_method == "bank") {
         // //        $validate['bank_payment'] = 'required|exists:bank,id';
@@ -223,7 +223,7 @@ class OrderController extends Controller
                 'province_id' => 'Tỉnh/TP',
                 'district_id' => 'Quận/Huyện',
                 'ward_id' => 'Phường/xã',
-            //    'payment_method' => 'Phương thức thanh toán',
+                'payment_method' => 'Phương thức thanh toán',
             //    'bank_payment' => 'Ngân hàng'
             ]);
  
@@ -253,7 +253,7 @@ class OrderController extends Controller
             $order = new Order();
             // $address->id = 3;
             $order->address_id = $address->id;
-            $order->pay_method = $request->shippingType??'cod';
+            $order->pay_method = $request->payment_method??'cod';
             // $order->bank = ;
             $order->user_id = Auth::id()??999;
             $order->trangthai = 0;

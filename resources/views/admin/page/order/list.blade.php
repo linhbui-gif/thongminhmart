@@ -8,11 +8,12 @@
         <th>Tổng</th>
         <th>Ship</th>
         <th>Coupon</th>
-        <th>Thanh toán</th>
+        <!-- <th>Thanh toán</th> -->
         <th>Tổng tiền</th>
         <th>Trạng thái</th>
         <th>Ngày tạo</th>
         <th>Cập nhật</th>
+        <th>#</th>
     </tr>
     </thead>
     <tbody>
