@@ -241,7 +241,7 @@ $fieldValue[$value] = old($value);
                         </div>
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="" value="cod">
+                                <input class="Radio-control" type="radio" name="payment_method" data-key="" value="cod">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Thanh toán khi nhận hàng</div>
@@ -250,7 +250,7 @@ $fieldValue[$value] = old($value);
                         </div>
                         <div class="CheckoutPage-form-row-control">
                             <div class="Radio middle">
-                                <input class="Radio-control" type="radio" name="shippingType" data-key="banking" value="bank">
+                                <input class="Radio-control" type="radio" name="payment_method" data-key="banking" value="bank">
                                 <div class="Radio-wrapper flex items-center">
                                     <div class="Radio-wrapper-box"> </div>
                                     <div class="Radio-wrapper-label">Thanh toán chuyển khoản</div>

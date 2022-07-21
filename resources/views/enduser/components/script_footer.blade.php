@@ -28,10 +28,18 @@
     <script src="{{ asset('/assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('/assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('/assets/js/main.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @yield('script')
 @if (Session::has('success'))
     <script>
-        toastr.success('{{ Session::get('success') }}', 'Thành công');
+        // toastr.success('{{ Session::get('success') }}', 'Thành công');
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: '{{ Session::get('success') }}',
+            showConfirmButton: false,
+            timer: 1500
+        });
     </script>
 @endif
 @if (Session::has('error'))
