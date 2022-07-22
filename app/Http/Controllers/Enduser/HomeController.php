@@ -38,7 +38,20 @@ class HomeController extends Controller
 
         return view(config("edushop.end-user.pathView") . "contact");
     }
+    public function getPriceShipping(Request $request)
+    {
+        // if (Session('Cart') && Session('Cart')->totalPrice >=1000000) {
+        //     return response()->json([
+        //         'fee_ship' => 0,
+        //     ]);
+        // }
+        $ship_fee_district = \App\Ship_fee_district::where('name','like','%'.($request->province_name).'%')->where('type', $request->type)->first();
 
+        return response()->json([
+            'fee_ship' => $ship_fee_district->fee_ship??0,
+        ]);
+
+    }
     public function about()
     {
 
