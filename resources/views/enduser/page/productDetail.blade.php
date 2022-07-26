@@ -262,7 +262,7 @@
                                                                     <td>{{@$item['description']}}</td>
                                                                 </tr>
                                                             @else
-                                                                 <p>Chưa có dữ liệu phù hợp</p>
+{{--                                                                 <p>Chưa có dữ liệu phù hợp</p>--}}
                                                             @endif
                                                     @endif
                                                 @endfor
@@ -296,7 +296,6 @@
             });
         }
         $data['videokeyword'] = $query->limit(10)->latest()->get();
-        dd($data);
         ?>
         <div class="ProductList">
             <div class="container">
