@@ -41,7 +41,7 @@ class Blog_postsController extends AdminController
                 [ 'label' => 'Description' ,'name' => 'description', 'type' => 'textarea'],
                 [ 'label' => 'Content' ,'name' => 'content', 'type' => 'ckeditor'],
                 [ 'label' => 'Danh mục' ,'name' => 'category_id', 'type' => 'select', 'data_source' => \App\blog_categories::class, 'foreign_key' => 'category_id' ],
-//                [ 'label' => 'Tags' ,'name' => 'tag_id', 'type' => 'tag','data_source' => \App\blog_tags::class,  'foreign_key' => 'tags'],
+                [ 'label' => 'Tags' ,'name' => 'tag_id', 'type' => 'tag','data_source' => \App\blog_tags::class,  'foreign_key' => 'tags'],
 //                [ 'label' => 'bài viết liên quan' ,'name' => 'related_post_id', 'type' => 'tag','data_source' => \App\blog_posts::class,  'foreign_key' => 'posts'],
 //                [ 'label' => 'Vị trí hiển thị' ,'name' => 'location', 'type' => 'select','data_source' => [
 //                        'post_home' => 'Bài viết trang chủ',
