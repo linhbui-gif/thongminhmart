@@ -241,6 +241,11 @@ class OrderController extends Controller
             $order->ship = $request->ship??0;
             $order->total = $request->total??0;
             $order->status = 'active';
+            $order->note = $request->note;
+            $order->user_name = $request->name;
+            $order->user_phone = $request->phone;
+            $order->user_email = $request->email;
+            $order->status = 'active';
             $order->save();
 
             // tạo đơn hàng cho user

@@ -52,6 +52,7 @@
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
+                                <input type="hidden" name="weight" id="weight" value="{{$product->weight}}">
                                 <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_final}}">
                                 <input type="hidden" name="jsAvarta" id="jsAvarta" value="{{$product->url_picture}}">
                                 <input type="hidden" name="jsProductName" id="jsProductName" value="{{$product->name}}">
@@ -66,7 +67,7 @@
                                                         <!-- <option value="">Select color</option> -->
                                                         @if(!empty($metaColor))
                                                         @foreach($metaColor as $c => $color)
-                                                         @if($color['status'] == 'active')
+                                                         @if($color['status'] == 'active' && !empty($color['name']))
                                                         <option value="{{$c}}">{{$color['name']}}</option>
                                                         @endif
                                                         @endforeach
@@ -88,7 +89,7 @@
                                                         <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Size</option>
                                                         @if(!empty($metaSize))
                                                         @foreach($metaSize as $s => $size)
-                                                            @if($size['status'] == 'active')
+                                                            @if($size['status'] == 'active' && !empty($size['price_final']))
                                                             <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
                                                             @endif
                                                         @endforeach
@@ -263,11 +264,17 @@
         var size = $("#size_id option:selected").text();
         var color = $("#color_id option:selected").text();
 
-        // if ($('#size_id').val() == '' || $('#color_id').val() == '') {
-        //     alert('Vui lòng chọn phân loại hàng');
-        //     $('#size_id').focus();
-        //     return false;
-        // }
+        if (size == '' || color == '') {
+            // alert('Vui lòng chọn phân loại hàng');
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo...',
+                text: 'Vui lòng chọn phân loại hàng!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
+            $('#size_id').focus();
+            return false;
+        }
         var productId = $('#product_id').val();
         var data = {
             '_token': '{{ csrf_token() }}',
@@ -275,6 +282,7 @@
             'color': color,
             'quantity': quantity,
             'productId': productId,
+            'weight': $('#weight').val(),
             // 'price': $('#jsTotalPrice').val(),
             'price': $('#size_id').find(':selected').attr('data-price-active'),
             'avatar': $('#jsAvarta').val(),

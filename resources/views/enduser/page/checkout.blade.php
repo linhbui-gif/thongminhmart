@@ -14,7 +14,7 @@ use App\Helper\NhanhService;
 @section('content')
 @php
 
-$fields = ['name', 'email', 'phone', 'address', 'province_id', 'district_id', 'ward_id', 'payment_method'];
+$fields = ['name', 'email', 'phone', 'address', 'note', 'province_id', 'district_id', 'ward_id', 'payment_method'];
 $fieldValue = [];
 
 foreach ($fields as $key => $value) {
@@ -208,7 +208,7 @@ $fieldValue[$value] = old($value);
                         <div class="CheckoutPage-form-row">
                             <div class="CheckoutPage-form-row-control">
                                 <div class="TextArea middle">
-                                    <textarea class="TextArea-control" placeholder="Ghi chú đơn hàng"></textarea>
+                                    <textarea class="TextArea-control" name="note" value="{{ $fieldValue['note'] }}" placeholder="Ghi chú đơn hàng"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -525,7 +525,7 @@ $fieldValue[$value] = old($value);
                 success: function (data) {
                     $('#ship_fee').text(data.fee_ship+'đ');
                     $('#ship').val(data.fee_ship);
-                    $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.fee_ship + $('#total').val()));
+                    $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
                     console.log(data.fee_ship); return;
                 },
                 error: function () {

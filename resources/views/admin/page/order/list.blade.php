@@ -35,7 +35,7 @@
             <tr>
                 <td><input name="cid[]" value="{{ $id }}" class="minimal" type="checkbox"></td>
                 <td><a href="{{ route('admin.order.detail', [ 'id' => $id ]) }}">#{{ $item->getId() }}</a></td>
-                <td>@if($user) {{ $user->fullname() }}@endif</td>
+                <td>@if($user) {{-- $user->fullname() --}}@endif {{$item->user_name??''}}</td>
 {{--                <td>{{ $user->email }}</td>--}}
                 <td>
                     @if($item->pay_method == "cod")

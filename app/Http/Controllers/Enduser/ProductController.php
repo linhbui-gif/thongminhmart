@@ -81,7 +81,7 @@ class ProductController extends Controller
     public function addCart(Request $request)
     {
         try {
-            // session()->forget('Cart');
+            // session()->forget('Cart'); die();
             $arrInput = $request->input();
             $oldCart = Session('Cart') ? Session('Cart') : null;
             $newCart = new Cart($oldCart);

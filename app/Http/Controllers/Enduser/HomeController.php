@@ -220,15 +220,18 @@ class HomeController extends Controller
 
     public function getPriceShipping(Request $request)
     {
-        // if (Session('Cart') && Session('Cart')->totalPrice >=1000000) {
-        //     return response()->json([
-        //         'fee_ship' => 0,
-        //     ]);
-        // }
+        $tong = 0;
+        if (Session('Cart')) {
+            foreach(Session('Cart')->products as $products) {
+                $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+            }
+        }
+
         $ship_fee_district = \App\Ship_fee_district::where('name','like','%'.($request->province_name).'%')->where('type', $request->type)->first();
+        $fee_ship = $ship_fee_district->fee_ship??0;
 
         return response()->json([
-            'fee_ship' => $ship_fee_district->fee_ship??0,
+            'fee_ship' => $fee_ship * $tong,
         ]);
 
     }
