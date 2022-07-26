@@ -47,7 +47,7 @@ class Product_productsController extends AdminController
                 [ 'label' => 'Mô tả tóm tắt' ,'name' => 'short_description', 'type' => 'ckeditor'],
                 [ 'label' => 'Nội dung' ,'name' => 'content', 'type' => 'ckeditor'],
                 [ 'label' => 'Danh mục' ,'name' => 'category_id', 'type' => 'select', 'data_source' => \App\Product_category::class, 'foreign_key' => 'category_id' ],
-//                [ 'label' => 'Chọn màu' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Color::class, 'foreign_key' => 'color_id' ],
+                [ 'label' => 'Chọn màu' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Color::class, 'foreign_key' => 'color_id' ],
 //                [ 'label' => 'Chọn size' ,'name' => 'color_id', 'type' => 'select', 'data_source' => \App\Size::class, 'foreign_key' => 'size_id' ],
                 [ 'label' => 'Tags' ,'name' => 'tag_id', 'type' => 'tag','data_source' => \App\Product_tags::class,  'foreign_key' => 'tags'],
 //                [ 'label' => 'Loại sản phẩm', 'name' => 'type', 'type' => 'select', 'data_source' =>

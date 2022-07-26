@@ -52,13 +52,21 @@ class ProductController extends Controller
 
     public function updateCart(Request $request)
     {
-        if ($request->id && $request->quantity) {
-            $cart = session()->get('cart');
-            $cart[$request->id]["quantity"] = $request->quantity;
-            session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
+        try {
+            $quanty = $request->quanty;
+            $id = $request->id;
+            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->UpdateItemCartToNumber($id, $quanty);
+            $request->session()->put('Cart', $newCart);
+
+            return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
         }
     }
+
 
     public function remove(Request $request)
     {
@@ -99,52 +107,6 @@ class ProductController extends Controller
             dd($e);
         }
 
-        // $product = Product_products::findOrFail($request->product_id);
-        // $cart = session()->get('cart', []);
-        // if(!empty($cart[$request->product_id])) {
-
-        //     if(!empty($cart[$request->product_id]['options'])) {
-        //         foreach ($cart[$request->product_id]['options'] as $k => &$options) {
-        //                     if ((int)$options['color'] === (int)$request->color_id && (int)$options['size'] === (int)$request->size_id) {
-        //                         $cart[$request->product_id]['options'][$k]['quantity'] = (int)$options['quantity'] + (int)$request->quantity;
-        //                         session()->put('cart', $cart);
-        //                     } else {
-
-        //                         array_push($cart[$request->product_id]['options'],
-        //                             [
-        //                                 "name" => $product->name,
-        //                                 "quantity" => (int)$request->quantity,
-        //                                 "price" => $product->price_final,
-        //                                 "image" => $product->url_picture,
-        //                                 "color" => $request->color_id,
-        //                                 "size" => $request->size_id,
-        //                             ]);
-        //                         $cart[$request->product_id]['options'][$k] = $options;
-        //                         session()->put('cart', $cart);
-        //                     }
-
-        //         }
-        //     }
-        // } else {
-        //     $cart[$request->product_id] = [
-        //         "name" => $product->name,
-        //         "quantity" => 1,
-        //         "price" => $product->price_final,
-        //         "image" => $product->url_picture,
-        //         "options" => [
-        //             $request->color_id => [
-        //                 "name" => $product->name,
-        //                 "quantity" =>  (int) $request->quantity,
-        //                 "price" => $product->price_final,
-        //                 "image" => $product->url_picture,
-        //                 "color" => $request->color_id,
-        //                 "size" => $request->size_id
-        //             ]
-        //         ]
-        //     ];
-        //     session()->put('cart', $cart);
-        // }
-        //     return redirect()->back()->with('success', 'Thêm sản phẩm vào giỏ hàng thành công');
     }
     public function delCart(Request $request){
         try {
@@ -156,8 +118,13 @@ class ProductController extends Controller
             } else {
                 $request->session()->forget('Cart');
             }
+            $productId = $request->productId;
 
-            return view(config("edushop.end-user.pathView") . "productCart");
+            if ($request->action) {
+                return redirect()->back()->with('success', 'Xóa sản phẩm khỏi giỏ hàng thành công');
+            }
+
+            return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e->getMessage());
         }

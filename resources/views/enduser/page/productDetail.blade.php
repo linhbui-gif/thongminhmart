@@ -111,8 +111,8 @@
                             <div class="ProductDetailPage-detail-info-basic flex justify-between">
                                 <div class="ProductDetailPage-detail-info-basic-item">
                                     <div class="ProductDetailPage-detail-info-text">Giá bán </div><br>
-                                    <div class="ProductDetailPage-detail-info-basic-price flex items-center"><span>{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
-                                        <del>{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
+                                    <div class="ProductDetailPage-detail-info-basic-price flex items-center" ><span id="price_final">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
+                                        <del id="price_base">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
                                     </div>
                                 </div>
                                 <div class="ProductDetailPage-detail-info-basic-item">
@@ -122,7 +122,7 @@
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
-                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_base}}">
+                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_final}}">
                                 <input type="hidden" name="jsAvarta" id="jsAvarta" value="{{$product->url_picture}}">
                                 <input type="hidden" name="jsProductName" id="jsProductName" value="{{$product->name}}">
                                 <div class="ProductDetailPage-detail-info-options flex flex-wrap">
@@ -153,11 +153,11 @@
                                             <div class="ProductDetailPage-detail-info-options-item-row-control">
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="size_id" id="size_id">
-                                                        <!-- <option value="">Select size</option> -->
+                                                        <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Chọn size</option>
                                                         @if(!empty($sizes))
-                                                        @foreach($sizes as $k => $v)
-                                                        <option value="{{$v->id}}">{{$v->name}}</option>
-                                                        @endforeach
+                                                            @foreach($sizes as $k => $v)
+                                                                <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>
+                                                            @endforeach
                                                         @endif
                                                     </select>
                                                     </select>
@@ -316,9 +316,10 @@
         </div>
     </div>
 @stop
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @section('script')
 
-@section('script')
-<script type="text/javascript">
+            <script >
     $('#addtocart').click(function() {
         var url = "{{route('product.addCart')}}";
         var quantity = $('#quantity').val();
@@ -330,10 +331,11 @@
         var size = $("#size_id option:selected").text();
         var color = $("#color_id option:selected").text();
 
-        if (color == '' || size == '') {
-            alert('Vui lòng chọn phân loại hàng');
-            return false;
-        }
+        // if ($('#size_id').val() == '' || $('#color_id').val() == '') {
+        //     alert('Vui lòng chọn phân loại hàng');
+        //     $('#size_id').focus();
+        //     return false;
+        // }
         var productId = $('#product_id').val();
         var data = {
             '_token': '{{ csrf_token() }}',
@@ -341,10 +343,12 @@
             'color': color,
             'quantity': quantity,
             'productId': productId,
-            'price': $('#jsTotalPrice').val(),
+            // 'price': $('#jsTotalPrice').val(),
+            'price': $('#size_id').find(':selected').attr('data-price-active'),
             'avatar': $('#jsAvarta').val(),
             'name': $('#jsProductName').val(),
         }
+        // console.log(data); return;
 
         $.ajax({
             type: 'POST',
@@ -356,43 +360,25 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
-                $('#quantity').val(1);
-                // alert('Thêm sản phẩm vào giỏ hàng thành công !!')
-                $('.delCartItem').click(function() {
-                    var url = "{{route('product.delCart')}}";
-                    var data = {
-                        '_token': '{{ csrf_token() }}',
-                        'id': $(this).data('id')
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: data,
-                        dataType: 'HTML',
-                        success: function(data) {
-                            $('#add_to_cart').html(data);
-                            $('#quantity').val(1);
-                            // alert('Xóa sản phẩm từ giỏ hàng thành công !!')
-                        }
-                    });
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
                 });
-
             }
         });
     });
-    $('.delCartItem').click(function() {
+    $('.delCartItem').on('click', function() {
         var url = "{{route('product.delCart')}}";
         var data = {
             '_token': '{{ csrf_token() }}',
-            'id': $(this).data('id')
+            'id': $(this).data('id'),
+            'productId': $('#product_id').val()
         }
-
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: url,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -401,9 +387,23 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
-                // alert('Xóa sản phẩm từ giỏ hàng thành công !!')
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Xóa sản phẩm khỏi giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
+                });
             }
         });
     });
+
+    $('#size_id').change(function () {
+        var price_base = $(this).find(':selected').attr('data-price-base');
+        var price_final = $(this).find(':selected').attr('data-price-final');
+        $('#price_final').text(price_final);
+        $('#price_base').text(price_base);
+    });
+
 </script>
 @stop
