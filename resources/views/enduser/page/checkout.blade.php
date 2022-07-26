@@ -285,11 +285,11 @@ $fieldValue[$value] = old($value);
                         <div class="CheckoutPage-text">Phí vận chuyển: (miễn phí vận chuyển cho đơn hàng trị giá trên 1 triệu đồng)</div>
                         <div class="CheckoutPage-text medium nowrap" id="ship_fee">30 000 đ</div>
                         <input type="hidden" name="ship" id="ship" value="30000">
-                        <input type="hidden" name="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
+                        <input type="hidden" name="total" id="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
                     </div>
                     <div class="CheckoutPage-row flex justify-between items-center">
                         <div class="CheckoutPage-text">Thành tiền:</div>
-                        <div class="CheckoutPage-text big color-yellow-sea nowrap">{{ (!empty(Session::get('Cart')->totalPrice)) ? number_format(Session::get('Cart')->totalPrice + 30000). 'đ' : ''}}</div>
+                        <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('Cart')->totalPrice)) ? number_format(Session::get('Cart')->totalPrice + 30000). 'đ' : ''}}</div>
                     </div>
                     <div class="CheckoutPage-row">
                         <div class="Button primary big">
@@ -525,6 +525,7 @@ $fieldValue[$value] = old($value);
                 success: function (data) {
                     $('#ship_fee').text(data.fee_ship+'đ');
                     $('#ship').val(data.fee_ship);
+                    $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.fee_ship + $('#total').val()));
                     console.log(data.fee_ship); return;
                 },
                 error: function () {
