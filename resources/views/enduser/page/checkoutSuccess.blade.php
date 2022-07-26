@@ -26,21 +26,6 @@
                                </div>
                            @endif
                        </div>
-{{--                       <div class="note note-order">--}}
-{{--                           <p>1. Với khóa học KHÔNG có học cụ đi kèm ( không cần vận chuyển ) sẽ cần thanh toán trước để kích hoạt khóa học</p>--}}
-{{--                           <p>2. Với sản phẩm hoặc khóa học CÓ học cụ đi kèm sẽ được thanh toán theo phương thức mà quí khách đã lựa chọn</p>--}}
-{{--                       </div>--}}
-{{--                       <div class="box_order_general">--}}
-{{--                           <div class="item">--}}
-{{--                               <span class="title_order">Mã:</span>--}}
-{{--                               <span>{{ $order->getId() }}</span>--}}
-{{--                           </div>--}}
-{{--                           <div class="item">--}}
-{{--                               <span class="title_order">Thời gian:</span>--}}
-{{--                               <span>{{ $order->created_at->format("h:i:s d/m/Y") }}</span>--}}
-{{--                           </div>--}}
-{{--                       </div>--}}
-
                        <h2 class="time_and_sku_order">
                            <span>[Đơn hàng: #{{ sprintf("%06d", $order->getId()) }}]</span>
                            <span> ({{ $order->created_at->format("h:i \p\h\ú\\t d/m/Y") }})</span>
@@ -120,10 +105,6 @@
                                                <td><b class="text-bold">Tổng thanh toán</b></td>
                                                <td><span class="total_checkout_main">{{ number_format($totalCheckout + $order->ship) }} VNĐ</span></td>
                                            </tr>
-                                           {{--                                           <tr>--}}
-                                           {{--                                               <td><b>Trạng thái</b></td>--}}
-                                           {{--                                               <td>{!!  $order->getStatus() !!}</td>--}}
-                                           {{--                                           </tr>--}}
                                        </table>
                                        @if(count($suborders) > 0)
                                            @foreach($suborders as $k => $suborder)
@@ -132,10 +113,6 @@
                                                    $details = $suborder->details;
                                                    $subtotal = 0;
                                                @endphp
-{{--                                               <p class="text-uppercase text-bold">Kho: {{ $khoObj->name }}</p>--}}
-{{--                                               <p>Người đại diện: {{ $khoObj->contact_name }}</p>--}}
-{{--                                               <p>Địa chỉ: {{ $khoObj->address }}</p>--}}
-{{--                                               <p>Số điện thoại: {{ $khoObj->phone }}</p>--}}
                                                <table class="table table-bordered">
                                                    <thead>
                                                    <tr>

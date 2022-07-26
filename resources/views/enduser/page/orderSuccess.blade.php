@@ -40,12 +40,6 @@ $stringDefaulr =  substr(str_shuffle($permitted_chars), 0, 10);
                         <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round" />
                     </svg>
                 </div>
-                <!-- <a class="Breadcrumb-list-item" href="danh-sach-san-pham.html">Danh sách sản phẩm</a>
-                <div class="Breadcrumb-list-item arrow">
-                    <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round" />
-                    </svg>
-                </div><a class="Breadcrumb-list-item" href="chi-tiet-san-pham.html">Chi tiết</a> -->
             </div>
         </div>
     </div>
@@ -91,7 +85,7 @@ $stringDefaulr =  substr(str_shuffle($permitted_chars), 0, 10);
 
             <div class="footer">
                 <p class="title">Chúng tôi sẽ liên hệ với bạn ngay sau khi nhận được đơn hàng</p>
-                <p class="title">Mọi thắc mắc xin vui lòng liên hệ hotline: 0347576999</p>
+                <p class="title">Mọi thắc mắc xin vui lòng liên hệ hotline: 1900 9999</p>
                 <div class="footer-btn" style="padding: 40px;">
 
                     <a href="{{ route('siteIndex') }}"><button type="button" class="btn btn-secondary">Trở về trang chủ</button></a>

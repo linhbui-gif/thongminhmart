@@ -21,6 +21,8 @@
 </div>
 <div class="ProductDetailPage">
     <?php
+    $metaColor = unserialize($product->meta_color);
+    $metaSize = unserialize($product->meta_size);
     $colors = \App\Color::where('status', 'active')->get();
     $sizes = \App\Size::where('status', 'active')->get();
     $page_content = unserialize($product->ts_kt);
@@ -62,9 +64,11 @@
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="color_id" id="color_id">
                                                         <!-- <option value="">Select color</option> -->
-                                                        @if(!empty($colors))
-                                                        @foreach($colors as $k => $v)
-                                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                                        @if(!empty($metaColor))
+                                                        @foreach($metaColor as $c => $color)
+                                                         @if($color['status'] == 'active')
+                                                        <option value="{{$c}}">{{$color['name']}}</option>
+                                                        @endif
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -82,9 +86,11 @@
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="size_id" id="size_id">
                                                         <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Size</option>
-                                                        @if(!empty($sizes))
-                                                        @foreach($sizes as $k => $v)
-                                                        <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>
+                                                        @if(!empty($metaSize))
+                                                        @foreach($metaSize as $s => $size)
+                                                            @if($size['status'] == 'active')
+                                                            <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
+                                                            @endif
                                                         @endforeach
                                                         @endif
                                                     </select>

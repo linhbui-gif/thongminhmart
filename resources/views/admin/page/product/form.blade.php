@@ -81,6 +81,7 @@
                                                     <label for="name">Số thứ tự:</label>
                                                     <input value="{{ old("order_no", @$item['order_no'] )  }}" name="order_no" type="text" class="form-control" id="order_no">
                                                 </div>
+                                               
                                                 <?php
                                                 if (isset($item->ts_kt)){
                                                     $content = unserialize($item->ts_kt);
@@ -93,7 +94,7 @@
                                                             <h4>Tiêu chí {{ $stt }}</h4>
                                                             <div class="form-group">
                                                                 <label for="">Tên:</label>
-                                                                <input name="contents[tieu_chi_{{ $stt }}][name]" value="{{ @$content['tieu_chi_' . $stt ]['name'] }}" type="text" class="form-control" id="">
+                                                                <input name="contents[tieu_chi_{{ $stt }}][name]" value="{{ @$content['tieu_chi_' . $stt ]['name'] }}" type="text" class="form-control">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="">Mô tả</label>
@@ -175,6 +176,62 @@
 
 
                                             </div>
+                                        </div>
+                                        <?php
+                                        if (isset($item->meta_size)){
+                                            $metaSize = unserialize($item->meta_size);
+                                        // dd($metaSize);
+
+                                        }
+
+                                        ?>
+                                        <h4>Meta size</h4>
+                                        <div class="row">
+
+                                            @for($stt = 1; $stt < 10; $stt++)
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-1 col-form-label">Name:</label>
+                                                        <input class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][name]" value="{{ @$metaSize['meta_size_' . $stt ]['name'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">Status:</label>
+                                                        <select class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][status]">
+                                                            <option value="inactive" @if($metaSize['meta_size_' . $stt ]['status'] === 'inactive') selected @endif>Inactive</option>
+                                                            <option value="active" @if($metaSize['meta_size_' . $stt ]['status'] === 'active') selected @endif>Active</option>
+                                                        </select>
+                                                        <label class="col-sm-1 col-form-label">price_base:</label>
+                                                        <input class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][price_base]" value="{{ @$metaSize['meta_size_' . $stt ]['price_base'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">price_final:</label>
+                                                        <input class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][price_final]" value="{{ @$metaSize['meta_size_' . $stt ]['price_final'] }}" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                            @endfor
+                                        </div>
+                                        <?php
+                                        if (isset($item->meta_size)){
+                                            $metaColor = unserialize($item->meta_color);
+                                        }
+
+                                        ?>
+                                        <h4>Meta color</h4>
+                                        <div class="row">
+
+                                            @for($stt = 1; $stt < 10; $stt++)
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-1 col-form-label">Name:</label>
+                                                        <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][name]" value="{{ @$metaColor['meta_color_' . $stt ]['name'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">Status:</label>
+                                                        <select class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][status]">
+                                                            <option value="inactive" @if($metaColor['meta_color_' . $stt ]['status']??'' === 'inactive') selected @endif>Inactive</option>
+                                                            <option value="active" @if($metaColor['meta_color_' . $stt ]['status']??'' === 'active') selected @endif>Active</option>
+                                                        </select>
+                                                        <!-- <label class="col-sm-1 col-form-label">price_base:</label>
+                                                        <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][price_base]" value="{{ @$metaColor['meta_color_' . $stt ]['price_base'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">price_final:</label>
+                                                        <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][price_final]" value="{{ @$metaColor['meta_color_' . $stt ]['price_final'] }}" type="text" class="form-control"> -->
+                                                    </div>
+                                                </div>
+                                            @endfor
                                         </div>
                                     </div>
                                     <div id="seo_tab" class="tab-pane fade in @if($tab_current == "seo") active @endif ">
