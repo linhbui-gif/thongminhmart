@@ -1,6 +1,7 @@
 @extends("enduser.layoutv2")
 
 @section('content')
+
     <div class="ProductActions flex">
         <div class="ProductActions-item">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_680_441)"><path d="M6.1707 1.23535H17.7383C18.9855 1.23535 20 2.2498 20 3.49707V13.6338C20 14.1139 19.4571 14.3845 19.0738 14.1107L15.8523 11.8123C15.582 11.6197 15.2641 11.5178 14.932 11.5178H7.84648C6.59922 11.5178 5.58477 10.5033 5.58477 9.25605V1.82129C5.58477 1.49785 5.84727 1.23535 6.1707 1.23535ZM9.0168 8.3334H15.7867C16.1102 8.3334 16.3727 8.07129 16.3727 7.74746C16.3727 7.42402 16.1102 7.16152 15.7867 7.16152H9.0168C8.69336 7.16152 8.43086 7.42402 8.43086 7.74746C8.43086 8.07129 8.69336 8.3334 9.0168 8.3334ZM9.0168 5.59902H15.7867C16.1102 5.59902 16.3727 5.33691 16.3727 5.01309C16.3727 4.68965 16.1102 4.42715 15.7867 4.42715H9.0168C8.69336 4.42715 8.43086 4.68965 8.43086 5.01309C8.43086 5.33691 8.69336 5.59902 9.0168 5.59902Z" fill="#929191"/><path d="M-0.000195503 8.04189V18.1782C-0.000195503 18.6551 0.54 18.9309 0.925976 18.6552L4.14746 16.3571C4.41777 16.1646 4.73574 16.0626 5.06777 16.0626H12.1533C13.4006 16.0626 14.415 15.0478 14.415 13.8005V12.6896H7.84629C5.95293 12.6896 4.41269 11.1493 4.41269 9.25596V5.77979H2.26152C1.01426 5.77979 -0.000195503 6.79463 -0.000195503 8.04189Z" fill="#929191"/></g><defs><clipPath id="clip0_680_441"><rect width="20" height="20" fill="white" transform="matrix(-1 0 0 1 20 0)"/></clipPath></defs></svg></div>
@@ -93,9 +94,11 @@
 </div>
 <div class="ProductDetailPage">
     <?php
-    $colors = \App\Color::where('status', 'active')->get();
-    $sizes = \App\Size::where('status', 'active')->get();
-    $page_content = unserialize($product->ts_kt);
+    $metaColor = unserialize(@$product->meta_color);
+    $metaSize = unserialize(@$product->meta_size);
+//    $colors = \App\Color::where('status', 'active')->get();
+//    $sizes = \App\Size::where('status', 'active')->get();
+    $page_content = unserialize(@$product->ts_kt);
     ?>
     <div class="container">
         <div class="ProductDetailPage-wrapper">
@@ -103,12 +106,12 @@
                 <div class="Card-body">
                     <div class="ProductDetailPage-detail-wrapper flex flex-wrap">
                         <div class="ProductDetailPage-detail-image"> <img src="{{ $product->url_picture }}" alt="">
-                            <video class="ProductDetailPage-detail-video" src="{{asset('storage/video-intro/'.$product->video_link)}}" preload="auto" defaultmuted playsinline autoplay muted loop></video>
+                            <video class="ProductDetailPage-detail-video" src="{{asset('storage/video-intro/'.$product->video_link)}}" defaultmuted autoplay loop muted playsinline preload="metadata" controls></video>
                             <div class="ProductDetailPage-detail-image-play"><img src="{{ asset('/assets/icons/icon-play.svg') }}" alt=""></div>
                         </div>
                         <div class="ProductDetailPage-detail-info">
                             <div class="ProductDetailPage-detail-info-title">{{$product->name}} </div>
-                            <div class="ProductDetailPage-detail-info-basic flex justify-between">
+                            <div class="ProductDetailPage-detail-info-basic">
                                 <div class="ProductDetailPage-detail-info-basic-item">
                                     <div class="ProductDetailPage-detail-info-text">Giá bán </div><br>
                                     <div class="ProductDetailPage-detail-info-basic-price flex items-center" ><span id="price_final">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
@@ -134,10 +137,18 @@
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="color_id" id="color_id">
                                                         <!-- <option value="">Select color</option> -->
-                                                        @if(!empty($colors))
-                                                        @foreach($colors as $k => $v)
-                                                        <option value="{{$v->id}}">{{$v->name}}</option>
-                                                        @endforeach
+{{--                                                        @if(!empty($colors))--}}
+{{--                                                        @foreach($colors as $k => $v)--}}
+{{--                                                        <option value="{{$v->id}}">{{$v->name}}</option>--}}
+{{--                                                        @endforeach--}}
+{{--                                                        @endif--}}
+
+                                                        @if(!empty($metaColor))
+                                                            @foreach($metaColor as $c => $color)
+                                                                @if($color['status'] == 'active')
+                                                                    <option value="{{$c}}">{{$color['name']}}</option>
+                                                                @endif
+                                                            @endforeach
                                                         @endif
                                                     </select>
                                                     <div class="Select-arrow">
@@ -154,9 +165,16 @@
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="size_id" id="size_id">
                                                         <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Chọn size</option>
-                                                        @if(!empty($sizes))
-                                                            @foreach($sizes as $k => $v)
-                                                                <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>
+{{--                                                        @if(!empty($sizes))--}}
+{{--                                                            @foreach($sizes as $k => $v)--}}
+{{--                                                                <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        @endif--}}
+                                                        @if(!empty($metaSize))
+                                                            @foreach($metaSize as $s => $size)
+                                                                @if($size['status'] == 'active')
+                                                                    <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
+                                                                @endif
                                                             @endforeach
                                                         @endif
                                                     </select>
@@ -282,20 +300,21 @@
         }
         $dataProducts = [];
         $productItem = \App\Product_products::find($product->id);
-//        if(!empty($productItem->tags)){
-//            $dataProducts = \App\Helper\Common::keywordsLike($productItem->tags);
-//        }
-//        $dataProducts = $productItem->tags;
-//        dd( json_decode($dataProducts, true));
-//        dd(implode(",", $dataProducts));
-
         $query = \App\Product_products::query();
         foreach ($productItem->tags as $term) {
             $query->orWhere(function ($query) use ($term) {
                 $query->orWhere('name', 'LIKE', '%' . $term->name . '%');
             });
         }
-        $data['videokeyword'] = $query->limit(10)->latest()->get();
+        $data['productAuto'] = $query->limit(10)->latest()->get();
+        if (empty($data['productAuto'])){
+            if (isset($productItem->category->id)){
+                $data['productAuto'] = \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->where('category_id', @$productItem->category->id)->get();
+            }
+            else{
+                $data['productAuto'] = $products;
+            }
+        }
         ?>
         <div class="ProductList">
             <div class="container">
@@ -306,7 +325,7 @@
                         </div>
                         <div class="Card-body">
                             <div class="ProductList-list flex flex-wrap">
-                                @include('enduser.page.components.product-items', ['data' => $products])
+                                @include('enduser.page.components.product-items', ['data' => $data['productAuto']])
                             </div>
                         </div>
                     </div>

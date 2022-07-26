@@ -4,8 +4,10 @@
         <div class="ProductBox">
             <div class="ProductBox-image">
                 <div class="ProductBox-image-wrapper"><img src="{{$v->url_picture}}" alt="">
-                    <video class="ProductBox-video" data-src="{{asset('storage/video-intro/'.$v->video_link)}}" muted="muted" loop="loop"></video>
+                    <canvas class="ProductBox-thumbnail-video active"></canvas>
+                    <video class="ProductBox-video desktop" data-src="{{asset('storage/video-intro/'.$v->video_link)}}" muted="muted" loop="loop"></video>
                     <div class="ProductBox-video-loading">  <img src="{{ asset('enduser/thongminhmart/assets/icons/icon-spinner.svg') }}" alt=""></div>
+                    <div class="ProductBox-video-play active"><img src="{{ asset('enduser/thongminhmart/assets/icons/icon-play.svg') }}" alt=""></div>
                 </div>
             </div>
             <div class="ProductBox-info"><a class="ProductBox-title" href="{{route('product.productDetail',['category'=>$v->slug])}}">{{$v->name}}</a>
@@ -18,3 +20,4 @@
     </div>
 @endforeach
 @endif
+
