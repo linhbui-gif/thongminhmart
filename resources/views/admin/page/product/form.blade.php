@@ -199,8 +199,8 @@
                                                         <input class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][name]" value="{{ @$metaSize['meta_size_' . $stt ]['name'] }}" type="text" class="form-control">
                                                         <label class="col-sm-1 col-form-label">Status:</label>
                                                         <select class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][status]">
-                                                            <option value="inactive" @if($metaSize['meta_size_' . $stt ]['status'] === 'inactive') selected @endif>Inactive</option>
-                                                            <option value="active" @if($metaSize['meta_size_' . $stt ]['status'] === 'active') selected @endif>Active</option>
+                                                            <option value="inactive" @if(($metaSize['meta_size_' . $stt ]['status']??'') === 'inactive') selected @endif>Inactive</option>
+                                                            <option value="active" @if(($metaSize['meta_size_' . $stt ]['status']??'') === 'active') selected @endif>Active</option>
                                                         </select>
                                                         <label class="col-sm-1 col-form-label">price_base:</label>
                                                         <input class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][price_base]" value="{{ @$metaSize['meta_size_' . $stt ]['price_base'] }}" type="text" class="form-control">
@@ -226,8 +226,8 @@
                                                         <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][name]" value="{{ @$metaColor['meta_color_' . $stt ]['name'] }}" type="text" class="form-control">
                                                         <label class="col-sm-1 col-form-label">Status:</label>
                                                         <select class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][status]">
-                                                            <option value="inactive" @if($metaColor['meta_color_' . $stt ]['status']??'' === 'inactive') selected @endif>Inactive</option>
-                                                            <option value="active" @if($metaColor['meta_color_' . $stt ]['status']??'' === 'active') selected @endif>Active</option>
+                                                            <option value="inactive" @if(($metaColor['meta_color_' . $stt ]['status']??'') === 'inactive') selected @endif>Inactive</option>
+                                                            <option value="active" @if(($metaColor['meta_color_' . $stt ]['status']??'') === 'active') selected @endif>Active</option>
                                                         </select>
                                                         <!-- <label class="col-sm-1 col-form-label">price_base:</label>
                                                         <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][price_base]" value="{{ @$metaColor['meta_color_' . $stt ]['price_base'] }}" type="text" class="form-control">
