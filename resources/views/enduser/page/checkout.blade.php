@@ -258,6 +258,9 @@ $fieldValue[$value] = old($value);
                             </div>
                         </div>
                     </div>
+                    @error('payment_method')
+                    <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="Card js-banking-info">

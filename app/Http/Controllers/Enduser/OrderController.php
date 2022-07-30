@@ -256,11 +256,10 @@ class OrderController extends Controller
 
             // tạo chi tiết đơn hàng
             $this->createOrderDetail($order->id);
-            // $this->sendMail($address);
+            $this->sendMail($address);
             DB::commit();
             session()->forget('Cart');
 
-            // return redirect()->back()->with('success', 'Đặt hàng thành công');
             return view(config("edushop.end-user.pathView") . "orderSuccess")->with('success', 'Đặt hàng thành công');
         } catch (\Exception $e) {
             DB::rollBack();
