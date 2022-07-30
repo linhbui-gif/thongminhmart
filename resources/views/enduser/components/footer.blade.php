@@ -30,7 +30,7 @@
                 </div>
                 <div class="Footer-col flex">
                     <div class="Footer-col-item">
-                        <div class="Footer-favicon"><img src="{{ asset('/assets/images/favicon.png" alt=""></div>
+                        <div class="Footer-favicon"><img src="{{ asset('/assets/images/favicon.png') }}" alt=""></div>
                     </div>
                     <div class="Footer-col-item">
                         <div class="Footer-col-title">CÔNG TY CỔ PHẦN TM&DV SMARTCHOISE</div>
