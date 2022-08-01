@@ -130,24 +130,31 @@
                                                     </select>
                                                 </div>
                                                 @php
-                                                    $model = new \App\Product_tags();
-                                                    $items = $model->orderBy('id','desc')->get()->pluck('name','id')->toArray();
+                                                   $classSource = new \App\Product_tags();
+                                                    $dataTags = $classSource->select("id","name")->orderBy('id','desc')->get()->toArray();
+                                                    if(is_object($item) && $item->tags){
+                                                        $arrChecked = old('tag_id', @$item->tags->pluck('id','id')->toArray() );
+                                                    }else{
+                                                        $arrChecked = old('tag_id', []);
+                                                    }
+
                                                 @endphp
                                                 <div class="form-group">
                                                     <label for="hashtag">Nhập hashtag:</label>
                                                     <select multiple="multiple" class="form-control tag_id" name="tag_id[]">
                                                         <option value="default">-- Select tags --</option>
-                                                        @if ( isset($item->tags)  && count($item->tags) > 0)
-                                                                @foreach ($item->tags as $k => $tag)
-                                                                    <option value="{{ $k }}" selected >{{ $tag->name }}</option>
-                                                                @endforeach
-                                                        @else
-                                                            @foreach($items as $k => $name)
-                                                                <option value="{{ $k }}">{{ $name }}</option>
-                                                            @endforeach
-                                                        @endif
+                                                        @foreach($dataTags as $k => $item_source)
+                                                            @php
+                                                                $checked = "";
+                                                                if( isset($arrChecked) && isset($item_source['id'])){
+                                                                    if(in_array($item_source['id'], $arrChecked)){
+                                                                        $checked = "selected";
+                                                                    }
+                                                                }
 
-
+                                                            @endphp
+                                                            <option {{ $checked }} value="{{ $item_source['id'] }}">{{ $item_source['name'] }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -197,6 +204,61 @@
 
                                             </div>
                                         </div>
+                                        <?php
+                                        if (isset($item->meta_size)){
+                                            $metaSize = unserialize($item->meta_size);
+//                                             dd($metaSize);
+                                        }
+
+                                        ?>
+                                        <h4>Cấu hình size</h4>
+                                        <div class="row">
+
+                                            @for($stt = 1; $stt < 10; $stt++)
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-1 col-form-label">Name:</label>
+                                                        <input class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][name]" value="{{ @$metaSize['meta_size_' . $stt ]['name'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">Status:</label>
+                                                        <select class="col-sm-2" name="metaSize[meta_size_{{ $stt }}][status]">
+                                                            <option value="inactive" @if(@$metaSize['meta_size_' . $stt ]['status'] === 'inactive') selected @endif>Inactive</option>
+                                                            <option value="active" @if(@$metaSize['meta_size_' . $stt ]['status'] === 'active') selected @endif>Active</option>
+                                                        </select>
+                                                        <label class="col-sm-1 col-form-label">price_base:</label>
+                                                        <input class="col-sm-2" name="metaSize[meta_size_{{ @$stt }}][price_base]" value="{{ @$metaSize['meta_size_' . $stt ]['price_base'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">price_final:</label>
+                                                        <input class="col-sm-2" name="metaSize[meta_size_{{ @$stt }}][price_final]" value="{{ @$metaSize['meta_size_' . $stt ]['price_final'] }}" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                            @endfor
+                                        </div>
+                                        <?php
+                                        if (isset($item->meta_color)){
+                                            $metaColor = unserialize($item->meta_color);
+                                        }
+
+                                        ?>
+                                        <h4>Cấu hình màu sắc</h4>
+                                        <div class="row">
+
+                                            @for($stt = 1; $stt < 10; $stt++)
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-1 col-form-label">Name:</label>
+                                                        <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][name]" value="{{ @$metaColor['meta_color_' . $stt ]['name'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">Status:</label>
+                                                        <select class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][status]">
+                                                            <option value="inactive" @if(@$metaColor['meta_color_' . $stt ]['status']??'' === 'inactive') selected @endif>Inactive</option>
+                                                            <option value="active" @if(@$metaColor['meta_color_' . $stt ]['status']??'' === 'active') selected @endif>Active</option>
+                                                        </select>
+                                                    <!-- <label class="col-sm-1 col-form-label">price_base:</label>
+                                                        <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][price_base]" value="{{ @$metaColor['meta_color_' . $stt ]['price_base'] }}" type="text" class="form-control">
+                                                        <label class="col-sm-1 col-form-label">price_final:</label>
+                                                        <input class="col-sm-2" name="metaColor[meta_color_{{ $stt }}][price_final]" value="{{ @$metaColor['meta_color_' . $stt ]['price_final'] }}" type="text" class="form-control"> -->
+                                                    </div>
+                                                </div>
+                                            @endfor
+                                        </div>
                                     </div>
                                     <div id="seo_tab" class="tab-pane fade in @if($tab_current == "seo") active @endif ">
                                         @include("admin.partials.meta_seo")
@@ -224,7 +286,10 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('.tag_id').select2();
+        $('.tag_id').select2({
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
     });
 
 </script>

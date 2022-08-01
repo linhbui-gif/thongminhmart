@@ -183,7 +183,7 @@ class Product_productsController extends AdminController
                     $tag_id[] = $v;
                 }
             }
-            $this->model->tags()->attach($tag_id);
+            $product->tags()->attach($tag_id);
         }
 
         Session::flash('success', 'Bạn đã thêm mới thành công');
@@ -227,6 +227,8 @@ class Product_productsController extends AdminController
       $product->url_picture = $request->url_picture;
       $product->order_no = $request->order_no;
       $product->ts_kt = serialize($data);
+      $product->meta_size = serialize($request->metaSize);
+      $product->meta_color = serialize($request->metaColor);
       if(isset($request->video_link)){
           if(preg_match("#mp4#", $_FILES['video_link']['type'])){
               $video_upload = $request->file('video_link');

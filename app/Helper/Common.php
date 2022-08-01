@@ -55,10 +55,10 @@ class Common {
                 foreach ($likeConditions as $index => $item) {
 
 //                    $slug = Str::slug(convertSpecialChar(trim($item)));
-                    $buildQuery .= "'%" . $item->slug; // . "%' OR s.keyword like ";
+                    $buildQuery .= "'%" . $item->name; // . "%' OR s.keyword like ";
 
                     if ($index < count($likeConditions) - 1) {
-                        $buildQuery .= "%' OR slug like ";
+                        $buildQuery .= "%' OR content like ";
                     }
                 }
             }
@@ -66,7 +66,7 @@ class Common {
             $buildQuery .= "%' ";
 
             // search from table searched LEFT JOIN table search_results
-            $query = "SELECT name, price_base, price_final from product_products where slug like $buildQuery ORDER BY id DESC limit 10";
+            $query = "SELECT name, price_base, price_final from product_products where name like $buildQuery ORDER BY id DESC limit 10";
             dd($query);
             $results = \DB::select(\DB::raw($query));
             return $results;

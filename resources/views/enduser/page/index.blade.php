@@ -121,11 +121,84 @@
             function ConfigVideoProduct(){
                 const products = document.querySelectorAll(".ProductBox");
                 products.forEach((item) => {
-                    const video = item.querySelector(".ProductBox-video");
+                    const video = item.querySelector(".ProductBox-video.desktop");
                     const loading = item.querySelector(".ProductBox-video-loading");
+                    const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
                     const srcVideo = video.dataset.src;
 
+                    const playVideo = item.querySelector(".ProductBox-video-play");
+
                     const startVideo = () => {
+                        const isDesktop = window.innerWidth > 991;
+
+                        if (isDesktop) {
+                            if (!video.src) {
+                                video.addEventListener("loadeddata", () => {
+                                    video.classList.add("loaded");
+                                    loading.classList.add("loaded");
+                                });
+                                video.src = srcVideo;
+                            }
+
+                            loading.classList.add("active");
+                            video.classList.add("active");
+                            video.play();
+                        }
+                    };
+
+                    const endVideo = () => {
+                        const isDesktop = window.innerWidth > 991;
+                        if (isDesktop) {
+                            loading.classList.remove("active");
+                            video.classList.remove("active");
+                            video.pause();
+                            video.currentTime = 0;
+                        }
+                    };
+
+                    item.addEventListener("mousemove", startVideo);
+                    item.addEventListener("touchstart", startVideo);
+                    item.addEventListener("mouseleave", endVideo);
+                    item.addEventListener("touchend", endVideo);
+
+                    const getThumbnailImage = (seekTo = 0.0) => {
+                        const videoPlayer = document.createElement("video");
+                        videoPlayer.setAttribute("src", srcVideo);
+                        videoPlayer.load();
+
+                        videoPlayer.addEventListener("loadeddata", () => {
+                            setTimeout(() => {
+                                videoPlayer.currentTime = seekTo;
+                            }, 1000);
+
+                            videoPlayer.addEventListener("seeked", () => {
+                                const videoPlayerWidth = videoPlayer.videoWidth * 0.45;
+                                const videoPlayerHeight = videoPlayer.videoHeight * 0.22;
+
+                                thumbnailVideo
+                                    .getContext("2d")
+                                    .drawImage(
+                                        videoPlayer,
+                                        thumbnailVideo.width / 2 - videoPlayerWidth / 2,
+                                        thumbnailVideo.height / 2 - videoPlayerHeight / 2,
+                                        videoPlayerWidth,
+                                        videoPlayerHeight
+                                    );
+
+                                thumbnailVideo.canvas?.toBlob(
+                                    (blob) => {
+                                        resolve(blob);
+                                    },
+                                    "image/jpeg",
+                                    1
+                                );
+                            });
+                        });
+                    };
+
+                    getThumbnailImage();
+
+                    playVideo.addEventListener("click", () => {
                         if (!video.src) {
                             video.addEventListener("loadeddata", () => {
                                 video.classList.add("loaded");
@@ -134,22 +207,18 @@
                             video.src = srcVideo;
                         }
 
-                        loading.classList.add("active");
-                        video.classList.add("active");
-                        video.play();
-                    };
+                        loading.classList.add("active-mobile");
+                        video.classList.add("active-mobile");
 
-                    const endVideo = () => {
-                        loading.classList.remove("active");
-                        video.classList.remove("active");
-                        video.pause();
-                        video.currentTime = 0;
-                    };
-
-                    item.addEventListener("mousemove", startVideo);
-                    item.addEventListener("touchstart", startVideo);
-                    item.addEventListener("mouseleave", endVideo);
-                    item.addEventListener("touchend", endVideo);
+                        if (video.paused) {
+                            video.play();
+                            playVideo.classList.remove("active");
+                            thumbnailVideo.classList.remove("active");
+                        } else {
+                            video.pause();
+                            playVideo.classList.add("active");
+                        }
+                    });
                 });
             }
             $(document).on('click', '#load_more_button', function(){
