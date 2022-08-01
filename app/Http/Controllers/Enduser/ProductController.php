@@ -83,7 +83,7 @@ class ProductController extends Controller
     public function addCart(Request $request)
     {
         try {
-            // session()->forget('Cart');
+            // session()->forget('Cart'); die();
             $arrInput = $request->input();
             $oldCart = Session('Cart') ? Session('Cart') : null;
             $newCart = new Cart($oldCart);
@@ -101,6 +101,7 @@ class ProductController extends Controller
 
             // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
             $productId = $request->productId;
+            // session()->flash('success', 'Đã thêm vào rỏ hàng');
 
             return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {

@@ -64,6 +64,10 @@
                                                     <input value="{{ old("price_final", @$item['price_final'] )  }}" name="price_final" type="text" class="form-control" id="price_final">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="name">Weight:</label>
+                                                    <input value="{{ old("weight", @$item['weight'] )  }}" name="weight" type="number" min="0" class="form-control" id="weight">
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="short_description">Mô tả tóm tắt:</label>
                                                     <textarea name="short_description" id="ck_description" rows="10" cols="80">{{ old("short_description", @$item['short_description'])  }}</textarea>
                                                     <script>

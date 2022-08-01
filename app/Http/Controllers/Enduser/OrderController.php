@@ -12,6 +12,7 @@ use App\OrderAddress;
 use App\OrderSub;
 use App\Product_products;
 use App\Warehouse;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Cart;
 use Illuminate\Support\Facades\Auth;
@@ -191,25 +192,6 @@ class OrderController extends Controller
                 'ward_id' => 'required|exists:ward,id',
                 'payment_method' => 'required|in:cod,bank'
             ];
-            // //    if ($request->payment_method == "bank") {
-            // //        $validate['bank_payment'] = 'required|exists:bank,id';
-            // //    }
-            //    $request->validate($validate, [
-            //        'required' => ':attribute không được rỗng',
-            //        'exists' => ':attribute không hợp lệ',
-            //        'min' => ':attribute phải có ít nhất :min kí tự',
-            //        'max' => ':attribute không vượt quá :max kí tự',
-            //        'in' => ':attribute không hợp lệ',
-            //    ], [
-            //        'name' => 'Họ và tên',
-            //        'phone' => 'Số điện thoại',
-            //        'address' => 'Địa chỉ',
-            //        'province_id' => 'Tỉnh/TP',
-            //        'district_id' => 'Quận/Huyện',
-            //        'ward_id' => 'Phường/xã',
-            //     //    'payment_method' => 'Phương thức thanh toán',
-            //     //    'bank_payment' => 'Ngân hàng'
-            //    ]);
             $validator = Validator::make($request->all(), $validate, [
                 'required' => ':attribute không được rỗng',
                 'exists' => ':attribute không hợp lệ',
@@ -260,6 +242,11 @@ class OrderController extends Controller
             $order->ship = $request->ship??0;
             $order->total = $request->total??0;
             $order->status = 'active';
+            $order->note = $request->note;
+            $order->user_name = $request->name;
+            $order->user_phone = $request->phone;
+            $order->user_email = $request->email;
+            $order->status = 'active';
             $order->save();
 
             // tạo đơn hàng cho user
@@ -270,18 +257,16 @@ class OrderController extends Controller
 
             // tạo chi tiết đơn hàng
             $this->createOrderDetail($order->id);
-            // $this->sendMail($address);
+            $this->sendMail($address);
             DB::commit();
             session()->forget('Cart');
 
-            // return redirect()->back()->with('success', 'Đặt hàng thành công');
             return view(config("edushop.end-user.pathView") . "orderSuccess")->with('success', 'Đặt hàng thành công');
         } catch (\Exception $e) {
-//            DB::rollBack();
-//            dd($e->getMessage());
+            DB::rollBack();
+            dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
-
     }
 
     public function createOrderDetail($orderId){
@@ -304,6 +289,7 @@ class OrderController extends Controller
             }
         }
     }
+
 
     public function createDataPostGTKT($order_id)
     {
@@ -543,8 +529,6 @@ class OrderController extends Controller
     {
 
         Mail::send('enduser.mail.checkout', ['order' => $order], function ($message) use ($order) {
-            //$message->to('thanhphonglx98@gmail.com', 'Thanh phong')->bcc('phongprolx98@gmail.com','Thanh Phong')->subject('Đơn hàng thành công');
-            // $user = $order->user;
             $message->to($order->email, $order->fullname)->bcc('linhbq68@wru.vn','Linh')->subject('Đơn hàng thành công');
         });
     }

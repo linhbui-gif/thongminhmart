@@ -38,20 +38,6 @@ class HomeController extends Controller
 
         return view(config("edushop.end-user.pathView") . "contact");
     }
-    public function getPriceShipping(Request $request)
-    {
-        // if (Session('Cart') && Session('Cart')->totalPrice >=1000000) {
-        //     return response()->json([
-        //         'fee_ship' => 0,
-        //     ]);
-        // }
-        $ship_fee_district = \App\Ship_fee_district::where('name','like','%'.($request->province_name).'%')->where('type', $request->type)->first();
-
-        return response()->json([
-            'fee_ship' => $ship_fee_district->fee_ship??0,
-        ]);
-
-    }
     public function about()
     {
 
@@ -235,7 +221,23 @@ class HomeController extends Controller
         return 0;
 
     }
+    public function getPriceShipping(Request $request)
+    {
+        $tong = 0;
+        if (Session('Cart')) {
+            foreach(Session('Cart')->products as $products) {
+                $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+            }
+        }
 
+        $ship_fee_district = \App\Ship_fee_district::where('name','like','%'.($request->province_name).'%')->where('type', $request->type)->first();
+        $fee_ship = $ship_fee_district->fee_ship??0;
+
+        return response()->json([
+            'fee_ship' => $fee_ship * $tong,
+        ]);
+
+    }
     public function getKhoAddress($province_to, $district_to)
     {
         $carts = \Cart::getContent();
