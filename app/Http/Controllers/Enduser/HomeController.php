@@ -56,35 +56,40 @@ class HomeController extends Controller
         {
             if($request->id > 0)
             {
-                $data = \DB::table('blog_posts')
+                $data = \DB::table('product_products')
                     ->where('id', '>', $request->id)
                     ->orderBy('id', 'asc')
-                    ->limit(3)
+                    ->limit(5)
                     ->get();
             }
             else
             {
-                $data = \DB::table('blog_posts')
+                $data = \DB::table('product_products')
                     ->orderBy('id', 'asc')
-                    ->limit(3)
+                    ->limit(5)
                     ->get();
             }
             $output = '';
+            $htmlButton = '';
             $last_id = '';
             if(!$data->isEmpty()){
-                foreach($data as $k => $blog){
-                    $output .= view('enduser.page.components.card-component', compact('blog'))->render();
-                    $last_id = $blog->id;
+                foreach($data as $k => $product){
+                    $output .= view('enduser.page.components.card-component', compact('product','htmlButton'))->render();
+                    $last_id = $product->id;
                 }
-                $output .= '<div class="col-12 text-center">
-                    <button class="btn btn-primary ajax-loading" data-id="'.$last_id.'" id="load_more_button">Xem thêm tin tức</button>
-                </div>';
+//                $output .= '<div class="col-12 text-center">
+//                    <button class="btn btn-primary ajax-loading" data-id="'.$last_id.'" id="load_more_button">Xem thêm tin tức</button>
+//                </div>';
+                $htmlButton .= '
+                              <button data-id="'.$last_id.'" class="Button-control ajax-loading flex items-center justify-center" type="button" id="load_more_button"><span class="Button-control-title">Xem thêm</span>
+                                       </button>
+                           ';
             }
             else
             {
-                $output .= '';
+                $output .= "";
             }
-            echo $output;
+            return [$output,$htmlButton];
         }
     }
 
