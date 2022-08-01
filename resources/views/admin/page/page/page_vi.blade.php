@@ -135,17 +135,15 @@
                     <label for="">Name</label>
                     <input value="{{ @$content['page_about']['name'] }}" name="content[page_about][name]" type="text" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label for="">Description</label>
-                    <input value="{{ @$content['page_about']['description'] }}" name="content[page_about][description]" type="text" class="form-control">
-                </div>
             </div>
             <div class="col-md-12">
-                <div class="form-group">
-                    <label for="">Khối đối tác</label>
-                    <input value="{{ @$content['partner']['name'] }}" name="content[partner][name]"  type="text" class="form-control">
+                <div class="form-group ">
+                    <label for="">Nội dung:</label>
+                    <textarea  id="page_about" name="content[about][text]" class="form-control" name="" id="" cols="30" rows="10">{{ @$content['about']['text'] }}</textarea>
+                    <script>
+                        CKEDITOR.replace( 'page_about' );
+                    </script>
                 </div>
-
             </div>
 
         </div>

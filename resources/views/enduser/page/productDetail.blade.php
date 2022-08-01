@@ -42,6 +42,8 @@
                                     @foreach($metaColor as $c => $color)
                                         @if($color['status'] == 'active' && !empty($color['name']))
                                             <option value="{{$c}}">{{$color['name']}}</option>
+                                        @else
+                                            {{""}}
                                         @endif
                                     @endforeach
                                 @endif
@@ -61,6 +63,9 @@
                                     @foreach($metaSize as $s => $size)
                                         @if($size['status'] == 'active' && !empty($size['price_final']))
                                             <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
+
+                                        @else
+                                            {{""}}
                                         @endif
                                     @endforeach
                                 @endif
@@ -150,17 +155,13 @@
                                             <div class="ProductDetailPage-detail-info-options-item-row-control">
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="color_id" id="color_id">
-                                                        <!-- <option value="">Select color</option> -->
-{{--                                                        @if(!empty($colors))--}}
-{{--                                                        @foreach($colors as $k => $v)--}}
-{{--                                                        <option value="{{$v->id}}">{{$v->name}}</option>--}}
-{{--                                                        @endforeach--}}
-{{--                                                        @endif--}}
 
                                                         @if(!empty($metaColor))
                                                             @foreach($metaColor as $c => $color)
                                                                 @if($color['status'] == 'active')
                                                                     <option value="{{$c}}">{{$color['name']}}</option>
+                                                                @else
+                                                                    {{""}}
                                                                 @endif
                                                             @endforeach
                                                         @endif
@@ -188,6 +189,8 @@
                                                             @foreach($metaSize as $s => $size)
                                                                 @if($size['status'] == 'active')
                                                                     <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
+                                                                @else
+                                                                    {{""}}
                                                                 @endif
                                                             @endforeach
                                                         @endif
@@ -317,16 +320,16 @@
         $query = \App\Product_products::query();
         foreach ($productItem->tags as $term) {
             $query->orWhere(function ($query) use ($term) {
-                $query->orWhere('name', 'LIKE', '%' . $term->name . '%');
+                $query->orWhere('name', 'LIKE', '%' . $term->name . '%')->orWhere('content', 'LIKE', '%' . $term->name . '%');
             });
         }
-        $data['productAuto'] = $query->limit(10)->latest()->get();
+        $dataProducts = $query->get();
         if (empty($data['productAuto'])){
             if (isset($productItem->category->id)){
-                $data['productAuto'] = \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->where('category_id', @$productItem->category->id)->get();
+                $dataProducts = \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->where('category_id', @$productItem->category->id)->get();
             }
             else{
-                $data['productAuto'] = $products;
+                $dataProducts = $products;
             }
         }
         ?>
@@ -339,7 +342,7 @@
                         </div>
                         <div class="Card-body">
                             <div class="ProductList-list flex flex-wrap">
-                                @include('enduser.page.components.product-items', ['data' => $data['productAuto']])
+                                @include('enduser.page.components.product-items', ['data' => $dataProducts])
                             </div>
                         </div>
                     </div>
@@ -410,6 +413,7 @@
         });
     });
     $('.delCartItem').on('click', function() {
+        // console.log('123')
         var url = "{{route('product.delCart')}}";
         var data = {
             '_token': '{{ csrf_token() }}',
