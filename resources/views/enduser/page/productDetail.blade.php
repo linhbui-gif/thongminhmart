@@ -156,71 +156,67 @@
                                                     <div class="Select middle">
                                                         <select class="Select-control" name="color_id" id="color_id">
 
-                                                            @if(!empty($metaColor))
-                                                                @foreach($metaColor as $c => $color)
-                                                                    @if($color['status'] == 'active')
-                                                                        <option value="{{$c}}">{{$color['name']}}</option>
-                                                                    @else
-                                                                        {{""}}
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                        <div class="Select-arrow">
-                                                            <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M12.9248 1L6.89488 7L0.864954 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ProductDetailPage-detail-info-options-item-row flex items-center">
-                                                <div class="ProductDetailPage-detail-info-options-item-row-label">Kích cỡ</div>
-                                                <div class="ProductDetailPage-detail-info-options-item-row-control">
-                                                    <div class="Select middle">
-                                                        <select class="Select-control" name="size_id" id="size_id">
-                                                            <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Chọn size</option>
-                                                            {{--                                                        @if(!empty($sizes))--}}
-                                                            {{--                                                            @foreach($sizes as $k => $v)--}}
-                                                            {{--                                                                <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>--}}
-                                                            {{--                                                            @endforeach--}}
-                                                            {{--                                                        @endif--}}
-                                                            @if(!empty($metaSize))
-                                                                @foreach($metaSize as $s => $size)
-                                                                    @if($size['status'] == 'active')
-                                                                        <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
-                                                                    @else
-                                                                        {{""}}
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                        </select>
-                                                        <div class="Select-arrow">
-                                                            <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M12.9248 1L6.89488 7L0.864954 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ProductDetailPage-detail-info-options-item-row flex items-center">
-                                                <div class="ProductDetailPage-detail-info-options-item-row-label">Số lượng</div>
-                                                <div class="ProductDetailPage-detail-info-options-item-row-control">
-                                                    <div class="Amount flex">
-                                                        <div class="Amount-minus"><svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M0 0H16.8149V2.80248H0V0Z" fill="black" />
-                                                            </svg></div>
-                                                        <input class="Amount-control" type="number" name="quantity" id="quantity" value="1" min="1">
-                                                        <div class="Amount-plus">
-                                                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.90497 7.07477V0H7.07504V7.07477H0V9.90469H7.07504V16.9796H9.90497V9.90469H16.9796V7.07477H9.90497Z" fill="black" />
-                                                            </svg>
-                                                        </div>
+                                                        @if(!empty($metaColor))
+                                                            @foreach($metaColor as $c => $color)
+                                                                @if($color['status'] == 'active')
+                                                                    <option value="{{$c}}">{{$color['name']}}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                    <div class="Select-arrow">
+                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12.9248 1L6.89488 7L0.864954 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                                                        </svg>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="ProductDetailPage-detail-info-options-item-row flex items-center">
+                                            <div class="ProductDetailPage-detail-info-options-item-row-label">Kích cỡ</div>
+                                            <div class="ProductDetailPage-detail-info-options-item-row-control">
+                                                <div class="Select middle">
+                                                    <select class="Select-control" name="size_id" id="size_id">
+                                                        <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Chọn size</option>
+{{--                                                        @if(!empty($sizes))--}}
+{{--                                                            @foreach($sizes as $k => $v)--}}
+{{--                                                                <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>--}}
+{{--                                                            @endforeach--}}
+{{--                                                        @endif--}}
+                                                        @if(!empty($metaSize))
+                                                            @foreach($metaSize as $s => $size)
+                                                                @if($size['status'] == 'active')
+                                                                    <option value="{{$s}}" data-price-base="{{ $size['price_base'] ? number_format($size['price_base']). 'đ' : '' }}" data-price-final="{{ $size['price_final'] ? number_format($size['price_final']). 'đ' : '' }}" data-price-active="{{$size['price_final']}}">{{$size['name']}}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                    </select>
+                                                    <div class="Select-arrow">
+                                                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12.9248 1L6.89488 7L0.864954 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ProductDetailPage-detail-info-options-item-row flex items-center">
+                                            <div class="ProductDetailPage-detail-info-options-item-row-label">Số lượng</div>
+                                            <div class="ProductDetailPage-detail-info-options-item-row-control">
+                                                <div class="Amount flex">
+                                                    <div class="Amount-minus"><svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M0 0H16.8149V2.80248H0V0Z" fill="black" />
+                                                        </svg></div>
+                                                    <input class="Amount-control" type="number" name="quantity" id="quantity" value="1" min="1">
+                                                    <div class="Amount-plus">
+                                                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.90497 7.07477V0H7.07504V7.07477H0V9.90469H7.07504V16.9796H9.90497V9.90469H16.9796V7.07477H9.90497Z" fill="black" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                         <div class="ProductDetailPage-detail-info-options-item">
                                             <div class="ProductDetailPage-detail-info-options-item-title">Các sản phẩm trong giỏ hàng</div>

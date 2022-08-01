@@ -226,7 +226,10 @@ class HomeController extends Controller
         $tong = 0;
         if (Session('Cart')) {
             foreach(Session('Cart')->products as $products) {
-                $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+                if (!empty($products['productInfo']['weight'])){
+                    $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+                }
+
             }
         }
 
