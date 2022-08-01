@@ -122,7 +122,7 @@
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
-                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_base}}">
+                                <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_final}}">
                                 <input type="hidden" name="jsAvarta" id="jsAvarta" value="{{$product->url_picture}}">
                                 <input type="hidden" name="jsProductName" id="jsProductName" value="{{$product->name}}">
                                 <div class="ProductDetailPage-detail-info-options flex flex-wrap">
@@ -343,10 +343,12 @@
             'color': color,
             'quantity': quantity,
             'productId': productId,
-            'price': $('#jsTotalPrice').val(),
+            // 'price': $('#jsTotalPrice').val(),
+            'price': $('#size_id').find(':selected').attr('data-price-active'),
             'avatar': $('#jsAvarta').val(),
             'name': $('#jsProductName').val(),
         }
+        // console.log(data); return;
 
         $.ajax({
             type: 'POST',
@@ -358,33 +360,49 @@
             dataType: 'HTML',
             success: function(data) {
                 $('#add_to_cart').html(data);
-                $('#quantity').val(1);
-                // alert('Thêm sản phẩm vào giỏ hàng thành công !!')
-                $('.delCartItem').click(function() {
-                    var url = "{{route('product.delCart')}}";
-                    var data = {
-                        '_token': '{{ csrf_token() }}',
-                        'id': $(this).data('id')
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: data,
-                        dataType: 'HTML',
-                        success: function(data) {
-                            $('#add_to_cart').html(data);
-                            $('#quantity').val(1);
-                            // alert('Xóa sản phẩm từ giỏ hàng thành công !!')
-                        }
-                    });
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
                 });
-
             }
         });
+    });
+    $('.delCartItem').on('click', function() {
+        var url = "{{route('product.delCart')}}";
+        var data = {
+            '_token': '{{ csrf_token() }}',
+            'id': $(this).data('id'),
+            'productId': $('#product_id').val()
+        }
+        $.ajax({
+            type: 'GET',
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: data,
+            dataType: 'HTML',
+            success: function(data) {
+                $('#add_to_cart').html(data);
+                Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Xóa sản phẩm khỏi giỏ hàng thành công',
+                showConfirmButton: false,
+                timer: 1500
+                });
+            }
+        });
+    });
+
+    $('#size_id').change(function () {
+        var price_base = $(this).find(':selected').attr('data-price-base');
+        var price_final = $(this).find(':selected').attr('data-price-final');
+        $('#price_final').text(price_final);
+        $('#price_base').text(price_base);
     });
     $('.delCartItem').click(function() {
         var url = "{{route('product.delCart')}}";

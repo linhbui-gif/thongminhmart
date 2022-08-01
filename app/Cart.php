@@ -26,17 +26,17 @@ class Cart
         $newProduct = ['quanty' => 0, 'price' => $input['price'], 'productInfo' => $input];
         // if ($this->products) {
         //     dd(1);
-            if ($this->products && array_key_exists($id, $this->products)) {
-                $newProduct = $this->products[$id];
-                $check = true;
-            } else {
+        if ($this->products && array_key_exists($id, $this->products)) {
+            $newProduct = $this->products[$id];
+            $check = true;
+        } else {
             $newProduct['quanty'] += $input['quantity'];
             $newProduct['price'] = $newProduct['quanty'] * $input['price'];
             $this->products[$id] = $newProduct;
             $this->totalPrice += $input['quantity'] * $input['price'];
             $this->totalQuanty += $input['quantity'];
         }
-        
+
         if ($check) {
             $this->checkIsset = $id;
         } else {
@@ -62,5 +62,17 @@ class Cart
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+
+    public function UpdateItemCartToNumber($id, $quanty)
+    {
+        $this->totalQuanty -= $this->products[$id]['quanty'];
+        $this->totalPrice -= $this->products[$id]['price'];
+
+        $this->products[$id]['quanty'] = $quanty;
+        $this->products[$id]['price'] = $quanty * $this->products[$id]['productInfo']['price'];
+
+        $this->totalQuanty += $this->products[$id]['quanty'];
+        $this->totalPrice += $this->products[$id]['price'];
     }
 }

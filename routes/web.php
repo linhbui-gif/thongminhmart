@@ -18,6 +18,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
 
     /*---- ajax ------*/
     Route::get('/ajax/get-shipping', 'HomeController@getShipping')->name('ajax.getShipping');
+    Route::get('/ajax/get-price-shipping', 'HomeController@getPriceShipping')->name('ajax.getPriceShipping');
     Route::get('/ajax/get-district', 'HomeController@getDistrict')->name('ajax.getDistrict');
     Route::get('/ajax/get-ward', 'HomeController@getWard')->name('ajax.getWard');
 //    Route::get('/', 'HomeController@index')->name('siteIndex');
@@ -46,10 +47,10 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
     /* -- ORDER -- */
     Route::get('/gio-hang', 'ProductController@cart')->name('product.cart');
     Route::post('them-vao-gio-hang', 'ProductController@addCart')->name('product.addCart');
-    Route::post('delete-cart', 'ProductController@delCart')->name('product.delCart');
+    Route::get('delete-cart', 'ProductController@delCart')->name('product.delCart');
 //
     Route::delete('xoa-gio-hang', 'ProductController@remove')->name('product.deleteCart');
-    Route::patch('cart/update','ProductController@updateCart')->name('product.updateCart');
+    Route::get('cart/update','ProductController@updateCart')->name('product.updateCart');
     Route::get('/thanh-toan', 'ProductController@checkout')->name('product.checkout');
     Route::post('/thanh-toan', 'OrderController@postCheckout')->name('order.postCheckout');
 //
