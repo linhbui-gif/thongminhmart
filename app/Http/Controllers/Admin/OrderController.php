@@ -238,27 +238,27 @@ class OrderController extends AdminController
         $address = $order->address;
         $user = $order->user;
         $thongtinnoinhan = [
-                'tel' => $address->phone,
-                'name' => !empty($address->fullname) ? $address->fullname : $user->fullname(),
-                'address' => $address->address,
-                'province' => $address->CityName,
-                'district' => $address->DistrictName,
-                'ward' => $address->WardName,
-                "hamlet" => "Khác",
-            ];
+            'tel' => $address->phone,
+            'name' => !empty($address->fullname) ? $address->fullname : $user->fullname(),
+            'address' => $address->address,
+            'province' => $address->CityName,
+            'district' => $address->DistrictName,
+            'ward' => $address->WardName,
+            "hamlet" => "Khác",
+        ];
 
         $madonhang = 'dh' . Str::random(6) . '_' . $order_id;
         $totalPriceInKho = $this->getTotalPriceDetails($details);
         $noigui = [
-                    'id' => $madonhang,
-                    'pick_name' => $warehouse->contact_name,
-                    'pick_address' => $warehouse->address,
-                    'pick_province' => $warehouse->CityName,
-                    'pick_district' => $warehouse->DistrictName,
-                    'pick_ward' => $warehouse->WardName,
-                    'pick_tel' => $warehouse->phone,
-                    'value' => $totalPriceInKho
-                ];
+            'id' => $madonhang,
+            'pick_name' => $warehouse->contact_name,
+            'pick_address' => $warehouse->address,
+            'pick_province' => $warehouse->CityName,
+            'pick_district' => $warehouse->DistrictName,
+            'pick_ward' => $warehouse->WardName,
+            'pick_tel' => $warehouse->phone,
+            'value' => $totalPriceInKho
+        ];
         if ($order->pay_method == "cod") {
             $noigui['pick_option'] = 'cod';
             $noigui['pick_money'] = $totalPriceInKho;

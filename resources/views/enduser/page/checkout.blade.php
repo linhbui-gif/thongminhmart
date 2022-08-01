@@ -14,7 +14,7 @@
 @section('content')
     @php
 
-        $fields = ['name', 'email', 'phone', 'address', 'province_id', 'district_id', 'ward_id', 'payment_method'];
+        $fields = ['name', 'email', 'phone', 'address', 'note', 'province_id', 'district_id', 'ward_id', 'payment_method'];
         $fieldValue = [];
 
         foreach ($fields as $key => $value) {
@@ -208,7 +208,7 @@
                                 <div class="CheckoutPage-form-row">
                                     <div class="CheckoutPage-form-row-control">
                                         <div class="TextArea middle">
-                                            <textarea class="TextArea-control" placeholder="Ghi chú đơn hàng"></textarea>
+                                            <textarea class="TextArea-control" name="note" value="{{ $fieldValue['note'] }}" placeholder="Ghi chú đơn hàng"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -258,6 +258,9 @@
                                     </div>
                                 </div>
                             </div>
+                            @error('payment_method')
+                            <div class="alert alert-danger  mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="Card js-banking-info">
@@ -285,11 +288,11 @@
                                 <div class="CheckoutPage-text">Phí vận chuyển: (miễn phí vận chuyển cho đơn hàng trị giá trên 1 triệu đồng)</div>
                                 <div class="CheckoutPage-text medium nowrap" id="ship_fee">30 000 đ</div>
                                 <input type="hidden" name="ship" id="ship" value="30000">
-                                <input type="hidden" name="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
+                                <input type="hidden" name="total" id="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
                             </div>
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Thành tiền:</div>
-                                <div class="CheckoutPage-text big color-yellow-sea nowrap">{{ (!empty(Session::get('Cart')->totalPrice)) ? number_format(Session::get('Cart')->totalPrice + 30000). 'đ' : ''}}</div>
+                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('Cart')->totalPrice)) ? number_format(Session::get('Cart')->totalPrice + 30000). 'đ' : ''}}</div>
                             </div>
                             <div class="CheckoutPage-row">
                                 <div class="Button primary big">
@@ -525,6 +528,7 @@
                 success: function (data) {
                     $('#ship_fee').text(data.fee_ship+'đ');
                     $('#ship').val(data.fee_ship);
+                    $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
                     console.log(data.fee_ship); return;
                 },
                 error: function () {
