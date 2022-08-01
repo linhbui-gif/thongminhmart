@@ -86,31 +86,47 @@
                             <div class="col-md-6">
                                 <h4 class="text-uppercase">Thông tin khách</h4>
                                 @php
+                                    $address = $order->address;
                                     $user = $order->user;
                                     $config = config("edushop.status_gthk");
                                 @endphp
                                 <table class="table">
                                     <tr>
                                         <td><b>Họ tên</b></td>
-                                        <td>{{ $user->fullname() }}</td>
+                                        <td>@if(!empty($address->fullname))
+                                                {{ $address->fullname  }}
+                                            @else
+                                                {{ $user->fullname()  }}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><b>Phone</b></td>
-                                        <td>{{ $user->phone }}</td>
+                                        <td>@if(!empty($address->phone))
+                                                {{ $address->phone  }}
+                                            @else
+                                                {{ $user->phone  }}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><b>Email</b></td>
-                                        <td>{{ $user->email }}</td>
+                                        <td>@if(!empty($address->email))
+                                                {{ $address->email  }}
+                                            @else
+                                                {{ $user->email  }}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><b>Sinh nhật</b></td>
-                                        <td>{{ $user->birthday }}</td>
+                                        <td>@if(!empty($address->email))
+                                                
+                                            @else
+                                                {{ $user->birthday }}
+                                            @endif</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         @php
-                            $address = $order->address;
                             $arrKho = [];
                             $suborders = $order->suborder;
                             $order_course = $order->details()->where('order_detail.type', 'course' )->where('order_detail.compo_id', null)->where('order_detail.kho_id', null)->get();

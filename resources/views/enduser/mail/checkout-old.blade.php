@@ -531,6 +531,7 @@
             </div>
             @php
                 $order_details = $order->details;
+                dd($order_details);
             @endphp
             @foreach($order_details as $detail)
                 @php
