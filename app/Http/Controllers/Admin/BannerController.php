@@ -39,7 +39,8 @@ class BannerController extends AdminController
                 [ 'label' => 'Tiêu đề' ,'name' => 'title', 'type' => 'text'],
                 [ 'label' => 'Mô tả' ,'name' => 'description', 'type' => 'ckeditor'],
                 [ 'label' => 'Picture' ,'name' => 'picture', 'type' => 'file_from_url'],
-                [ 'label' => 'Gallery' ,'name' => 'gallery', 'type' => 'gallery'],
+                [ 'label' => 'Picture version mobile slider Home' ,'name' => 'url_picture_mobile', 'type' => 'file_from_url'],
+//                [ 'label' => 'Gallery' ,'name' => 'gallery', 'type' => 'gallery'],
                 [ 'label' => 'Type' ,'name' => 'type', 'type' => 'select','data_source' =>
                     [
                         '0' => 'Hiển thị là banner',
@@ -65,15 +66,15 @@ class BannerController extends AdminController
                 [ 'label' => 'Status' ,'name' => 'status', 'type' => 'status'],
             ]
         ],
-        'general_tab_ko' => [
-            'label_tab' => 'General (Korean)',
-            'items' => [
-                [ 'label' => 'Name' ,'name' => 'name_ko', 'type' => 'text'],
-                [ 'label' => 'Title' ,'name' => 'title_ko', 'type' => 'text'],
-                [ 'name' => 'button_name_ko', 'label' => 'Tên button', 'type' => 'text'],
-                [ 'label' => 'Mô tả' ,'name' => 'description_ko', 'type' => 'ckeditor']
-            ]
-        ],
+//        'general_tab_ko' => [
+//            'label_tab' => 'General (Korean)',
+//            'items' => [
+//                [ 'label' => 'Name' ,'name' => 'name_ko', 'type' => 'text'],
+//                [ 'label' => 'Title' ,'name' => 'title_ko', 'type' => 'text'],
+//                [ 'name' => 'button_name_ko', 'label' => 'Tên button', 'type' => 'text'],
+//                [ 'label' => 'Mô tả' ,'name' => 'description_ko', 'type' => 'ckeditor']
+//            ]
+//        ],
     ];
     protected $searchList = [
         'all' => 'Search By All',

@@ -119,11 +119,13 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
 //    Route::post('/question/update/{id}', 'PageController@updatequestionClient')->name('page.updatequestionClient');
     /* -- BLOG -- */
     Route::get('/linh-vuc-hoat-dong/{slug_category}', 'BlogController@blogListByCategory')->name('blogListByCategory.category');
-    Route::get('/tin-tuc', 'PageController@newList')->name('siteLvhd');
+    Route::get('/chinh-sach', 'PageController@chinhsach')->name('siteLvhd');
+    Route::get('/kien-thuc', 'PageController@newList');
     Route::get('/chi-tiet-ve-chung-toi', 'HomeController@chitietchungtoi')->name('siteChitiet');
 
 //    Route::get('/tin-tuc/{slug_category}', 'BlogController@courseListInCategory')->name('course.courseListInCategory');
     Route::get('/tin-tuc/chi-tiet/{slug}', 'BlogController@newDetail')->name('new.newDetail');
+    Route::get('/search', 'CourseController@searchProduct')->name('product.searchProduct');
 });
 
 

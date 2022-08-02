@@ -5,7 +5,7 @@ window.onload = () => {
     Collapse.init();
     BankingInfo.init();
     ProductCategoryDrawer.init();
-    // PlaceholderCustom.init();
+    PlaceholderCustom.init();
 };
 
 const loading = {
@@ -197,46 +197,88 @@ const ProductBox = {
     configProductBoxVideo: function () {
         const products = document.querySelectorAll(".ProductBox");
 
-        products.forEach((item) => {
+        const stopAllProductsVideo = (item) => {
+            const video = item.querySelector(".ProductBox-video.desktop");
+            const loading = item.querySelector(".ProductBox-video-loading");
+            const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
+            const playBtn = item.querySelector(".ProductBox-video-play");
+
+            loading.classList.remove("active");
+            video.classList.remove("active");
+            // playBtn.classList.add("active");
+            thumbnailVideo.classList.add("active");
+            video.pause();
+            video.currentTime = 0;
+        };
+
+        products.forEach((item, index) => {
             const video = item.querySelector(".ProductBox-video.desktop");
             const loading = item.querySelector(".ProductBox-video-loading");
             const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
             const srcVideo = video.dataset.src;
+            const srcLink = video.dataset.link;
+            const playBtn = item.querySelector(".ProductBox-video-play");
 
-            const playVideo = item.querySelector(".ProductBox-video-play");
+            const triggerClassStartVideo = () => {
+                loading.classList.add("active");
+                video.classList.add("active");
+                // playBtn.classList.remove("active");
+                thumbnailVideo.classList.remove("active");
+            };
+
+            const triggerClassEndVideo = () => {
+                loading.classList.remove("active");
+                video.classList.remove("active");
+                // playBtn.classList.add("active");
+                thumbnailVideo.classList.add("active");
+            };
+
+            const startNavigate = () => {
+                const isMobile = window.innerWidth <= 991;
+                const isVideoPlaying = !!(
+                    video.currentTime > 0 &&
+                    !video.paused &&
+                    !video.ended &&
+                    video.readyState > 2
+                );
+                if (isVideoPlaying && isMobile) {
+                    window.open(srcLink, "_self");
+                }
+            };
 
             const startVideo = () => {
-                const isDesktop = window.innerWidth > 991;
+                const isMobile = window.innerWidth <= 991;
 
-                if (isDesktop) {
-                    if (!video.src) {
-                        video.addEventListener("loadeddata", () => {
-                            video.classList.add("loaded");
-                            loading.classList.add("loaded");
-                        });
-                        video.src = srcVideo;
-                    }
+                if (isMobile) {
+                    products.forEach((product, productIdx) => {
+                        if (productIdx !== index) stopAllProductsVideo(product);
+                    });
+                }
 
-                    loading.classList.add("active");
-                    video.classList.add("active");
+                if (!video.src) {
+                    video.addEventListener("loadeddata", () => {
+                        video.classList.add("loaded");
+                        loading.classList.add("loaded");
+                        video.play();
+                        triggerClassStartVideo();
+                    });
+                    video.src = srcVideo;
+                } else {
                     video.play();
+                    triggerClassStartVideo();
                 }
             };
 
             const endVideo = () => {
-                const isDesktop = window.innerWidth > 991;
-                if (isDesktop) {
-                    loading.classList.remove("active");
-                    video.classList.remove("active");
-                    video.pause();
-                    video.currentTime = 0;
-                }
+                triggerClassEndVideo();
+                video.pause();
+                video.currentTime = 0;
             };
 
+            item.addEventListener("click", startNavigate);
             item.addEventListener("mousemove", startVideo);
             item.addEventListener("touchstart", startVideo);
             item.addEventListener("mouseleave", endVideo);
-            item.addEventListener("touchend", endVideo);
 
             const getThumbnailImage = (seekTo = 0.0) => {
                 const videoPlayer = document.createElement("video");
@@ -274,28 +316,6 @@ const ProductBox = {
             };
 
             getThumbnailImage();
-
-            playVideo.addEventListener("click", () => {
-                if (!video.src) {
-                    video.addEventListener("loadeddata", () => {
-                        video.classList.add("loaded");
-                        loading.classList.add("loaded");
-                    });
-                    video.src = srcVideo;
-                }
-
-                loading.classList.add("active-mobile");
-                video.classList.add("active-mobile");
-
-                if (video.paused) {
-                    video.play();
-                    playVideo.classList.remove("active");
-                    thumbnailVideo.classList.remove("active");
-                } else {
-                    video.pause();
-                    playVideo.classList.add("active");
-                }
-            });
         });
     },
     configProductDetailVideo: function () {
@@ -414,30 +434,30 @@ const ProductCategoryDrawer = {
     },
 };
 
-// const PlaceholderCustom = {
-//     init: function () {
-//         this.config();
-//     },
-//     config: function () {
-//         const Inputs = document.querySelectorAll(".Input");
-//         const Selects = document.querySelectorAll(".Select");
-//
-//         const configPlaceholder = (elm, key, tag, event) => {
-//             const control = elm.querySelector(tag);
-//             const placeholder = elm.querySelector(`.${key}-placeholder`);
-//
-//             control.addEventListener(event, (e) => {
-//                 const { value } = e.target;
-//                 if (value) placeholder.style.opacity = 0;
-//                 else placeholder.style.opacity = 1;
-//             });
-//         };
-//
-//         Inputs.forEach((item) =>
-//             configPlaceholder(item, "Input", "input", "input")
-//         );
-//         Selects.forEach((item) =>
-//             configPlaceholder(item, "Select", "select", "change")
-//         );
-//     },
-// };
+const PlaceholderCustom = {
+    init: function () {
+        this.config();
+    },
+    config: function () {
+        const Inputs = document.querySelectorAll(".Input");
+        const Selects = document.querySelectorAll(".Select");
+
+        const configPlaceholder = (elm, key, tag, event) => {
+            const control = elm.querySelector(tag);
+            const placeholder = elm.querySelector(`.${key}-placeholder`);
+
+            control.addEventListener(event, (e) => {
+                const { value } = e.target;
+                if (value) placeholder.style.opacity = 0;
+                else placeholder.style.opacity = 1;
+            });
+        };
+
+        Inputs.forEach((item) =>
+            configPlaceholder(item, "Input", "input", "input")
+        );
+        Selects.forEach((item) =>
+            configPlaceholder(item, "Select", "select", "change")
+        );
+    },
+};

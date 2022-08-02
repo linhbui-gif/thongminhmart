@@ -41,14 +41,14 @@ class PageController extends AdminController
                 [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords', 'type' => 'text'],
             ]
         ],
-        'seo_tab_ko' => [
-            'label_tab' => 'Meta (Korea)',
-            'items' => [
-                [ 'label' => 'Meta title' ,'name' => 'meta_title_ko', 'type' => 'text'],
-                [ 'label' => 'Meta description' ,'name' => 'meta_description_ko', 'type' => 'textarea'],
-                [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords_ko', 'type' => 'text'],
-            ]
-        ]
+//        'seo_tab_ko' => [
+//            'label_tab' => 'Meta (Korea)',
+//            'items' => [
+//                [ 'label' => 'Meta title' ,'name' => 'meta_title_ko', 'type' => 'text'],
+//                [ 'label' => 'Meta description' ,'name' => 'meta_description_ko', 'type' => 'textarea'],
+//                [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords_ko', 'type' => 'text'],
+//            ]
+//        ]
     ];
     protected $searchList = [
         'all' => 'Search By All',
@@ -141,37 +141,37 @@ class PageController extends AdminController
         }
 
         // Korera
-        $content_ko = unserialize($item->content_ko);
-
-        $data_ko = [];
-        foreach($request->content_ko as $k => $sections){
-            foreach($sections as $k_1 => $section){
-                if(is_object($section)){
-                    $section = $this->uploadThumb($section);
-                }
-                $data_ko[$k][$k_1] = $section;
-            }
-        }
-
-        if(is_array($content_ko)){
-            foreach($content_ko as $k => $sections){
-                foreach($sections as $k_1 => $section){
-                    if(!isset($data_ko[$k][$k_1])){
-                        $data_ko[$k][$k_1] = $content_ko[$k][$k_1];
-                    }
-                }
-            }
-        }
+//        $content_ko = unserialize($item->content_ko);
+//
+//        $data_ko = [];
+//        foreach($request->content_ko as $k => $sections){
+//            foreach($sections as $k_1 => $section){
+//                if(is_object($section)){
+//                    $section = $this->uploadThumb($section);
+//                }
+//                $data_ko[$k][$k_1] = $section;
+//            }
+//        }
+//
+//        if(is_array($content_ko)){
+//            foreach($content_ko as $k => $sections){
+//                foreach($sections as $k_1 => $section){
+//                    if(!isset($data_ko[$k][$k_1])){
+//                        $data_ko[$k][$k_1] = $content_ko[$k][$k_1];
+//                    }
+//                }
+//            }
+//        }
 
         $item->meta_title = $request->meta_title;
         $item->meta_description = $request->meta_description;
         $item->meta_keywords = $request->meta_keywords;
         $item->content = serialize($data);
 
-        $item->content_ko = serialize($data_ko);
-        $item->meta_title_ko = $request->meta_title_ko;
-        $item->meta_description_ko = $request->meta_description_ko;
-        $item->meta_keywords_ko = $request->meta_keywords_ko;
+//        $item->content_ko = serialize($data_ko);
+//        $item->meta_title_ko = $request->meta_title_ko;
+//        $item->meta_description_ko = $request->meta_description_ko;
+//        $item->meta_keywords_ko = $request->meta_keywords_ko;
 
         $item->save();
 

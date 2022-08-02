@@ -60,7 +60,7 @@ class PageController extends Controller
     public function getIndex()
     {
         $data['products'] = Product_products::where('status', 'active')->orderBy('order_no','asc')->get();
-        
+
         return view(config("edushop.end-user.pathView") . "index")->with($data);;
     }
     public function lienhe(){
@@ -86,6 +86,9 @@ class PageController extends Controller
     public function newList()
     {
         return view(config("edushop.end-user.pathView") . "blogList");
+    }
+    public function chinhsach(){
+        return view(config("edushop.end-user.pathView") . "chinhsach");
     }
     public function productList(Request $request)
     {

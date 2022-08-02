@@ -152,11 +152,14 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="">Name</label>
-                    <input value="{{ @$content['tintuc']['name'] }}" name="content[tintuc][name]" type="text" class="form-control">
+                    <input value="{{ @$content['chinhsach']['name'] }}" name="content[chinhsach][name]" type="text" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Description</label>
-                    <input value="{{ @$content['tintuc']['description'] }}" name="content[tintuc][description]" type="text" class="form-control">
+                    <label for="">Nội dung:</label>
+                    <textarea  id="page_chinhsach" name="content[chinhsach][text]" class="form-control" name="" id="" cols="30" rows="10">{{ @$content['chinhsach']['text'] }}</textarea>
+                    <script>
+                        CKEDITOR.replace( 'page_chinhsach' );
+                    </script>
                 </div>
             </div>
         </div>

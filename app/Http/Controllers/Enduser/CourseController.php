@@ -353,4 +353,9 @@ class CourseController extends Controller
 
         return $thumbName;
     }
+    public function searchProduct(){
+        $key = $_GET['keyword'];
+        $data['products'] = Product_products::where('name','LIKE','%' . $key . '%')->orWhere('short_description','LIKE','%' . $key . '%')->orWhere('content','LIKE','%' . $key . '%')->get();
+        return view(config("edushop.end-user.pathView") . "productSearch")->with($data);
+    }
 }

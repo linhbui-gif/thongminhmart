@@ -1,4 +1,5 @@
 @extends("enduser.layout")
+
 @section('head')
     @php
         $locale = app()->getLocale();
@@ -12,29 +13,25 @@
     @endphp
 @stop
 @section('content')
-
     <?php
     $dataBreb = [
         [
-            "name" => @$page_content['tuyendung']['name']
+            "name" => @$page_content['chinhsach']['name']
         ]
     ];
     ?>
     @include("enduser.page.components.breb-crumb",['data' => $dataBreb])
     <div class="container">
-    <div class="content mt-5 bg-white">
-            <h1>{{@$page_content['tuyendung']['name']}}</h1>
+        <div class="content mt-5 bg-white ">
+            <h1>{{@$page_content['chinhsach']['name']}}</h1>
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="content-area">
-
-                        {!! @$page_content['tuyendung']['text'] !!}
+                        {!! @$page_content['chinhsach']['text'] !!}
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-
-
 @stop

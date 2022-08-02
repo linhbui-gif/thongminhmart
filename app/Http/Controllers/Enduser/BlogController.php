@@ -20,10 +20,16 @@ class BlogController extends Controller
     public function newDetail($slug)
     {
         $course = blog_posts::where("status", "active")->where('slug', $slug)->first();
-        $related = $course->posts()->pluck('related_post_id')->toArray();
-        $related_post = DB::table('blog_posts')->whereIn('id', $related)->get();
+//        $related = $course->posts()->pluck('related_post_id')->toArray();
+//        $related_post = DB::table('blog_posts')->whereIn('id', $related)->get();
+        if ($course) {
+            $idCategory = $course->category->id;
+            $data['categoryName'] = $course->category->name;
+        }
         $data['new'] = $course;
-        $data['related'] = $related_post;
+//        $data['related'] = $related_post;
+        $data['blogSameCategory'] = blog_posts::where('category_id', $idCategory)->where('status', 'active')->get();
+
         return view(config("edushop.end-user.pathView") . "blogDetail")->with($data);
     }
 

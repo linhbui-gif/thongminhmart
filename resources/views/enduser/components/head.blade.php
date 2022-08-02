@@ -6,7 +6,8 @@
 @if(isset($_config))
     <link rel="shortcut icon" href="{{ $_config->favicon_url }}" />
 @endif
-<link rel="stylesheet" type="text/css" href="{{ asset('enduser/thongminhmart/assets/css/main.css') }}">
+<link rel="stylesheet" href="{{ asset('enduser/thongminhmart/assets/css/main.css') }}">
+{{--<link rel="stylesheet" type="text/css" href="{{ asset('enduser/composite/css/bootstrap.min.css') }}">--}}
 <link rel="stylesheet" type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @yield('css')
