@@ -395,7 +395,7 @@
 @endsection
 @section('script')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="">
+<script type="text/javascript">
     $('#addtocart').click(function() {
         var url = "{{route('product.addCart')}}";
         var quantity = $('#quantity').val();
@@ -404,10 +404,10 @@
             return false;
         }
         // var type = $('.btn-color-active').text();
-        var size = $("#size_id option:selected").text();
-        var color = $("#color_id option:selected").text();
-
-        if (size == '' || color == '') {
+        let size = $("#size_id option:selected").text();
+        let sizeVal = $("#size_id option:selected").val();
+        let color = $("#color_id option:selected").text();
+        if (size == '' || color == '' || sizeVal == '') {
             // alert('Vui lòng chọn phân loại hàng');
             Swal.fire({
                 icon: 'error',
@@ -488,6 +488,13 @@
         $('#price_base').text(price_base);
     });
 
+    $('#size_id_mb').change(function () {
+        var price_base = $(this).find(':selected').attr('data-price-base');
+        var price_final = $(this).find(':selected').attr('data-price-final');
+        $('#price_final').text(price_final);
+        $('#price_base').text(price_base);
+    });
+
     //mb
     $('#addtocart_mb').click(function() {
         var url = "{{route('product.addCart')}}";
@@ -497,10 +504,11 @@
             return false;
         }
         // var type = $('.btn-color-active').text();
-        var size = $("#size_id_mb option:selected").text();
+        let size = $("#size_id_mb option:selected").text();
+        let sizeVal = $("#size_id_mb option:selected").val();
         var color = $("#color_id_mb option:selected").text();
 
-        if (size == '' || color == '') {
+        if (size == '' || color == '' || sizeVal == '') {
             // alert('Vui lòng chọn phân loại hàng');
             Swal.fire({
                 icon: 'error',
