@@ -315,16 +315,42 @@
             $products= \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->orderBy('order_no','desc')->get();
             \App\Helper\Common::putToCache('product_main',$products);
         }
-        $dataProducts = [];
         $productItem = \App\Product_products::find($product->id);
-        $query = \App\Product_products::query();
-        foreach ($productItem->tags as $term) {
-            $query->orWhere(function ($query) use ($term) {
-                $query->orWhere('name', 'LIKE', '%' . $term->name . '%')->orWhere('content', 'LIKE', '%' . $term->name . '%');
-            });
+        $dataProducts = [];
+        $arrProduct = [];
+        if(!empty($productItem)) {
+            foreach ($productItem->tags as $term) {
+                $query = App\Product_products::where('name', 'LIKE', '%' . $term->name . '%')->get();
+                if(count($query) > 1) {
+                    $i= 1 ;
+                    foreach($query as $k_product => $itemProduct) {
+                        $dataProducts[] = $itemProduct;
+                        $i++;
+                    }
+                    if(!empty($dataProducts)) {
+                        $num_product = count($dataProducts);
+                        $dataProducts[$num_product+$k_product+$i]= $itemProduct;
+                    }
+                }else {
+                    foreach($query as $k_product3 => $itemProduct3) {
+                        $dataProducts[$k_product +1] = $itemProduct3;
+                    }
+                }
+                if(!empty($term))  {
+                    foreach($term->products as $k_product2 => $term2) {
+                        $k_product2 += 2;
+                        $query2 = App\Product_products::where('id',$term2->id)->first();
+                        if($k_product == $k_product2) {
+                            $dataProducts[$k_product2+1] = $query2;
+                        }else {
+                            $dataProducts[$k_product2] = $query2;
+                        }
+                    }
+                }
+            }
+            $dataProducts =   array_unique($dataProducts);
         }
-        $dataProducts = $query->get();
-        if (empty($data['productAuto'])){
+        if(count($dataProducts) < 1){
             if (isset($productItem->category->id)){
                 $dataProducts = \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->where('category_id', @$productItem->category->id)->get();
             }
