@@ -333,18 +333,23 @@
                     }
                 }else {
                     foreach($query as $k_product3 => $itemProduct3) {
-                        $dataProducts[$k_product +1] = $itemProduct3;
+                        if(isset($k_product)) {
+                            $dataProducts[$k_product +1] = $itemProduct3;
+                        }
                     }
                 }
                 if(!empty($term))  {
                     foreach($term->products as $k_product2 => $term2) {
                         $k_product2 += 2;
                         $query2 = App\Product_products::where('id',$term2->id)->first();
-                        if($k_product == $k_product2) {
-                            $dataProducts[$k_product2+1] = $query2;
-                        }else {
-                            $dataProducts[$k_product2] = $query2;
+                        if(isset($k_product)) {
+                            if($k_product == $k_product2) {
+                                $dataProducts[$k_product2+1] = $query2;
+                            }else {
+                                $dataProducts[$k_product2] = $query2;
+                            }
                         }
+
                     }
                 }
             }
