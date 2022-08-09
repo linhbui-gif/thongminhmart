@@ -26,6 +26,9 @@ class OrderDetail extends Authenticatable
         }
 
     }
+    public function product(){
+        return $this->belongsTo(Product_products::class, 'product_id');
+    }
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
