@@ -86,35 +86,50 @@
                             <div class="col-md-6">
                                 <h4 class="text-uppercase">Thông tin khách</h4>
                                 @php
+                                    $address = $order->address;
                                     $user = $order->user;
                                     $config = config("edushop.status_gthk");
                                 @endphp
                                 <table class="table">
                                     <tr>
                                         <td><b>Họ tên</b></td>
-                                        <td>{{ $user->fullname() }}</td>
+                                        <td>@if(!empty($address->fullname))
+                                                {{ $address->fullname  }}
+                                            @else
+                                                {{ $user->fullname()  }}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><b>Phone</b></td>
-                                        <td>{{ $user->phone }}</td>
+                                        <td>@if(!empty($address->phone))
+                                                {{ $address->phone  }}
+                                            @else
+                                                {{ $user->phone  }}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><b>Email</b></td>
-                                        <td>{{ $user->email }}</td>
+                                        <td>@if(!empty($address->email))
+                                                {{ $address->email  }}
+                                            @else
+                                                {{ $user->email  }}
+                                            @endif</td>
                                     </tr>
                                     <tr>
                                         <td><b>Sinh nhật</b></td>
-                                        <td>{{ $user->birthday }}</td>
+                                        <td>@if(!empty($address->email))
+
+                                            @else
+                                                {{ $user->birthday }}
+                                            @endif</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         @php
-                            $address = $order->address;
                             $arrKho = [];
                             $suborders = $order->suborder;
-                            $order_course = $order->details()->where('order_detail.type', 'course' )->where('order_detail.compo_id', null)->where('order_detail.kho_id', null)->get();
-
+                            $orderDetail = $order->details()->where('order_detail.type', 'product' )->get();
                         @endphp
                         <div class="row">
                             <div class="col-md-12">
@@ -160,213 +175,239 @@
                                 </table>
                             </div>
                         </div>
-{{--                        <div class="row">--}}
-{{--                            <div class="col-md-12">--}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-uppercase">Danh sách đơn hàng</h4>
+                                <table class="table">
+                                    <tr>
+                                        <th>Số thứ tự</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
+                                    </tr>
+                                    <tbody>
+                                    @if(!empty($orderDetail))
+                                        @foreach($orderDetail as $v)
+                                        <tr>
+                                            <td>{{$v->id}}</td>
+                                            <td>{{$v->product_name}}</td>
+                                            <td>{{number_format($v->product_price)}}</td>
+                                            <td>{{$v->quantity}}</td>
+                                        </tr>
+                                        @endforeach
+                                    @endif
+                                    </tbody>
 
-{{--                                @if(count($order_course) > 0)--}}
-{{--                                    <h4 class="text-uppercase">Danh sách đơn hàng không vận chuyển</h4>--}}
-{{--                                    <table class="table table-bordered">--}}
-{{--                                        <thead>--}}
-{{--                                        <tr>--}}
-{{--                                            <td class="item-image">Hình ảnh</td>--}}
-{{--                                            <td class="item-name">Tên khóa học </td>--}}
-{{--                                            <td class="item-price">Giá</td>--}}
-{{--                                            <td class="item-name">Số lượng </td>--}}
-{{--                                            <td class="item-name">Tổng</td>--}}
-{{--                                            <td>Trạng thái</td>--}}
-{{--                                            <td></td>--}}
-{{--                                        </tr>--}}
-{{--                                        </thead>--}}
-{{--                                        <tbody>--}}
-{{--                                            @php--}}
-{{--                                                $total_course = 0;--}}
-{{--                                            @endphp--}}
-{{--                                            @foreach($order_course as $k => $detail)--}}
-{{--                                                @php--}}
-{{--                                                    $type_name = \App\Helper\Common::showTypeProductName($detail->type);--}}
-{{--                                                    $product = $detail->getProduct()->first();--}}
-{{--                                                    $t = $detail->quantity * $detail->product_price;--}}
-{{--                                                    $total_course += $t;--}}
-{{--                                                    $compo = \App\Compo::find($detail->compo_id);--}}
-{{--                                                    $warehouse = \App\Warehouse::find($detail->kho_id);--}}
-{{--                                                    $piot = DB::table('users_course')->where('user_id',$user->id)->where('course_id', $detail->product_id)->first();--}}
-{{--                                                @endphp--}}
-{{--                                                <tr>--}}
-{{--                                                    <td><img style="max-width: 100px" src="{{ $product->url_picture }}" alt=""></td>--}}
-{{--                                                    <td>--}}
-{{--                                                        <p>{{ $detail->product_name }}</p>--}}
+                                </table>
+                            </div>
+                        </div>
+                        {{--                        <div class="row">--}}
+                        {{--                            <div class="col-md-12">--}}
 
-{{--                                                    </td>--}}
-{{--                                                    <td>{{ number_format($detail->product_price) }} VNĐ</td>--}}
-{{--                                                    <td>{{ $detail->quantity }}</td>--}}
-{{--                                                    <td>{{ number_format($t)  }} VNĐ</td>--}}
-{{--                                                    <td>--}}
-{{--                                                        @if($piot)--}}
-{{--                                                            <span class="label label-success">Đã kích hoạt</span>--}}
-{{--                                                        @else--}}
-{{--                                                            <span class="label label-danger">Chưa kích hoạt</span>--}}
-{{--                                                        @endif--}}
-{{--                                                    </td>--}}
-{{--                                                    <td>--}}
+                        {{--                                @if(count($order_course) > 0)--}}
+                        {{--                                    <h4 class="text-uppercase">Danh sách đơn hàng không vận chuyển</h4>--}}
+                        {{--                                    <table class="table table-bordered">--}}
+                        {{--                                        <thead>--}}
+                        {{--                                        <tr>--}}
+                        {{--                                            <td class="item-image">Hình ảnh</td>--}}
+                        {{--                                            <td class="item-name">Tên khóa học </td>--}}
+                        {{--                                            <td class="item-price">Giá</td>--}}
+                        {{--                                            <td class="item-name">Số lượng </td>--}}
+                        {{--                                            <td class="item-name">Tổng</td>--}}
+                        {{--                                            <td>Trạng thái</td>--}}
+                        {{--                                            <td></td>--}}
+                        {{--                                        </tr>--}}
+                        {{--                                        </thead>--}}
+                        {{--                                        <tbody>--}}
+                        {{--                                            @php--}}
+                        {{--                                                $total_course = 0;--}}
+                        {{--                                            @endphp--}}
+                        {{--                                            @foreach($order_course as $k => $detail)--}}
+                        {{--                                                @php--}}
+                        {{--                                                    $type_name = \App\Helper\Common::showTypeProductName($detail->type);--}}
+                        {{--                                                    $product = $detail->getProduct()->first();--}}
+                        {{--                                                    $t = $detail->quantity * $detail->product_price;--}}
+                        {{--                                                    $total_course += $t;--}}
+                        {{--                                                    $compo = \App\Compo::find($detail->compo_id);--}}
+                        {{--                                                    $warehouse = \App\Warehouse::find($detail->kho_id);--}}
+                        {{--                                                    $piot = DB::table('users_course')->where('user_id',$user->id)->where('course_id', $detail->product_id)->first();--}}
+                        {{--                                                @endphp--}}
+                        {{--                                                <tr>--}}
+                        {{--                                                    <td><img style="max-width: 100px" src="{{ $product->url_picture }}" alt=""></td>--}}
+                        {{--                                                    <td>--}}
+                        {{--                                                        <p>{{ $detail->product_name }}</p>--}}
 
-{{--                                                        @if($piot)--}}
-{{--                                                            <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=inactive')" href="javascript:void(0)" class="btn btn-danger btn-sm">Hủy kích hoạt khóa học</a>--}}
-{{--                                                        @else--}}
-{{--                                                            <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=active')" href="javascript:void(0)" class="btn btn-success btn-sm">Kích hoạt khóa học</a>--}}
-{{--                                                        @endif--}}
+                        {{--                                                    </td>--}}
+                        {{--                                                    <td>{{ number_format($detail->product_price) }} VNĐ</td>--}}
+                        {{--                                                    <td>{{ $detail->quantity }}</td>--}}
+                        {{--                                                    <td>{{ number_format($t)  }} VNĐ</td>--}}
+                        {{--                                                    <td>--}}
+                        {{--                                                        @if($piot)--}}
+                        {{--                                                            <span class="label label-success">Đã kích hoạt</span>--}}
+                        {{--                                                        @else--}}
+                        {{--                                                            <span class="label label-danger">Chưa kích hoạt</span>--}}
+                        {{--                                                        @endif--}}
+                        {{--                                                    </td>--}}
+                        {{--                                                    <td>--}}
 
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
-{{--                                            @endforeach--}}
-{{--                                            <tr>--}}
-{{--                                                <td colspan="6" class="item-image">--}}
-{{--                                                    <span>Tổng</span>--}}
-{{--                                                </td>--}}
-{{--                                                <td>--}}
-{{--                                                    <span>{{ number_format($total_course) }} VNĐ</span>--}}
-{{--                                                </td>--}}
-{{--                                            </tr>--}}
-{{--                                        </tbody>--}}
-{{--                                    </table>--}}
+                        {{--                                                        @if($piot)--}}
+                        {{--                                                            <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=inactive')" href="javascript:void(0)" class="btn btn-danger btn-sm">Hủy kích hoạt khóa học</a>--}}
+                        {{--                                                        @else--}}
+                        {{--                                                            <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=active')" href="javascript:void(0)" class="btn btn-success btn-sm">Kích hoạt khóa học</a>--}}
+                        {{--                                                        @endif--}}
 
-
-{{--                                @endif--}}
-
-{{--                                @if(count($suborders) > 0)--}}
-{{--                                    <h4 class="text-uppercase">Danh sách đơn hàng có vận chuyển</h4>--}}
-{{--                                    @foreach($suborders as $k => $suborder)--}}
-{{--                                        @php--}}
-{{--                                            $khoObj = \App\Warehouse::find($suborder->warehouse_id);--}}
-{{--                                            $details = $suborder->details;--}}
-{{--                                            $subtotal = 0;--}}
-{{--                                        @endphp--}}
-{{--                                        <p class="text-uppercase text-bold">Kho: {{ $khoObj->name }}</p>--}}
-{{--                                        <p>Người đại diện: {{ $khoObj->contact_name }}</p>--}}
-{{--                                        <p>Địa chỉ: {{ $khoObj->address }}</p>--}}
-{{--                                        <p>Số điện thoại: {{ $khoObj->phone }}</p>--}}
-{{--                                        <table class="table table-bordered">--}}
-{{--                                            <thead>--}}
-{{--                                            <tr>--}}
-{{--                                                <td class="item-image">Hình ảnh</td>--}}
-{{--                                                <td class="item-name">Tên sản phẩm </td>--}}
-{{--                                                <td class="item-name">Loại sản phẩm </td>--}}
-{{--                                                <td class="item-price">Giá</td>--}}
-{{--                                                <td class="item-name">Số lượng </td>--}}
-{{--                                                <td class="item-name">Tổng</td>--}}
-{{--                                                <td class="item-name">Trạng thái</td>--}}
-{{--                                                <td></td>--}}
-{{--                                            </tr>--}}
-{{--                                            </thead>--}}
-{{--                                            <tbody>--}}
-
-{{--                                            @foreach($details as $k => $detail)--}}
-{{--                                                @php--}}
-{{--                                                    $type_name = \App\Helper\Common::showTypeProductName($detail->type);--}}
-{{--                                                    $product = $detail->getProduct()->first();--}}
-{{--                                                    $subtotal += $detail->product_price;--}}
-{{--                                                    $t = $detail->quantity * $detail->product_price;--}}
-{{--                                                @endphp--}}
-{{--                                                <tr>--}}
-{{--                                                    <td><img style="max-width: 100px" src="{{ $product->url_picture }}" alt=""></td>--}}
-{{--                                                    <td>--}}
-{{--                                                        {{ $detail->product_name }}--}}
-{{--                                                        @if($detail->type == "course")--}}
-{{--                                                            @php--}}
-{{--                                                                $compo = \App\Compo::find($detail->compo_id);--}}
-{{--                                                            @endphp--}}
-{{--                                                            @if($compo)--}}
-{{--                                                                <p>Compo: {{ $compo->name }}</p>--}}
-{{--                                                            @endif--}}
-{{--                                                        @endif--}}
-{{--                                                    </td>--}}
-{{--                                                    <td><span class="label label-info">{!! \App\Helper\Common::showTypeProductName($detail->type) !!}</span></td>--}}
-{{--                                                    <td>{{ number_format($detail->product_price) }} VNĐ</td>--}}
-{{--                                                    <td>{{ $detail->quantity }}</td>--}}
-{{--                                                    <td>{{ number_format($t)  }} VNĐ</td>--}}
-{{--                                                    @if($detail->type == "course")--}}
-{{--                                                        @php--}}
-{{--                                                            $piot = DB::table('users_course')->where('user_id',$user->id)->where('course_id', $detail->product_id)->first();--}}
-{{--                                                        @endphp--}}
-{{--                                                        <td>--}}
-{{--                                                            @if($piot)--}}
-{{--                                                                <span class="label label-success">Đã kích hoạt</span>--}}
-{{--                                                            @else--}}
-{{--                                                                <span class="label label-danger">Chưa kích hoạt</span>--}}
-{{--                                                            @endif--}}
-{{--                                                        </td>--}}
-{{--                                                        <td>--}}
-{{--                                                            @if($piot)--}}
-{{--                                                                <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=inactive')" href="javascript:void(0)" class="btn btn-danger btn-sm">Hủy kích hoạt khóa học</a>--}}
-{{--                                                            @else--}}
-{{--                                                                <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=active')" href="javascript:void(0)" class="btn btn-success btn-sm">Kích hoạt khóa học</a>--}}
-{{--                                                            @endif--}}
-{{--                                                        </td>--}}
-{{--                                                    @endif--}}
-{{--                                                </tr>--}}
-
-{{--                                            @endforeach--}}
-{{--                                            <tr>--}}
-{{--                                                <td colspan="6" class="item-image">--}}
-{{--                                                    <span>Ship</span>--}}
-{{--                                                </td>--}}
-{{--                                                <td colspan="2">--}}
-{{--                                                    <span>{{ number_format($suborder->ship) }} VNĐ</span>--}}
-{{--                                                </td>--}}
-{{--                                            </tr>--}}
-{{--                                            <tr>--}}
-{{--                                                <td colspan="6" class="item-image">--}}
-{{--                                                    <span>Tạm tính</span>--}}
-{{--                                                </td>--}}
-{{--                                                <td colspan="2">--}}
-{{--                                                    <span>{{ number_format($subtotal) }} VNĐ</span>--}}
-{{--                                                </td>--}}
-{{--                                            </tr>--}}
-{{--                                            <tr>--}}
-{{--                                                <td colspan="6" class="item-image">--}}
-{{--                                                    <span>Tổng ( tổng đơn hàng + ship )</span>--}}
-{{--                                                </td>--}}
-{{--                                                <td colspan="2">--}}
-{{--                                                    <span>{{ number_format($subtotal + $suborder->ship) }} VNĐ</span>--}}
-{{--                                                </td>--}}
-{{--                                            </tr>--}}
-{{--                                            <tr>--}}
-{{--                                                <td colspan="6" class="item-image">--}}
-{{--                                                    <span>Trạng thái <i class="fa fa-truck"></i></span>--}}
-{{--                                                    @if(!$suborder->mavandon)--}}
-{{--                                                        <a onclick="postGHTK('{{ route('admin.order.postGHTK', [ 'order_id' => $order->id, 'warehouse_id' => $suborder->warehouse_id  ]) }}')" href="javascript:void(0)">Chuyển đơn hàng sang GHTK</a>--}}
-{{--                                                    @endif--}}
-{{--                                                </td>--}}
-{{--                                                @php--}}
-
-{{--                                                    $res =\App\Helper\Common::getStatusOrder($suborder->mavandon);--}}
+                        {{--                                                    </td>--}}
+                        {{--                                                </tr>--}}
+                        {{--                                            @endforeach--}}
+                        {{--                                            <tr>--}}
+                        {{--                                                <td colspan="6" class="item-image">--}}
+                        {{--                                                    <span>Tổng</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                                <td>--}}
+                        {{--                                                    <span>{{ number_format($total_course) }} VNĐ</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                            </tr>--}}
+                        {{--                                        </tbody>--}}
+                        {{--                                    </table>--}}
 
 
-{{--                                                @endphp--}}
-{{--                                                <td colspan="2">--}}
-{{--                                                    @if(isset($res['success']) && $res['success'] == false)--}}
-{{--                                                        <span class="label label-danger">Chưa gửi GHTK</span>--}}
-{{--                                                    @else--}}
-{{--                                                        @php--}}
-{{--                                                            $order_status = $res['order']['status'];--}}
-{{--                                                            $config_status = config("edushop.status_gthk");--}}
-{{--                                                        @endphp--}}
-{{--                                                        @if(in_array($order_status, [ 5, 6]))--}}
-{{--                                                            <span class="label label-success">{{  $config_status[$order_status] }}</span>--}}
-{{--                                                        @else--}}
-{{--                                                            <span class="label label-warning">{{  $config_status[$order_status] }}</span>--}}
-{{--                                                        @endif--}}
-{{--                                                    @endif--}}
+                        {{--                                @endif--}}
 
-{{--                                                </td>--}}
-{{--                                            </tr>--}}
-{{--                                            </tbody>--}}
-{{--                                        </table>--}}
+                        {{--                                @if(count($suborders) > 0)--}}
+                        {{--                                    <h4 class="text-uppercase">Danh sách đơn hàng có vận chuyển</h4>--}}
+                        {{--                                    @foreach($suborders as $k => $suborder)--}}
+                        {{--                                        @php--}}
+                        {{--                                            $khoObj = \App\Warehouse::find($suborder->warehouse_id);--}}
+                        {{--                                            $details = $suborder->details;--}}
+                        {{--                                            $subtotal = 0;--}}
+                        {{--                                        @endphp--}}
+                        {{--                                        <p class="text-uppercase text-bold">Kho: {{ $khoObj->name }}</p>--}}
+                        {{--                                        <p>Người đại diện: {{ $khoObj->contact_name }}</p>--}}
+                        {{--                                        <p>Địa chỉ: {{ $khoObj->address }}</p>--}}
+                        {{--                                        <p>Số điện thoại: {{ $khoObj->phone }}</p>--}}
+                        {{--                                        <table class="table table-bordered">--}}
+                        {{--                                            <thead>--}}
+                        {{--                                            <tr>--}}
+                        {{--                                                <td class="item-image">Hình ảnh</td>--}}
+                        {{--                                                <td class="item-name">Tên sản phẩm </td>--}}
+                        {{--                                                <td class="item-name">Loại sản phẩm </td>--}}
+                        {{--                                                <td class="item-price">Giá</td>--}}
+                        {{--                                                <td class="item-name">Số lượng </td>--}}
+                        {{--                                                <td class="item-name">Tổng</td>--}}
+                        {{--                                                <td class="item-name">Trạng thái</td>--}}
+                        {{--                                                <td></td>--}}
+                        {{--                                            </tr>--}}
+                        {{--                                            </thead>--}}
+                        {{--                                            <tbody>--}}
 
-{{--                                    @endforeach--}}
-{{--                                @endif--}}
+                        {{--                                            @foreach($details as $k => $detail)--}}
+                        {{--                                                @php--}}
+                        {{--                                                    $type_name = \App\Helper\Common::showTypeProductName($detail->type);--}}
+                        {{--                                                    $product = $detail->getProduct()->first();--}}
+                        {{--                                                    $subtotal += $detail->product_price;--}}
+                        {{--                                                    $t = $detail->quantity * $detail->product_price;--}}
+                        {{--                                                @endphp--}}
+                        {{--                                                <tr>--}}
+                        {{--                                                    <td><img style="max-width: 100px" src="{{ $product->url_picture }}" alt=""></td>--}}
+                        {{--                                                    <td>--}}
+                        {{--                                                        {{ $detail->product_name }}--}}
+                        {{--                                                        @if($detail->type == "course")--}}
+                        {{--                                                            @php--}}
+                        {{--                                                                $compo = \App\Compo::find($detail->compo_id);--}}
+                        {{--                                                            @endphp--}}
+                        {{--                                                            @if($compo)--}}
+                        {{--                                                                <p>Compo: {{ $compo->name }}</p>--}}
+                        {{--                                                            @endif--}}
+                        {{--                                                        @endif--}}
+                        {{--                                                    </td>--}}
+                        {{--                                                    <td><span class="label label-info">{!! \App\Helper\Common::showTypeProductName($detail->type) !!}</span></td>--}}
+                        {{--                                                    <td>{{ number_format($detail->product_price) }} VNĐ</td>--}}
+                        {{--                                                    <td>{{ $detail->quantity }}</td>--}}
+                        {{--                                                    <td>{{ number_format($t)  }} VNĐ</td>--}}
+                        {{--                                                    @if($detail->type == "course")--}}
+                        {{--                                                        @php--}}
+                        {{--                                                            $piot = DB::table('users_course')->where('user_id',$user->id)->where('course_id', $detail->product_id)->first();--}}
+                        {{--                                                        @endphp--}}
+                        {{--                                                        <td>--}}
+                        {{--                                                            @if($piot)--}}
+                        {{--                                                                <span class="label label-success">Đã kích hoạt</span>--}}
+                        {{--                                                            @else--}}
+                        {{--                                                                <span class="label label-danger">Chưa kích hoạt</span>--}}
+                        {{--                                                            @endif--}}
+                        {{--                                                        </td>--}}
+                        {{--                                                        <td>--}}
+                        {{--                                                            @if($piot)--}}
+                        {{--                                                                <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=inactive')" href="javascript:void(0)" class="btn btn-danger btn-sm">Hủy kích hoạt khóa học</a>--}}
+                        {{--                                                            @else--}}
+                        {{--                                                                <a onclick="activeCourse('{{ route('admin.order.status_course', [ 'order_detail' => $detail->id ] ) }}?action=active')" href="javascript:void(0)" class="btn btn-success btn-sm">Kích hoạt khóa học</a>--}}
+                        {{--                                                            @endif--}}
+                        {{--                                                        </td>--}}
+                        {{--                                                    @endif--}}
+                        {{--                                                </tr>--}}
 
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        {{--                                            @endforeach--}}
+                        {{--                                            <tr>--}}
+                        {{--                                                <td colspan="6" class="item-image">--}}
+                        {{--                                                    <span>Ship</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                                <td colspan="2">--}}
+                        {{--                                                    <span>{{ number_format($suborder->ship) }} VNĐ</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                            </tr>--}}
+                        {{--                                            <tr>--}}
+                        {{--                                                <td colspan="6" class="item-image">--}}
+                        {{--                                                    <span>Tạm tính</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                                <td colspan="2">--}}
+                        {{--                                                    <span>{{ number_format($subtotal) }} VNĐ</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                            </tr>--}}
+                        {{--                                            <tr>--}}
+                        {{--                                                <td colspan="6" class="item-image">--}}
+                        {{--                                                    <span>Tổng ( tổng đơn hàng + ship )</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                                <td colspan="2">--}}
+                        {{--                                                    <span>{{ number_format($subtotal + $suborder->ship) }} VNĐ</span>--}}
+                        {{--                                                </td>--}}
+                        {{--                                            </tr>--}}
+                        {{--                                            <tr>--}}
+                        {{--                                                <td colspan="6" class="item-image">--}}
+                        {{--                                                    <span>Trạng thái <i class="fa fa-truck"></i></span>--}}
+                        {{--                                                    @if(!$suborder->mavandon)--}}
+                        {{--                                                        <a onclick="postGHTK('{{ route('admin.order.postGHTK', [ 'order_id' => $order->id, 'warehouse_id' => $suborder->warehouse_id  ]) }}')" href="javascript:void(0)">Chuyển đơn hàng sang GHTK</a>--}}
+                        {{--                                                    @endif--}}
+                        {{--                                                </td>--}}
+                        {{--                                                @php--}}
+
+                        {{--                                                    $res =\App\Helper\Common::getStatusOrder($suborder->mavandon);--}}
+
+
+                        {{--                                                @endphp--}}
+                        {{--                                                <td colspan="2">--}}
+                        {{--                                                    @if(isset($res['success']) && $res['success'] == false)--}}
+                        {{--                                                        <span class="label label-danger">Chưa gửi GHTK</span>--}}
+                        {{--                                                    @else--}}
+                        {{--                                                        @php--}}
+                        {{--                                                            $order_status = $res['order']['status'];--}}
+                        {{--                                                            $config_status = config("edushop.status_gthk");--}}
+                        {{--                                                        @endphp--}}
+                        {{--                                                        @if(in_array($order_status, [ 5, 6]))--}}
+                        {{--                                                            <span class="label label-success">{{  $config_status[$order_status] }}</span>--}}
+                        {{--                                                        @else--}}
+                        {{--                                                            <span class="label label-warning">{{  $config_status[$order_status] }}</span>--}}
+                        {{--                                                        @endif--}}
+                        {{--                                                    @endif--}}
+
+                        {{--                                                </td>--}}
+                        {{--                                            </tr>--}}
+                        {{--                                            </tbody>--}}
+                        {{--                                        </table>--}}
+
+                        {{--                                    @endforeach--}}
+                        {{--                                @endif--}}
+
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
                     </div>
                     <div class="box-footer">
                         <div class="el-form-item">
@@ -394,9 +435,9 @@
                             $arr_status = config("edushop.order_status");
                         @endphp
                         @foreach($arr_status as $k => $v)
-                        <div class="radio">
-                            <label><input @if($k == $order->trangthai)  checked @endif value="{{ $k }}" type="radio" name="status_order">{{ $v }}</label>
-                        </div>
+                            <div class="radio">
+                                <label><input @if($k == $order->trangthai)  checked @endif value="{{ $k }}" type="radio" name="status_order">{{ $v }}</label>
+                            </div>
                         @endforeach
                         <button type="submit" class="btn btn-success">Cập nhật</button>
                         @csrf
