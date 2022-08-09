@@ -140,7 +140,9 @@ class OrderController extends AdminController
     }
     public function detail(Request $request, $order_id){
         $order = Order::find($order_id);
+        $orderDetail = OrderDetail::where('order_id', $order_id)->get();
         $data['order'] = $order;
+        $data['orderDetails'] = $orderDetail;
 
         $controller = (new \ReflectionClass($this))->getShortName();
         $shortController = Common::getShortNameController($controller);
@@ -152,7 +154,7 @@ class OrderController extends AdminController
             $log = new Log($this->logFolder);
             $log->put("log-" . date("Y-m-d"), $message);
         }
-
+        
         return view($this->pathView . 'view')->with($data);
     }
     public function changeStatus(Request $request,$id){
