@@ -117,6 +117,33 @@ $page_content = unserialize($page->content_ko);
                     }
                 })
             }
+            //
+            var timeNewDay = '23:0:20';
+            setInterval(function() {
+                var today = new Date();
+                var intervalTime = today.getHours() + ":" + today.getMinutes()+ ":" + today.getSeconds();
+
+                if(intervalTime == timeNewDay ) {
+                    getNewProduct(id='',_token);
+                    function getNewProduct(id='',_token) {
+                        $.ajax({
+                            url:"{{ route('ajaxProduct') }}",
+                            method:"POST",
+                            data:{id:id, _token:_token},
+                            success:function(data)
+                            {
+                                if (data.length){
+                                    $('#load_more_button').remove();
+                                    $('#product_data').html(data[0]);
+                                    $('#ProductList-loadmore').html(data[1]);
+                                    ConfigVideoProduct();
+                                }
+                            }
+                        })
+                    }
+                }
+            },1000)
+            //
             function ConfigVideoProduct(){
                 const products = document.querySelectorAll(".ProductBox");
 

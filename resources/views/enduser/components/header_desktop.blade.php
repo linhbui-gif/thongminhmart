@@ -6,6 +6,7 @@
         $main_menu = Menu::get(2); //lay menu tieng hàm trong bang menu item
     }
    //
+
 @endphp
 <header class="Header">
     <div class="container">
@@ -37,17 +38,21 @@
                                 src="{{ asset('enduser/thongminhmart/assets/icons/icon-search.svg') }}" alt=""></div>
                     </div>
                     <div class="Header-info-cart flex items-center">
-                        <div class="Header-info-cart-icon"><img
-                                src="{{ asset('enduser/thongminhmart/assets/icons/icon-cart-gray.svg') }}" alt=""></div>
-                        <div class="Header-info-cart-content"><span>Giỏ hàng</span><strong>
-                                <a href="{{route('product.cart')}}">
+                        <div class="Header-info-cart-icon">
+                            <a style='color:black' href="{{route('product.cart')}}">
+                                <img
+                            src="{{ asset('enduser/thongminhmart/assets/icons/icon-cart-gray.svg') }}" alt=""></div>
+                            </a>
+                        <div class="Header-info-cart-content">
+                            <span><a style="color:black" href="{{route('product.checkout')}}">Giỏ hàng</a> </span>
+                            <strong><a href="{{route('product.checkout')}}">
                                     @if(@session('cart')->totalPrice )
                                         {!! number_format(session('cart')->totalPrice) ?? "" !!}
                                     @else
                                         0
                                     @endif đ
-                                </a>
-                            </strong></div>
+                            </strong>
+                        </div>
                     </div>
                 </div>
             </div>

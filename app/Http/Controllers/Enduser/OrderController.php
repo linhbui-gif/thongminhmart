@@ -230,7 +230,6 @@ class OrderController extends Controller
             $address->DistrictName = $request->DistrictName;
             $address->WardName = $request->WardName;
             $address->save();
-
             // tạo đơn hàng
             $order = new Order();
             // $address->id = 3;
@@ -257,20 +256,20 @@ class OrderController extends Controller
 
             // tạo chi tiết đơn hàng
             $this->createOrderDetail($order->id);
-            $this->sendMail($address);
+            $this->sendMail($address,$orderUser, $order->ship);
             DB::commit();
-            session()->forget('Cart');
+            session()->forget('cart');
 
             return view(config("edushop.end-user.pathView") . "orderSuccess")->with('success', 'Đặt hàng thành công');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
+//            dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
     }
 
     public function createOrderDetail($orderId){
-        $oldCart = Session('Cart') ? Session('Cart') : null;
+        $oldCart = Session('cart') ? Session('cart') : null;
         if ($oldCart) {
             if (!empty($oldCart->products)) {
                 foreach($oldCart->products as $product) {
@@ -284,6 +283,8 @@ class OrderController extends Controller
                     $orderDetail->trangthai = 0;
                     $orderDetail->status = 'active';
                     $orderDetail->order_id = $orderId;
+                    $orderDetail->color = $product['productInfo']['color'] ?? "";
+                    $orderDetail->size = $product['productInfo']['size'] ?? "";
                     $orderDetail->save();
                 }
             }
@@ -525,9 +526,10 @@ class OrderController extends Controller
         $data['order'] = $order;
         return view(config("edushop.end-user.pathView") . "checkoutSuccess")->with($data);
     }
-    public function sendMail($order)
+    public function sendMail($order, $orderUser, $ship)
     {
-
+        $order->order_id  = $orderUser->order_id;
+        $order->ship  = $ship;
         Mail::send('enduser.mail.checkout', ['order' => $order], function ($message) use ($order) {
             $message->to($order->email, $order->fullname)->bcc('linhbq68@wru.vn','Linh')->subject('Đơn hàng thành công');
         });

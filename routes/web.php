@@ -99,7 +99,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
 //    Route::get('/product-lists/tag/{slug}', 'ProductController@productTagSlug')->name('product.productTagSlug');
 
     /* -- COURSE -- */
-   // Route::get('/course-detail', 'CourseController@courseDetail')->name('course.courseDetail');
+    // Route::get('/course-detail', 'CourseController@courseDetail')->name('course.courseDetail');
 //    Route::get('/danh-sach-khoa-hoc', 'CourseController@courseList')->name('course.courseList');
 //    Route::get('/khoa-hoc/tag/{slug}', 'CourseController@courseTagSlug')->name('course.courseTagSlug');
 //    Route::get('/khoa-hoc/{slug_category}', 'CourseController@courseListInCategory')->name('course.courseListInCategory');
@@ -126,6 +126,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
 //    Route::get('/tin-tuc/{slug_category}', 'BlogController@courseListInCategory')->name('course.courseListInCategory');
     Route::get('/tin-tuc/chi-tiet/{slug}', 'BlogController@newDetail')->name('new.newDetail');
     Route::get('/search', 'CourseController@searchProduct')->name('product.searchProduct');
+//    Route::get('/thong-tin-khac', 'CourseController@searchProduct')->name('product.searchProduct');
 });
 
 

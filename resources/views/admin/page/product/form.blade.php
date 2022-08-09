@@ -65,7 +65,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="name">Weight:</label>
-                                                    <input value="{{ old("weight", @$item['weight'] )  }}" name="weight" type="number" min="0" class="form-control" id="weight">
+                                                    <input value="{{ old("weight", @$item['weight'] )  }}" name="weight" type="number" min="1" class="form-control" id="weight">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="short_description">Mô tả tóm tắt:</label>

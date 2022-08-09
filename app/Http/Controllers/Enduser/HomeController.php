@@ -53,34 +53,50 @@ class HomeController extends Controller
     {
         if($request->ajax())
         {
-            if($request->id > 0)
-            {
+//            if($request->id > 0)
+//            {
+//                $data = \DB::table('product_products')
+//                    ->where('id', '>', $request->id)
+//                    ->orderBy('id', 'asc')
+//                    ->limit(5)
+//                    ->get();
+//            }
+//            else
+//            {
+//                $data = \DB::table('product_products')
+//                    ->orderBy('id', 'asc')
+//                    ->limit(5)
+//                    ->get();
+//            }
+            if($request->id > 0) {
                 $data = \DB::table('product_products')
-                    ->where('id', '>', $request->id)
-                    ->orderBy('id', 'asc')
+                    ->where('stt', '>', $request->id)
+                    ->orderBy('stt', 'asc')
                     ->limit(5)
                     ->get();
             }
             else
             {
                 $data = \DB::table('product_products')
-                    ->orderBy('id', 'asc')
+                    ->orderBy('stt', 'asc')
                     ->limit(5)
                     ->get();
             }
             $output = '';
             $htmlButton = '';
             $last_id = '';
+            $last_stt = '';
             if(!$data->isEmpty()){
                 foreach($data as $k => $product){
                     $output .= view('enduser.page.components.card-component', compact('product','htmlButton'))->render();
                     $last_id = $product->id;
+                    $last_stt = $product->stt;
                 }
 //                $output .= '<div class="col-12 text-center">
 //                    <button class="btn btn-primary ajax-loading" data-id="'.$last_id.'" id="load_more_button">Xem thêm tin tức</button>
 //                </div>';
                 $htmlButton .= '
-                              <button data-id="'.$last_id.'" class="Button-control ajax-loading flex items-center justify-center" type="button" id="load_more_button"><span class="Button-control-title">Xem thêm</span>
+                              <button data-id="'.$last_stt.'" class="Button-control ajax-loading flex items-center justify-center" type="button" id="load_more_button"><span class="Button-control-title">Xem thêm</span>
                                        </button>
                            ';
             }
@@ -224,17 +240,16 @@ class HomeController extends Controller
     public function getPriceShipping(Request $request)
     {
         $tong = 0;
-        if (Session('Cart')) {
-            foreach(Session('Cart')->products as $products) {
+        if (Session('cart')) {
+            foreach(Session('cart')->products as $products) {;
                 if (!empty($products['productInfo']['weight'])){
-                    $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+//                    $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+                    $tong +=  $products['productInfo']['weight'];
                 }
             }
         }
-
         $ship_fee_district = \App\Ship_fee_district::where('name','like','%'.($request->province_name).'%')->where('type', $request->type)->first();
         $fee_ship = $ship_fee_district->fee_ship??0;
-
         return response()->json([
             'fee_ship' => $fee_ship * $tong,
         ]);

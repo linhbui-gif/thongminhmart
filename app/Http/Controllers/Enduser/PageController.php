@@ -97,4 +97,7 @@ class PageController extends Controller
         $data['categories'] = Product_category::where('status', 'active')->orderBy('order_no', 'asc')->get();
         return view(config("edushop.end-user.pathView") . "productList")->with($data);
     }
+    public function moreAbout(){
+        return view(config("edushop.end-user.pathView") . "thongtinkhac");
+    }
 }

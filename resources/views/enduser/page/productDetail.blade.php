@@ -144,6 +144,7 @@
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id" value="{{$product->id}}">
+                                <input type="hidden" name="product_id" id="weight" value="{{$product->weight}}">
                                 <input type="hidden" name="jsTotalPrice" id="jsTotalPrice" value="{{$product->price_final}}">
                                 <input type="hidden" name="jsAvarta" id="jsAvarta" value="{{$product->url_picture}}">
                                 <input type="hidden" name="jsProductName" id="jsProductName" value="{{$product->name}}">
@@ -227,8 +228,8 @@
                                         <div class="ProductDetailPage-detail-info-options-item-carts">
 
                                             <div id="add_to_cart">
-                                                @if(Session::has('Cart') != null)
-                                                @foreach(Session::get('Cart')->products as $key => $value)
+                                                @if(Session::has('cart') != null)
+                                                @foreach(Session::get('cart')->products as $key => $value)
                                                 @if(!empty($value['productInfo']['productId']) && $value['productInfo']['productId'] == $product->id)
                                                 <div class="ProductDetailPage-detail-info-options-item-carts-item flex items-center">
                                                     <div class="ProductDetailPage-detail-info-options-item-carts-item-title">{{$value['quanty']??0}} sản phẩm - Màu sắc: {{$value['productInfo']['color']??''}} - Kích cỡ: {{$value['productInfo']['size']??''}}</div>
@@ -439,6 +440,34 @@
                 title: 'Thêm sản phẩm vào giỏ hàng thành công',
                 showConfirmButton: false,
                 timer: 1500
+                });
+                $('.delCartItem').on('click', function() {
+                    // console.log('123')
+                    var url = "{{route('product.delCart')}}";
+                    var data = {
+                        '_token': '{{ csrf_token() }}',
+                        'id': $(this).data('id'),
+                        'productId': $('#product_id').val()
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: data,
+                        dataType: 'HTML',
+                        success: function(data) {
+                            $('#add_to_cart').html(data);
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Xóa sản phẩm khỏi giỏ hàng thành công',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
                 });
             }
         });

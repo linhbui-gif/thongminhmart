@@ -32,8 +32,8 @@
                     <div class="Card-body">
                         <div class="CheckoutPage-list-product">
                             <div class="CheckoutPage-list-product-wrapper">
-                                @if(Session::has('Cart') != null)
-                                    @foreach(Session::get('Cart')->products as $key => $value)
+                                @if(Session::has('cart') != null)
+                                    @foreach(Session::get('cart')->products as $key => $value)
                                         <div class="CheckoutPage-list-product-item flex">
                                             <div class="CheckoutPage-list-product-item-image"><a href="#"> <img src="{{$value['productInfo']['avatar']??''}}" alt=""></a></div>
                                             <div class="CheckoutPage-list-product-item-info">
@@ -72,10 +72,10 @@
                                     @endforeach
                                 @endif
                             </div>
-                            @if (!empty(Session::get('Cart')->totalPrice))
+                            @if (!empty(Session::get('cart')->totalPrice))
                                 <div class="CheckoutPage-row flex justify-between items-center">
                                     <div class="CheckoutPage-text">Tạm tính:</div>
-                                    <div class="CheckoutPage-text big color-yellow-sea nowrap">{{ number_format(Session::get('Cart')->totalPrice). 'đ'}}</div>
+                                    <div class="CheckoutPage-text big color-yellow-sea nowrap">{{ number_format(Session::get('cart')->totalPrice). 'đ'}}</div>
                                 </div>
                             @endif
                         </div>
@@ -291,11 +291,11 @@
                                 <div class="CheckoutPage-text">Phí vận chuyển:</div>
                                 <div class="CheckoutPage-text medium nowrap" id="ship_fee">30 000 đ</div>
                                 <input type="hidden" name="ship" id="ship" value="30000">
-                                <input type="hidden" name="total" id="total" value="{{ (!empty(Session::get('Cart')->totalPrice)) ? Session::get('Cart')->totalPrice : 0}}">
+                                <input type="hidden" name="total" id="total" value="{{ (!empty(Session::get('cart')->totalPrice)) ? Session::get('cart')->totalPrice : 0}}">
                             </div>
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Thành tiền:</div>
-                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('Cart')->totalPrice)) ? number_format(Session::get('Cart')->totalPrice + 30000). 'đ' : ''}}</div>
+                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('cart')->totalPrice)) ? number_format(Session::get('cart')->totalPrice + 30000). 'đ' : ''}}</div>
                             </div>
                             <div class="CheckoutPage-row">
                                 <div class="Button primary big">

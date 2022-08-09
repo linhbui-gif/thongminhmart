@@ -53,13 +53,15 @@ class ProductController extends Controller
     public function updateCart(Request $request)
     {
         try {
-            $quanty = $request->quanty;
+            $quanty = $request->quantity;
+            if(isset($request->quanty)) {
+                $quanty = $request->quanty;
+            }
             $id = $request->id;
-            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $oldCart = Session('cart') ? Session('cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->UpdateItemCartToNumber($id, $quanty);
-            $request->session()->put('Cart', $newCart);
-
+            $request->session()->put('cart', $newCart);
             return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
 
         } catch (\Exception $e) {
@@ -85,18 +87,17 @@ class ProductController extends Controller
         try {
             // session()->forget('Cart'); die();
             $arrInput = $request->input();
-            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $oldCart = Session('cart') ? Session('cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->AddCart($arrInput);
-
             if ($newCart->checkIsset != 0) {
                 $quanty = $request->quantity;
                 // $oldCart = Session('Cart') ? Session('Cart') : null;
                 // $newCartUd = new Cart($oldCart);
                 $newCart->UpdateItemCart($newCart->checkIsset, $quanty);
-                session()->put('Cart', $newCart);
+                session()->put('cart', $newCart);
             } else {
-                session()->put('Cart', $newCart);
+                session()->put('cart', $newCart);
             }
 
             // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
@@ -111,13 +112,13 @@ class ProductController extends Controller
     }
     public function delCart(Request $request){
         try {
-            $oldCart = Session('Cart') ? Session('Cart') : null;
+            $oldCart = Session('cart') ? Session('cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->DeleteItemCart($request->id);
             if (count($newCart->products) > 0) {
-                $request->session()->put('Cart', $newCart);
+                $request->session()->put('cart', $newCart);
             } else {
-                $request->session()->forget('Cart');
+                $request->session()->forget('cart');
             }
             $productId = $request->productId;
 
@@ -136,7 +137,7 @@ class ProductController extends Controller
    }
     public function productDetail($product_slug)
     {
-        $product = DB::table('product_products')->select(['name','url_picture','slug','video_link','price_base','price_final','content','meta_title','meta_description','ts_kt','id','meta_size','meta_color'])->where('slug', $product_slug)->where('status', 'active')->first();
+        $product = DB::table('product_products')->select(['name','url_picture','slug','video_link','price_base','price_final','content','meta_title','meta_description','ts_kt','id','meta_size','meta_color','weight'])->where('slug', $product_slug)->where('status', 'active')->first();
         if (isset($product->category->id)) {
             $idCategory = $product->category->id;
         }

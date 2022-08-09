@@ -11,6 +11,7 @@ use DB;
 class Order extends Authenticatable
 {
     protected $table = "order";
+    protected $guarded = [];
     protected $folderUpload = "";
     public function __construct(){
         $className = (new \ReflectionClass($this))->getShortName();
