@@ -229,7 +229,6 @@ class HomeController extends Controller
                 if (!empty($products['productInfo']['weight'])){
                     $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
                 }
-
             }
         }
 
