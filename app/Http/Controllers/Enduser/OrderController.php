@@ -273,9 +273,9 @@ class OrderController extends Controller
         $oldCart = Session('Cart') ? Session('Cart') : null;
         if ($oldCart) {
             if (!empty($oldCart->products)) {
-                foreach($oldCart->products as $product) {
+                foreach($oldCart->products as $k => $product) {
                     $orderDetail = new OrderDetail();
-                    $orderDetail->product_name = $product['productInfo']['name'];
+                    $orderDetail->product_name = $product['productInfo']['name'].' ('.$k.' )';
                     $orderDetail->product_price = $product['productInfo']['price'];
                     $orderDetail->quantity = $product['quanty'];
                     $orderDetail->total = $product['price'];
