@@ -94,20 +94,20 @@ $routeName = \Request::route()->getName();
                             <li @if (in_array($routeName, ['admin.product_products.index', 'admin.product_products.create'])) class="active" @endif><a href="{{ route('admin.product_products.index') }}">Danh sách sản phẩm</a>
                             </li>
                         @endcan
-                            @can('size.index')
-                            <li @if (in_array($routeName, ['admin.size.index', 'admin.size.create'])) class="active" @endif><a href="{{ route('admin.size.index') }}">Size Product</a>
-                            </li>
-                        @endcan
-                            @can('color.index')
-                            <li @if (in_array($routeName, ['admin.color.index', 'admin.color.create'])) class="active" @endif><a href="{{ route('admin.color.index') }}">Color Product</a>
-                            </li>
-                        @endcan
+{{--                            @can('size.index')--}}
+{{--                            <li @if (in_array($routeName, ['admin.size.index', 'admin.size.create'])) class="active" @endif><a href="{{ route('admin.size.index') }}">Size Product</a>--}}
+{{--                            </li>--}}
+{{--                        @endcan--}}
+{{--                            @can('color.index')--}}
+{{--                            <li @if (in_array($routeName, ['admin.color.index', 'admin.color.create'])) class="active" @endif><a href="{{ route('admin.color.index') }}">Color Product</a>--}}
+{{--                            </li>--}}
+{{--                        @endcan--}}
                         @can('product_category.index')
                             <li @if (in_array($routeName, ['admin.product_category.index', 'admin.product_category.create'])) class="active" @endif><a href="{{ route('admin.product_category.index') }}">Category</a>
                             </li>
                         @endcan
                         @can('product_tags.index')
-                            <li @if (in_array($routeName, ['admin.product_tags.index', 'admin.product_tags.create'])) class="active" @endif><a href="{{ route('admin.product_tags.index') }}">Tags</a></li>
+                            <li @if (in_array($routeName, ['admin.product_tags.index', 'admin.product_tags.create'])) class="active" @endif><a href="{{ route('admin.product_tags.index') }}">Hashtags</a></li>
                         @endcan
                     </ul>
                 </li>
@@ -172,10 +172,10 @@ $routeName = \Request::route()->getName();
 {{--                </li>--}}
 {{--            @endcan--}}
 
-            @can('contact.index')
-                <li><a href="{{ route('admin.contact.index') }}"><i class="fa fa-tag"></i><span>Contact</span></a>
-                </li>
-            @endcan
+{{--            @can('contact.index')--}}
+{{--                <li><a href="{{ route('admin.contact.index') }}"><i class="fa fa-tag"></i><span>Contact</span></a>--}}
+{{--                </li>--}}
+{{--            @endcan--}}
 
 {{--            @can('qa_question.index')--}}
 {{--                <li @if (in_array($routeName, ['admin.qa_question.index'])) class="active" @endif>--}}
@@ -191,27 +191,11 @@ $routeName = \Request::route()->getName();
 {{--                            class="pull-right-container"></span></a>--}}
 {{--                </li>--}}
 {{--            @endcan--}}
-            @canany(['user.index', 'role.index', 'address.index'])
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Users</span> <span class="pull-right-container"><i
-                                class="fa fa-angle-left pull-right"></i></span></a>
-                    <ul class="treeview-menu">
-                        @can('user.index')
-                            <li><a href="{{ route('admin.user.index') }}">Users</a></li>
-                        @endcan
-                        @can('role.index')
-                            <li><a href="{{ route('admin.role.index') }}">Roles</a></li>
-                        @endcan
-{{--                        @can('address.index')--}}
-{{--                            <li><a href="{{ route('admin.address.index') }}">Address</a></li>--}}
-{{--                        @endcan--}}
-                    </ul>
-                </li>
-            @endcanany
+
 
             @canany(['order.index','ship_fee_district.index'])
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Order</span> <span class="pull-right-container"><i
+                    <a href="#"><i class="fa fa-link"></i> <span>Đơn hàng</span> <span class="pull-right-container"><i
                                 class="fa fa-angle-left pull-right"></i></span></a>
                     <ul class="treeview-menu">
                         @can('order.index')
@@ -226,12 +210,28 @@ $routeName = \Request::route()->getName();
                     </ul>
                 </li>
             @endcan
-
+            @canany(['user.index', 'role.index', 'address.index'])
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-link"></i> <span>Quản trị hệ thống</span> <span class="pull-right-container"><i
+                                class="fa fa-angle-left pull-right"></i></span></a>
+                    <ul class="treeview-menu">
+                        @can('user.index')
+                            <li><a href="{{ route('admin.user.index') }}">Người dùng</a></li>
+                        @endcan
+                        @can('role.index')
+                            <li><a href="{{ route('admin.role.index') }}">Vai trò</a></li>
+                        @endcan
+                        {{--                        @can('address.index')--}}
+                        {{--                            <li><a href="{{ route('admin.address.index') }}">Address</a></li>--}}
+                        {{--                        @endcan--}}
+                    </ul>
+                </li>
+            @endcanany
             {{-- @can('logs.indexLogs') --}}
-            <li @if (in_array($routeName, ['admin.logs.index'])) class="active" @endif>
-                <a href="{{ route('admin.logs.index') }}"><i class="fa fa-link"></i><span>Logs</span> <span
-                        class="pull-right-container"></span></a>
-            </li>
+{{--            <li @if (in_array($routeName, ['admin.logs.index'])) class="active" @endif>--}}
+{{--                <a href="{{ route('admin.logs.index') }}"><i class="fa fa-link"></i><span>Logs</span> <span--}}
+{{--                        class="pull-right-container"></span></a>--}}
+{{--            </li>--}}
             {{-- @endcan --}}
 
         </ul>

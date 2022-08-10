@@ -25,8 +25,8 @@
                 <div class="ProductCartDrawer-product-image"> <img src="{{ $product->url_picture }}" alt="{{$product->name}}"></div>
                 <div class="ProductCartDrawer-product-info">
                     <div class="ProductCartDrawer-product-info-title">{{$product->name}}</div>
-                    <div class="ProductCartDrawer-product-info-price"> <span>{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
-                        <del>{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
+                    <div class="ProductCartDrawer-product-info-price"> <span id="price_final_mb">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
+                        <del id="price_base_mb">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
                     </div>
                 </div>
             </div>
@@ -502,12 +502,19 @@
     });
 
     $('#size_id').change(function () {
+        console.log('123')
         var price_base = $(this).find(':selected').attr('data-price-base');
         var price_final = $(this).find(':selected').attr('data-price-final');
+        console.log('price_base', price_base)
         $('#price_final').text(price_final);
         $('#price_base').text(price_base);
     });
-
+    $('#size_id_mb').change(function () {
+        var price_base = $(this).find(':selected').attr('data-price-base');
+        var price_final = $(this).find(':selected').attr('data-price-final');
+        $('#price_final_mb').text(price_final);
+        $('#price_base_mb').text(price_base);
+    });
     //mb
     $('#addtocart_mb').click(function() {
         var url = "{{route('product.addCart')}}";

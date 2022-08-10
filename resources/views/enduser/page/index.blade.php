@@ -150,13 +150,13 @@ $page_content = unserialize($page->content_ko);
                 const stopAllProductsVideo = (item) => {
                     const video = item.querySelector(".ProductBox-video.desktop");
                     const loading = item.querySelector(".ProductBox-video-loading");
-                    const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
-                    const playBtn = item.querySelector(".ProductBox-video-play");
+                    // const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
+                    // const playBtn = item.querySelector(".ProductBox-video-play");
 
                     loading.classList.remove("active");
                     video.classList.remove("active");
                     // playBtn.classList.add("active");
-                    thumbnailVideo.classList.add("active");
+                    // thumbnailVideo.classList.add("active");
                     video.pause();
                     video.currentTime = 0;
                 };
@@ -164,23 +164,23 @@ $page_content = unserialize($page->content_ko);
                 products.forEach((item, index) => {
                     const video = item.querySelector(".ProductBox-video.desktop");
                     const loading = item.querySelector(".ProductBox-video-loading");
-                    const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
+                    // const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
                     const srcVideo = video.dataset.src;
                     const srcLink = video.dataset.link;
-                    const playBtn = item.querySelector(".ProductBox-video-play");
+                    // const playBtn = item.querySelector(".ProductBox-video-play");
 
                     const triggerClassStartVideo = () => {
                         loading.classList.add("active");
                         video.classList.add("active");
                         // playBtn.classList.remove("active");
-                        thumbnailVideo.classList.remove("active");
+                        // thumbnailVideo.classList.remove("active");
                     };
 
                     const triggerClassEndVideo = () => {
                         loading.classList.remove("active");
                         video.classList.remove("active");
                         // playBtn.classList.add("active");
-                        thumbnailVideo.classList.add("active");
+                        // thumbnailVideo.classList.add("active");
                     };
 
                     const startNavigate = () => {
@@ -265,7 +265,7 @@ $page_content = unserialize($page->content_ko);
                         });
                     };
 
-                    getThumbnailImage();
+                    // getThumbnailImage();
                 });
             }
             $(document).on('click', '#load_more_button', function(){

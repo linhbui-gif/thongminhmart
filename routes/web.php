@@ -126,7 +126,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
 //    Route::get('/tin-tuc/{slug_category}', 'BlogController@courseListInCategory')->name('course.courseListInCategory');
     Route::get('/tin-tuc/chi-tiet/{slug}', 'BlogController@newDetail')->name('new.newDetail');
     Route::get('/search', 'CourseController@searchProduct')->name('product.searchProduct');
-//    Route::get('/thong-tin-khac', 'CourseController@searchProduct')->name('product.searchProduct');
+    Route::get('/thong-tin-khac', 'PageController@moreAbout')->name('about.more');
 });
 
 

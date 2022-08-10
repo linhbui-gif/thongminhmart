@@ -289,7 +289,7 @@
                         <div class="Card-body">
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Phí vận chuyển:</div>
-                                <div class="CheckoutPage-text medium nowrap" id="ship_fee">30 000 đ</div>
+                                <div class="CheckoutPage-text medium nowrap" id="ship_fee">0 đ</div>
                                 <input type="hidden" name="ship" id="ship" value="30000">
                                 <input type="hidden" name="total" id="total" value="{{ (!empty(Session::get('cart')->totalPrice)) ? Session::get('cart')->totalPrice : 0}}">
                             </div>

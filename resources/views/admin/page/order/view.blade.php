@@ -43,21 +43,21 @@
                                         <td><b>Tổng ship</b></td>
                                         <td><span class="text-success">{{ number_format($order->ship ) }} VNĐ</span></td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Coupon</b></td>
-                                        <td>
-                                            @if($order->coupon && is_object($order->coupon))
-                                                <span class="text-success">{{ $order->coupon_code }}</span>
-                                                @if($order->coupon->type == 0)
-                                                    <p>-{{ $order->coupon->value }}%</p>
-                                                @else
-                                                    <p>-{{ number_format($order->coupon->value) }} VNĐ</p>
-                                                @endif
-                                            @else
-                                                <span>Không có</span>
-                                            @endif
-                                        </td>
-                                    </tr>
+{{--                                    <tr>--}}
+{{--                                        <td><b>Coupon</b></td>--}}
+{{--                                        <td>--}}
+{{--                                            @if($order->coupon && is_object($order->coupon))--}}
+{{--                                                <span class="text-success">{{ $order->coupon_code }}</span>--}}
+{{--                                                @if($order->coupon->type == 0)--}}
+{{--                                                    <p>-{{ $order->coupon->value }}%</p>--}}
+{{--                                                @else--}}
+{{--                                                    <p>-{{ number_format($order->coupon->value) }} VNĐ</p>--}}
+{{--                                                @endif--}}
+{{--                                            @else--}}
+{{--                                                <span>Không có</span>--}}
+{{--                                            @endif--}}
+{{--                                        </td>--}}
+{{--                                    </tr>--}}
                                     <tr>
                                         @php
                                             $totalCheckout = $order->total;
@@ -115,58 +115,33 @@
                                                 {{ $user->email  }}
                                             @endif</td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Sinh nhật</b></td>
-                                        <td>@if(!empty($address->email))
+{{--                                    <tr>--}}
+{{--                                        <td><b>Sinh nhật</b></td>--}}
+{{--                                        <td>@if(!empty($address->email))--}}
 
-                                            @else
-                                                {{ $user->birthday }}
-                                            @endif</td>
-                                    </tr>
+{{--                                            @else--}}
+{{--                                                {{ $user->birthday }}--}}
+{{--                                            @endif</td>--}}
+{{--                                    </tr>--}}
                                 </table>
                             </div>
                         </div>
                         @php
                             $arrKho = [];
                             $suborders = $order->suborder;
-                            $orderDetail = $order->details()->where('order_detail.type', 'product' )->get();
+                            $orderDetail = \App\OrderDetail::where('order_id', $order->id)->get();
                         @endphp
                         <div class="row">
                             <div class="col-md-12">
                                 <h4 class="text-uppercase">Thông tin nhận hàng</h4>
                                 <table class="table">
                                     <tr>
-                                        <th>Họ tên</th>
-                                        <th>Phone</th>
-                                        <th>Email</th>
                                         <th>Phưỡng/Xã</th>
                                         <th>Quận/Huyện</th>
                                         <th>Tỉnh/TP</th>
                                         <th>Địa chỉ</th>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            @if(!empty($address->fullname))
-                                                {{ $address->fullname  }}
-                                            @else
-                                                {{ $user->fullname()  }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if(!empty($address->phone))
-                                                {{ $address->phone  }}
-                                            @else
-                                                {{ $user->phone  }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if(!empty($address->email))
-                                                {{ $address->email  }}
-                                            @else
-                                                {{ $user->email  }}
-                                            @endif
-                                        </td>
-                                        <td>{{ $address->WardName }}</td>
                                         <td>{{ $address->WardName }}</td>
                                         <td>{{ $address->DistrictName }}</td>
                                         <td>{{ $address->CityName }}</td>
@@ -182,8 +157,10 @@
                                     <tr>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
-                                        <th>Giá</th>
-                                        <th>Thành tiền</th>
+                                        <th>Kích cỡ</th>
+                                        <th>Màu sắc</th>
+                                        <th>Đơn giá</th>
+                                        <th>Tạm tính</th>
                                     </tr>
                                     <tbody>
                                     @if(!empty($orderDetail))
@@ -191,8 +168,10 @@
                                     <tr>
                                         <td>{{ $v->product_name }}</td>
                                         <td>{{ $v->quantity }}</td>
+                                        <td>{{ $v->size }}</td>
+                                        <td>{{ $v->color }}</td>
                                         <td>{{ number_format($v->product_price) }} VNĐ</td>
-                                        <td>{{ number_format($v->total) }} VNĐ</td>
+                                        <td>{{ number_format($v->product_price *  $v->quantity) }} VNĐ</td>
                                     </tr>
                                         @endforeach
                                     @endif

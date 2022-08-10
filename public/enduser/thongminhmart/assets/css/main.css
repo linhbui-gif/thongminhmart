@@ -1888,12 +1888,6 @@ ul {
 }
 
 @media (max-width:991px) {
-    .ProductBox-image-wrapper>img {
-        opacity: 0
-    }
-}
-
-@media (max-width:991px) {
     .ProductBox-image-wrapper {
         height: 41.5vw
     }
@@ -3018,7 +3012,7 @@ ul {
     line-height: 1.5;
     bottom: 1rem;
     left: 0;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: #000;
     text-transform: uppercase;
     z-index: 2;
@@ -3031,7 +3025,7 @@ ul {
 
 @media (max-width:575px) {
     .ProductCategory-list-item-title {
-        font-size: 1.6rem
+        font-size: 1.3rem
     }
 }
 
@@ -3363,7 +3357,7 @@ ul {
 
 .ProductCategoryDrawer-main-item-title {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: #000;
     transition: .3s ease;
     overflow: hidden;

@@ -200,13 +200,13 @@ const ProductBox = {
         const stopAllProductsVideo = (item) => {
             const video = item.querySelector(".ProductBox-video.desktop");
             const loading = item.querySelector(".ProductBox-video-loading");
-            const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
-            const playBtn = item.querySelector(".ProductBox-video-play");
+            // const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
+            // const playBtn = item.querySelector(".ProductBox-video-play");
 
             loading.classList.remove("active");
             video.classList.remove("active");
             // playBtn.classList.add("active");
-            thumbnailVideo.classList.add("active");
+            // thumbnailVideo.classList.add("active");
             video.pause();
             video.currentTime = 0;
         };
@@ -214,23 +214,23 @@ const ProductBox = {
         products.forEach((item, index) => {
             const video = item.querySelector(".ProductBox-video.desktop");
             const loading = item.querySelector(".ProductBox-video-loading");
-            const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
+            // const thumbnailVideo = item.querySelector(".ProductBox-thumbnail-video");
             const srcVideo = video.dataset.src;
             const srcLink = video.dataset.link;
-            const playBtn = item.querySelector(".ProductBox-video-play");
+            // const playBtn = item.querySelector(".ProductBox-video-play");
 
             const triggerClassStartVideo = () => {
                 loading.classList.add("active");
                 video.classList.add("active");
                 // playBtn.classList.remove("active");
-                thumbnailVideo.classList.remove("active");
+                // thumbnailVideo.classList.remove("active");
             };
 
             const triggerClassEndVideo = () => {
                 loading.classList.remove("active");
                 video.classList.remove("active");
                 // playBtn.classList.add("active");
-                thumbnailVideo.classList.add("active");
+                // thumbnailVideo.classList.add("active");
             };
 
             const startNavigate = () => {
@@ -315,7 +315,7 @@ const ProductBox = {
                 });
             };
 
-            getThumbnailImage();
+            // getThumbnailImage();
         });
     },
     configProductDetailVideo: function () {

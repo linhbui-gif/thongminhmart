@@ -4,7 +4,7 @@
         <div class="ProductBox">
             <div class="ProductBox-image">
                 <div class="ProductBox-image-wrapper"><img src="{{$v->url_picture}}" alt="">
-                    <canvas class="ProductBox-thumbnail-video active"></canvas>
+{{--                    <canvas class="ProductBox-thumbnail-video active"></canvas>--}}
                     <video class="ProductBox-video desktop" data-link="{{route('product.productDetail',['category'=>$v->slug])}}" data-src="{{asset('storage/video-intro/'.$v->video_link)}}" muted="muted" loop="loop" playsinline="playsinline"></video>
                     <div class="ProductBox-video-loading">  <img src="{{ asset('enduser/thongminhmart/assets/icons/icon-spinner.svg') }}" alt=""></div>
                 </div>
