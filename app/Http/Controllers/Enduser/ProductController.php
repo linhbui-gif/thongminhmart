@@ -100,7 +100,10 @@ class ProductController extends Controller
             // return json_encode(['status' => 1, 'data' => $newCart, 'message' => 'Đã thêm vào rỏ hàng']);
             $productId = $request->productId;
             // session()->flash('success', 'Đã thêm vào rỏ hàng');
-
+            if ($request->type == 'checkout') {
+                // return redirect()->route('product.checkout');
+                return json_encode(['status' => 1, 'data' => route('product.checkout'), 'message' => 'Đã thêm vào rỏ hàng']);
+            }
             return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
         } catch (\Exception $e) {
             dd($e);
@@ -175,7 +178,7 @@ class ProductController extends Controller
         }
 
     }
-   public function checkout(){
+   public function checkout(Request $request){
        return view(config("edushop.end-user.pathView") . "checkout");
    }
     public function productDetail($id)

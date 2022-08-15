@@ -24,8 +24,8 @@
             <path d="M5.25 20.25C5.25 21.4905 6.2595 22.5 7.5 22.5C8.7405 22.5 9.75 21.4905 9.75 20.25C9.75 19.0095 8.7405 18 7.5 18C6.2595 18 5.25 19.0095 5.25 20.25Z" fill="#FBB508" />
             <path d="M18.75 20.25C18.75 19.0095 17.7405 18 16.5 18C15.2595 18 14.25 19.0095 14.25 20.25C14.25 21.4905 15.2595 22.5 16.5 22.5C17.7405 22.5 18.75 21.4905 18.75 20.25Z" fill="#FBB508" />
         </svg></div>
-        @php $checkoutUrl =  route('product.checkout')@endphp
-    <div onclick='window.location.href = "{{$checkoutUrl}}"' role="button" class="ProductActions-item buy">Mua ngay</div>
+        {{--@php $checkoutUrl =  route('product.checkout')@endphp--}}
+     <div class="ProductActions-item buy" id="checkout_mb">Mua ngay</div> {{--onclick='window.location.href = "{{$checkoutUrl}}"' role="button" --}}
 </div>
 <form action="{{route('product.addCart')}}" method="POST">
     
@@ -296,8 +296,10 @@
                                     </div>
                                     <div class="ProductDetailPage-detail-info-actions-item">
                                         <div class="Button primary middle">
-                                            <a href="{{route('product.checkout')}}"><button class="Button-control flex items-center justify-center" type="button"><span class="Button-control-title">Mua ngay</span>
-                                                </button></a>
+                                            {{--<a href="{{route('product.checkout')}}">--}}
+                                                <button class="Button-control flex items-center justify-center" id="checkout" type="button"><span class="Button-control-title">Mua ngay</span>
+                                                </button>
+                                            {{--</a>--}}
                                         </div>
                                     </div>
                                 </div>
@@ -453,6 +455,67 @@
             }
         });
     });
+    $('#checkout').click(function() {
+        var url = "{{route('product.addCart')}}";
+        var quantity = $('#quantity').val();
+        if (quantity <= 0) {
+            alert('Số lượng sản phẩm lớn hơn 0');
+            return false;
+        }
+        // var type = $('.btn-color-active').text();
+        let size = $("#size_id option:selected").text();
+        let sizeVal = $("#size_id option:selected").val();
+        let color = $("#color_id option:selected").text();
+        if (size == '' || color == '' || sizeVal == '') {
+            // alert('Vui lòng chọn phân loại hàng');
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo...',
+                text: 'Vui lòng chọn phân loại hàng!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
+            $('#size_id').focus();
+            return false;
+        }
+        var productId = $('#product_id').val();
+        var data = {
+            '_token': '{{ csrf_token() }}',
+            'size': size,
+            'color': color,
+            'quantity': quantity,
+            'productId': productId,
+            'weight': $('#weight').val(),
+            // 'price': $('#jsTotalPrice').val(),
+            'price': $('#size_id').find(':selected').attr('data-price-active'),
+            'avatar': $('#jsAvarta').val(),
+            'name': $('#jsProductName').val(),
+            'type': 'checkout'
+        }
+        // console.log(data); return;
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+                if (data.status == 1) {
+                    window.location.href = data.data;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thông báo...',
+                        text: 'Có lỗi xảy ra!',
+                    })
+                }
+                
+            }
+        });
+    });
+    
     $('.delCartItem').on('click', function() {
         var url = "{{route('product.delCart')}}";
         var data = {
@@ -551,6 +614,66 @@
                 showConfirmButton: false,
                 timer: 1500
                 });
+            }
+        });
+    });
+    $('#checkout_mb').click(function() {
+        var url = "{{route('product.addCart')}}";
+        var quantity = $('#quantity_mb').val();
+        if (quantity <= 0) {
+            alert('Số lượng sản phẩm lớn hơn 0');
+            return false;
+        }
+        // var type = $('.btn-color-active').text();
+        let size = $("#size_id_mb option:selected").text();
+        let sizeVal = $("#size_id_mb option:selected").val();
+        var color = $("#color_id_mb option:selected").text();
+
+        if (size == '' || color == '' || sizeVal == '') {
+            // alert('Vui lòng chọn phân loại hàng');
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo...',
+                text: 'Vui lòng chọn phân loại hàng!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
+            $('#size_id_mb').focus();
+            return false;
+        }
+        var productId = $('#product_id').val();
+        var data = {
+            '_token': '{{ csrf_token() }}',
+            'size': size,
+            'color': color,
+            'quantity': quantity,
+            'productId': productId,
+            'weight': $('#weight').val(),
+            // 'price': $('#jsTotalPrice').val(),
+            'price': $('#size_id_mb').find(':selected').attr('data-price-active'),
+            'avatar': $('#jsAvarta').val(),
+            'name': $('#jsProductName').val(),
+            'type': 'checkout'
+        }
+        // console.log(data); return;
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+                if (data.status == 1) {
+                    window.location.href = data.data;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thông báo...',
+                        text: 'Có lỗi xảy ra!',
+                    })
+                }
             }
         });
     });
