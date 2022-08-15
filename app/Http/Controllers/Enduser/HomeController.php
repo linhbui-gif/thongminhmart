@@ -72,14 +72,14 @@ class HomeController extends Controller
                 $data = \DB::table('product_products')
                     ->where('stt', '>', $request->id)
                     ->orderBy('stt', 'asc')
-                    ->limit(5)
+                    ->limit(60)
                     ->get();
             }
             else
             {
                 $data = \DB::table('product_products')
                     ->orderBy('stt', 'asc')
-                    ->limit(5)
+                    ->limit(60)
                     ->get();
             }
             $output = '';
@@ -241,10 +241,15 @@ class HomeController extends Controller
     {
         $tong = 0;
         if (Session('cart')) {
-            foreach(Session('cart')->products as $products) {;
-                if (!empty($products['productInfo']['weight'])){
+            if(Session('cart')->totalPrice >= 1000000){
+                $tong = 0;
+            }
+            else{
+                foreach(Session('cart')->products as $products) {
+                    if (!empty($products['productInfo']['weight'])){
 //                    $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
-                    $tong +=  $products['productInfo']['weight'];
+                        $tong +=  $products['productInfo']['weight'];
+                    }
                 }
             }
         }

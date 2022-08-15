@@ -223,7 +223,7 @@
                             <div class="CheckoutPage-form-row half js-banking-info-check">
                                 <div class="CheckoutPage-form-row-control">
                                     <div class="Radio middle">
-                                        <input class="Radio-control" type="radio" name="shippingType" data-key="" value="ship_fast">
+                                        <input class="Radio-control" checked type="radio" name="shippingType" data-key="" value="ship_fast">
                                         <div class="Radio-wrapper flex items-center">
                                             <div class="Radio-wrapper-box"> </div>
                                             <div class="Radio-wrapper-label">Giao nhanh</div>
@@ -241,7 +241,7 @@
                                 </div>
                                 <div class="CheckoutPage-form-row-control">
                                     <div class="Radio middle">
-                                        <input class="Radio-control" type="radio" name="payment_method" data-key="" value="cod">
+                                        <input class="Radio-control" checked type="radio" name="payment_method" data-key="" value="cod">
                                         <div class="Radio-wrapper flex items-center">
                                             <div class="Radio-wrapper-box"> </div>
                                             <div class="Radio-wrapper-label">Thanh toán khi nhận hàng</div>
@@ -359,6 +359,7 @@
             var id_tinh = $(this).val();
             tinh(id_tinh);
             var type = $('input[name=shippingType]:checked').val();
+            console.log('type', type)
             var province = $('#select_tinh').find(':selected').text();
             getPriceShipping(province, type);
         });
@@ -529,7 +530,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $('#ship_fee').text(data.fee_ship+'đ');
+                    $('#ship_fee').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship)) +'đ');
                     $('#ship').val(data.fee_ship);
                     $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
                     console.log(data.fee_ship); return;

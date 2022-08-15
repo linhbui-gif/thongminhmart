@@ -1,4 +1,4 @@
-@if(!empty($data)))
+@if(!empty($data))
 <div class="Banner">
     <div class="container">
         <div class="Banner-wrapper">

@@ -132,14 +132,15 @@
                             <div class="ProductDetailPage-detail-info-title">{{$product->name}} </div>
                             <div class="ProductDetailPage-detail-info-basic">
                                 <div class="ProductDetailPage-detail-info-basic-item">
+                                    <div class="ProductDetailPage-detail-info-text">MSP: {{ $product->id }}</div>
+                                </div>
+                                <div class="ProductDetailPage-detail-info-basic-item">
                                     <div class="ProductDetailPage-detail-info-text">Giá bán </div><br>
                                     <div class="ProductDetailPage-detail-info-basic-price flex items-center" ><span id="price_final">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
                                         <del id="price_base">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
                                     </div>
                                 </div>
-                                <div class="ProductDetailPage-detail-info-basic-item">
-                                    <div class="ProductDetailPage-detail-info-text">MSP: {{ $product->id }}</div>
-                                </div>
+
                             </div>
                             <form action="{{route('product.addCart')}}" method="POST">
                                 @csrf
@@ -180,7 +181,7 @@
                                             <div class="ProductDetailPage-detail-info-options-item-row-control">
                                                 <div class="Select middle">
                                                     <select class="Select-control" name="size_id" id="size_id">
-                                                        <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Chọn size</option>
+{{--                                                        <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Chọn size</option>--}}
 {{--                                                        @if(!empty($sizes))--}}
 {{--                                                            @foreach($sizes as $k => $v)--}}
 {{--                                                                <option value="{{$v->id}}" data-price-base="{{ $v->price_base ? number_format($v->price_base). 'đ' : '' }}" data-price-final="{{ $v->price_final ? number_format($v->price_final). 'đ' : '' }}" data-price-active="{{$v->price_final}}">{{$v->name}}</option>--}}
@@ -232,7 +233,7 @@
                                                 @foreach(Session::get('cart')->products as $key => $value)
                                                 @if(!empty($value['productInfo']['productId']) && $value['productInfo']['productId'] == $product->id)
                                                 <div class="ProductDetailPage-detail-info-options-item-carts-item flex items-center">
-                                                    <div class="ProductDetailPage-detail-info-options-item-carts-item-title">{{$value['quanty']??0}} sản phẩm - Màu sắc: {{$value['productInfo']['color']??''}} - Kích cỡ: {{$value['productInfo']['size']??''}}</div>
+                                                    <div class="ProductDetailPage-detail-info-options-item-carts-item-title">{{$value['quanty']??0}} SP - Màu: {{$value['productInfo']['color']??''}} - KT: {{$value['productInfo']['size']??''}}</div>
                                                     <div class="ProductDetailPage-detail-info-options-item-carts-item-remove delCartItem" data-id="{{ $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'] }}"> <img src="{{ asset('/assets/icons/icon-x-yellow.svg') }}" alt=""></div>
                                                 </div>
                                                 @endif

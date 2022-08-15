@@ -66,17 +66,17 @@
                 <div class="marquee-container">
                     <div class="marquee flex items-center">
                         <div class="item">
-                            <div class="marquee-item">1. Lorem Ipsum is simply dummy text of the printing</div>
+                            <div class="marquee-item">Chào mừng bạn đến với Thông Minh Mart - hệ thống kinh doanh sỉ và lẻ đồ gia dụng thông minh, tiện ích đa năng... giúp cuộc sống của bạn trở nên dễ dàng hơn.</div>
                         </div>
                         <div class="item">
-                            <div class="marquee-item">2. Lorem Ipsum is simply dummy text of the printing</div>
+                            <div class="marquee-item">Chào mừng bạn đến với Thông Minh Mart - hệ thống kinh doanh sỉ và lẻ đồ gia dụng thông minh, tiện ích đa năng... giúp cuộc sống của bạn trở nên dễ dàng hơn.</div>
                         </div>
-                        <div class="item">
-                            <div class="marquee-item">3. Lorem Ipsum is simply dummy text of the printing</div>
-                        </div>
-                        <div class="item">
-                            <div class="marquee-item">4. Lorem Ipsum is simply dummy text of the printing</div>
-                        </div>
+{{--                        <div class="item">--}}
+{{--                            <div class="marquee-item">3. Lorem Ipsum is simply dummy text of the printing</div>--}}
+{{--                        </div>--}}
+{{--                        <div class="item">--}}
+{{--                            <div class="marquee-item">4. Lorem Ipsum is simply dummy text of the printing</div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>
