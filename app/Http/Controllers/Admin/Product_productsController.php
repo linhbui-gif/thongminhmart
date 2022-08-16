@@ -41,6 +41,7 @@ class Product_productsController extends AdminController
             'label_tab' => 'General',
             'items' => [
                 [ 'label' => 'Name' ,'name' => 'name', 'type' => 'text'],
+                [ 'label' => 'Mã sản phẩm' ,'name' => 'code', 'type' => 'text'],
                 [ 'label' => 'Price Base' ,'name' => 'price_base', 'type' => 'text'],
                 [ 'label' => 'Price Final' ,'name' => 'price_final', 'type' => 'text'],
 //                [ 'label' => 'Weight (gr)' ,'name' => 'weight', 'type' => 'float'],
@@ -140,6 +141,7 @@ class Product_productsController extends AdminController
             }
         }
         $product->name = $request->name;
+        $product->code = $request->code;
         $product->price_base = $request->price_base;
         $product->price_final = $request->price_final;
         $product->short_description = $request->short_description;
@@ -214,6 +216,7 @@ class Product_productsController extends AdminController
           }
       }
       $product->name = $request->name;
+      $product->code = $request->code;
       $product->price_base = $request->price_base;
       $product->price_final = $request->price_final;
       $product->weight = $request->weight;

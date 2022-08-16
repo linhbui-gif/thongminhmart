@@ -40,6 +40,7 @@ class Product_categoryController extends AdminController
             'label_tab' => 'General',
             'items' => [
                 [ 'label' => 'Name' ,'name' => 'name', 'type' => 'text'],
+                [ 'label' => 'Số thứ tự' ,'name' => 'order_no', 'type' => 'text'],
                 [ 'label' => 'Description' ,'name' => 'description', 'type' => 'textarea'],
                 [ 'label' => 'Danh mục cha' ,'name' => 'parent_id', 'type' => 'select_recusive'],
                 [ 'label' => 'Content' ,'name' => 'content', 'type' => 'ckeditor'],
@@ -58,21 +59,21 @@ class Product_categoryController extends AdminController
                 [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords', 'type' => 'text'],
             ]
         ],
-        'general_tab_ko' => [
-            'label_tab' => 'General (Korean)',
-            'items' => [
-                [ 'label' => 'Name' ,'name' => 'name_ko', 'type' => 'text'],
-                [ 'label' => 'Mô tả' ,'name' => 'description_ko', 'type' => 'textarea']
-            ]
-        ],
-        'seo_tab_ko' => [
-            'label_tab' => 'Meta (Korean)',
-            'items' => [
-                [ 'label' => 'Meta title' ,'name' => 'meta_title_ko', 'type' => 'text'],
-                [ 'label' => 'Meta description' ,'name' => 'meta_description_ko', 'type' => 'textarea'],
-                [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords_ko', 'type' => 'text'],
-            ]
-        ]
+//        'general_tab_ko' => [
+//            'label_tab' => 'General (Korean)',
+//            'items' => [
+//                [ 'label' => 'Name' ,'name' => 'name_ko', 'type' => 'text'],
+//                [ 'label' => 'Mô tả' ,'name' => 'description_ko', 'type' => 'textarea']
+//            ]
+//        ],
+//        'seo_tab_ko' => [
+//            'label_tab' => 'Meta (Korean)',
+//            'items' => [
+//                [ 'label' => 'Meta title' ,'name' => 'meta_title_ko', 'type' => 'text'],
+//                [ 'label' => 'Meta description' ,'name' => 'meta_description_ko', 'type' => 'textarea'],
+//                [ 'label' => 'Meta keywords' ,'name' => 'meta_keywords_ko', 'type' => 'text'],
+//            ]
+//        ]
     ];
     protected $searchList = [
         'all' => 'Search By All',

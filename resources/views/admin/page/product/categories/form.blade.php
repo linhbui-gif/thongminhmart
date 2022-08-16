@@ -64,7 +64,10 @@
                                                     CKEDITOR.replace( "ck_description",options );
                                                 </script>
                                             </div>
-
+                                            <div class="form-group">
+                                                <label for="name">Số thứ tự:</label>
+                                                <input value="{{ old("order_no", @$item['order_no'] )  }}" name="order_no" type="text" class="form-control" id="order_no">
+                                            </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">

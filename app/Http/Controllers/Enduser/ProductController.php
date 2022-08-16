@@ -140,7 +140,7 @@ class ProductController extends Controller
    }
     public function productDetail($product_slug)
     {
-        $product = DB::table('product_products')->select(['name','url_picture','slug','video_link','price_base','price_final','content','meta_title','meta_description','ts_kt','id','meta_size','meta_color','weight'])->where('slug', $product_slug)->where('status', 'active')->first();
+        $product = DB::table('product_products')->select(['name','url_picture','slug','video_link','price_base','price_final','content','meta_title','meta_description','ts_kt','id','meta_size','meta_color','weight','code'])->where('slug', $product_slug)->where('status', 'active')->first();
         if (isset($product->category->id)) {
             $idCategory = $product->category->id;
         }

@@ -32,7 +32,7 @@ $page_content = unserialize($page->content_ko);
     $products= \Illuminate\Support\Facades\DB::table("product_products")->select(['name','url_picture','slug','video_link','price_base','price_final'])->where('status','active')->orderBy('order_no','desc')->get();
       \App\Helper\Common::putToCache('product_main',$products);
     }
-    $categoryProducts = \Illuminate\Support\Facades\DB::table("product_categories")->select(['name','url_picture','slug'])->where('status','active')->orderBy('id','desc')->get();
+    $categoryProducts = \Illuminate\Support\Facades\DB::table("product_categories")->select(['name','url_picture','slug','order_no'])->where('status','active')->orderBy('order_no','ASC')->get();
 @endphp
 @section('content')
    @include('enduser.page.pages.home.slider',["data" => $banners ])

@@ -53,21 +53,6 @@ class HomeController extends Controller
     {
         if($request->ajax())
         {
-//            if($request->id > 0)
-//            {
-//                $data = \DB::table('product_products')
-//                    ->where('id', '>', $request->id)
-//                    ->orderBy('id', 'asc')
-//                    ->limit(5)
-//                    ->get();
-//            }
-//            else
-//            {
-//                $data = \DB::table('product_products')
-//                    ->orderBy('id', 'asc')
-//                    ->limit(5)
-//                    ->get();
-//            }
             if($request->id > 0) {
                 $data = \DB::table('product_products')
                     ->where('stt', '>', $request->id)

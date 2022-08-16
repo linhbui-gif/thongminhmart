@@ -108,7 +108,7 @@
                     <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round" />
                     </svg>
-                </div><a class="Breadcrumb-list-item" href="danh-sach-san-pham.html">Danh sách sản phẩm</a>
+                </div><a class="Breadcrumb-list-item" href="#">Danh sách sản phẩm</a>
                 <div class="Breadcrumb-list-item arrow">
                     <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L7 7L1 13" stroke="#777777" stroke-width="1.5" stroke-linecap="round" />
@@ -132,7 +132,7 @@
                             <div class="ProductDetailPage-detail-info-title">{{$product->name}} </div>
                             <div class="ProductDetailPage-detail-info-basic">
                                 <div class="ProductDetailPage-detail-info-basic-item">
-                                    <div class="ProductDetailPage-detail-info-text">MSP: {{ $product->id }}</div>
+                                    <div class="ProductDetailPage-detail-info-text">MSP: {{ $product->code ?? $product->id }}</div>
                                 </div>
                                 <div class="ProductDetailPage-detail-info-basic-item">
                                     <div class="ProductDetailPage-detail-info-text">Giá bán </div><br>

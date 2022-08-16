@@ -165,7 +165,7 @@
 </div>
 
 <?php
-$categoryProducts = \Illuminate\Support\Facades\DB::table("product_categories")->select(['name', 'url_picture', 'slug'])->where('status', 'active')->orderBy('id', 'desc')->get();
+$categoryProducts = \Illuminate\Support\Facades\DB::table("product_categories")->select(['name','url_picture','slug','order_no'])->where('status','active')->orderBy('order_no','ASC')->get();
 ?>
 <div class="ProductCategoryDrawer">
     <div class="ProductCategoryDrawer-overlay"></div>

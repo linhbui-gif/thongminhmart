@@ -56,6 +56,10 @@
                                                     <input value="{{ old("name", @$item['name'] )  }}" name="name" type="text" class="form-control" id="name">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="name">Mã sản phẩm:</label>
+                                                    <input value="{{ old("code", @$item['code'] )  }}" name="code" type="text" class="form-control" id="code">
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="name">Price Base:</label>
                                                     <input value="{{ old("price_base", @$item['price_base'] )  }}" name="price_base" type="text" class="form-control" id="price_base">
                                                 </div>
