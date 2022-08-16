@@ -25,9 +25,12 @@
                     <div class="Header-info-cart flex items-center">
                         <div class="Header-info-cart-icon"> <img src="{{ asset('enduser/thongminhmart/assets/icons/icon-cart-gray.svg') }}" alt=""></div>
                         <div class="Header-info-cart-content"><span><a style="color:black" href="{{route('product.checkout')}}">Giỏ hàng</a> </span>
+<!--                            --><?php
+//                            dd(Session::get('cart')->totalPrice);
+//                            ?>
                             <strong><a href="{{route('product.checkout')}}">
-                                    @if(@session('cart')->totalPrice )
-                                        {!! number_format(session('cart')->totalPrice) ?? "" !!}
+                                    @if (!empty(Session::get('cart')->totalPrice))
+                                        {{number_format(Session::get('cart')->totalPrice)}}
                                     @else
                                         0
                                     @endif đ

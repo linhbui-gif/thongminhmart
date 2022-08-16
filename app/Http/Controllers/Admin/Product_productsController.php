@@ -131,7 +131,6 @@ class Product_productsController extends AdminController
     }
     public function store(Request $request)
     {
-
         $this->validateStore($request);
         $product = new MainModel();
         $data = [];
@@ -144,7 +143,7 @@ class Product_productsController extends AdminController
         $product->price_base = $request->price_base;
         $product->price_final = $request->price_final;
         $product->short_description = $request->short_description;
-        $product->category_id = $request->category_id;
+        $product->category_id = $request->parent_id;
         $product->slug = $request->slug;
         $product->weight = $request->weight;
         $product->content = $request->content;
@@ -219,7 +218,7 @@ class Product_productsController extends AdminController
       $product->price_final = $request->price_final;
       $product->weight = $request->weight;
       $product->short_description = $request->short_description;
-      $product->category_id = $request->category_id;
+      $product->category_id = $request->parent_id;
       $product->slug = $request->slug;
       $product->content = $request->content;
       $product->status = isset($request->status) && $request->status != null ? "active" : "inactive";

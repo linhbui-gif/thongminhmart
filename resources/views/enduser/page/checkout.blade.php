@@ -267,21 +267,21 @@
                         <div class="Card-header">
                             <div class="Card-header-title color-black">Thông tin chuyển khoản</div>
                         </div>
-<!--                        --><?php
-//                        $banks = \App\Bank::where('status', 'active')->get()
-//                        ?>
+                           <?php
+                        $banks = \App\Bank::where('status', 'active')->first()
+                         ?>
                         <div class="Card-body">
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Tên tài khoản</div>
-                                <div class="CheckoutPage-text medium nowrap">CÔNG TY DỊCH VỤ VÀ CỔ PHẦN THONGMINHMART</div>
+                                <div class="CheckoutPage-text medium nowrap">{{$banks->chutaikhoan}}</div>
                             </div>
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Số tài khoản</div>
-                                <div class="CheckoutPage-text medium nowrap">1010101010</div>
+                                <div class="CheckoutPage-text medium nowrap">{{$banks->stk}}</div>
                             </div>
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Ngân hàng</div>
-                                <div class="CheckoutPage-text medium nowrap">Vietcombank</div>
+                                <div class="CheckoutPage-text medium nowrap">{{$banks->name}}</div>
                             </div>
                         </div>
                     </div>
@@ -295,7 +295,7 @@
                             </div>
                             <div class="CheckoutPage-row flex justify-between items-center">
                                 <div class="CheckoutPage-text">Thành tiền:</div>
-                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('cart')->totalPrice)) ? number_format(Session::get('cart')->totalPrice + 30000). 'đ' : ''}}</div>
+                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('cart')->totalPrice)) ? number_format(Session::get('cart')->totalPrice + 30000). 'đ' : '0 đ'}}</div>
                             </div>
                             <div class="CheckoutPage-row">
                                 <div class="Button primary big">
@@ -530,7 +530,7 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $('#ship_fee').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship)) +'đ');
+                    $('#ship_fee').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship)));
                     $('#ship').val(data.fee_ship);
                     $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
                     console.log(data.fee_ship); return;

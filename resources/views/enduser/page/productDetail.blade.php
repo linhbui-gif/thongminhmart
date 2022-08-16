@@ -8,7 +8,7 @@
         <div class="ProductActions-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.7719 14.125C18.7206 14.0844 15 11.4025 13.9787 11.595C13.4912 11.6812 13.2125 12.0138 12.6531 12.6794C12.5631 12.7869 12.3469 13.0444 12.1788 13.2275C11.8252 13.1122 11.4804 12.9718 11.1469 12.8075C9.42533 11.9694 8.03437 10.5784 7.19625 8.85687C7.03179 8.52339 6.89143 8.17855 6.77625 7.825C6.96 7.65625 7.2175 7.44 7.3275 7.3475C7.99 6.79125 8.32312 6.5125 8.40938 6.02375C8.58625 5.01125 5.90625 1.265 5.87812 1.23125C5.75653 1.05754 5.59784 0.913039 5.41355 0.808189C5.22925 0.70334 5.02395 0.640768 4.8125 0.625C3.72625 0.625 0.625 4.64813 0.625 5.32562C0.625 5.365 0.681875 9.3675 5.6175 14.3881C10.6331 19.3181 14.635 19.375 14.6744 19.375C15.3525 19.375 19.375 16.2737 19.375 15.1875C19.3594 14.9768 19.2972 14.7722 19.1929 14.5884C19.0886 14.4047 18.9448 14.2464 18.7719 14.125Z" fill="#929191"/></svg></div>
         <div class="ProductActions-item cart"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.4775 6.93225L20.37 15.3638C20.2028 16.0328 19.6043 16.5 18.9143 16.5H5.9175C5.15625 16.5 4.51575 15.93 4.428 15.174L2.90925 3H1.875C1.25325 3 0.75 2.49675 0.75 1.875C0.75 1.25325 1.25325 0.75 1.875 0.75H3.89025C4.45275 0.75 4.92825 1.1655 5.00475 1.722L5.59125 6H21.75C22.2375 6 22.596 6.459 22.4775 6.93225Z" fill="#FBB508"/><path d="M5.25 20.25C5.25 21.4905 6.2595 22.5 7.5 22.5C8.7405 22.5 9.75 21.4905 9.75 20.25C9.75 19.0095 8.7405 18 7.5 18C6.2595 18 5.25 19.0095 5.25 20.25Z" fill="#FBB508"/><path d="M18.75 20.25C18.75 19.0095 17.7405 18 16.5 18C15.2595 18 14.25 19.0095 14.25 20.25C14.25 21.4905 15.2595 22.5 16.5 22.5C17.7405 22.5 18.75 21.4905 18.75 20.25Z" fill="#FBB508"/></svg></div>
         @php $checkoutUrl =  route('product.checkout')@endphp
-        <div  onclick='window.location.href = "{{$checkoutUrl}}"' class="ProductActions-item buy">Mua ngay</div>
+        <div id="checkout_mb" class="ProductActions-item buy">Mua ngay</div>
     </div>
     <?php
     $metaColor = unserialize(@$product->meta_color);
@@ -258,8 +258,10 @@
                                     </div>
                                     <div class="ProductDetailPage-detail-info-actions-item">
                                         <div class="Button primary middle">
-                                            <a href="{{route('product.checkout')}}"><button class="Button-control flex items-center justify-center" type="button"><span class="Button-control-title">Mua ngay</span>
-                                                </button></a>
+{{--                                            <a href="{{route('product.checkout')}}"><button class="Button-control flex items-center justify-center" type="button"><span class="Button-control-title">Mua ngay</span>--}}
+{{--                                                </button></a>--}}
+                                            <button class="Button-control flex items-center justify-center" id="checkout" type="button"><span class="Button-control-title">Mua ngay</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -473,6 +475,65 @@
             }
         });
     });
+    $('#checkout').click(function() {
+        var url = "{{route('product.addCart')}}";
+        var quantity = $('#quantity').val();
+        if (quantity <= 0) {
+            alert('Số lượng sản phẩm lớn hơn 0');
+            return false;
+        }
+        // var type = $('.btn-color-active').text();
+        let size = $("#size_id option:selected").text();
+        let sizeVal = $("#size_id option:selected").val();
+        let color = $("#color_id option:selected").text();
+        if (size == '' || color == '' || sizeVal == '') {
+            // alert('Vui lòng chọn phân loại hàng');
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo...',
+                text: 'Vui lòng chọn phân loại hàng!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
+            $('#size_id').focus();
+            return false;
+        }
+        var productId = $('#product_id').val();
+        var data = {
+            '_token': '{{ csrf_token() }}',
+            'size': size,
+            'color': color,
+            'quantity': quantity,
+            'productId': productId,
+            'weight': $('#weight').val(),
+            // 'price': $('#jsTotalPrice').val(),
+            'price': $('#size_id').find(':selected').attr('data-price-active'),
+            'avatar': $('#jsAvarta').val(),
+            'name': $('#jsProductName').val(),
+            'type': 'checkout'
+        }
+        // console.log(data); return;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+                if (data.status == 1) {
+                    window.location.href = data.data;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thông báo...',
+                        text: 'Có lỗi xảy ra!',
+                    })
+                }
+
+            }
+        });
+    });
     $('.delCartItem').on('click', function() {
         // console.log('123')
         var url = "{{route('product.delCart')}}";
@@ -574,6 +635,63 @@
             }
         });
     });
-
+    $('#checkout_mb').click(function() {
+        var url = "{{route('product.addCart')}}";
+        var quantity = $('#quantity_mb').val();
+        if (quantity <= 0) {
+            alert('Số lượng sản phẩm lớn hơn 0');
+            return false;
+        }
+        // var type = $('.btn-color-active').text();
+        let size = $("#size_id_mb option:selected").text();
+        let sizeVal = $("#size_id_mb option:selected").val();
+        var color = $("#color_id_mb option:selected").text();
+        if (size == '' || color == '' || sizeVal == '') {
+            // alert('Vui lòng chọn phân loại hàng');
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo...',
+                text: 'Vui lòng chọn phân loại hàng!',
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
+            $('#size_id_mb').focus();
+            return false;
+        }
+        var productId = $('#product_id').val();
+        var data = {
+            '_token': '{{ csrf_token() }}',
+            'size': size,
+            'color': color,
+            'quantity': quantity,
+            'productId': productId,
+            'weight': $('#weight').val(),
+            // 'price': $('#jsTotalPrice').val(),
+            'price': $('#size_id_mb').find(':selected').attr('data-price-active'),
+            'avatar': $('#jsAvarta').val(),
+            'name': $('#jsProductName').val(),
+            'type': 'checkout'
+        }
+        // console.log(data); return;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+                if (data.status == 1) {
+                    window.location.href = data.data;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thông báo...',
+                        text: 'Có lỗi xảy ra!',
+                    })
+                }
+            }
+        });
+    });
 </script>
 @stop

@@ -18,14 +18,13 @@
                         <div class="Header-info-contact-item-icon"><img
                                 src="{{ asset('enduser/thongminhmart/assets/icons/icon-phone-yellow.svg') }}" alt="">
                         </div>
-                        <div class="Header-info-contact-item-title"><strong>Đặt hàng:</strong><a href="#">0979 188
-                                002</a><span>|</span><a href="#">0988 599 559</a></div>
+                        <div class="Header-info-contact-item-title"><strong>Đặt hàng:</strong><a href="tel:0932.86 85 85">0932.86 85 85</a></div>
                     </div>
                     <div class="Header-info-contact-item flex items-center">
                         <div class="Header-info-contact-item-icon"><img
                                 src="{{ asset('enduser/thongminhmart/assets/icons/icon-phone-yellow.svg') }}" alt="">
                         </div>
-                        <div class="Header-info-contact-item-title"><strong>Hotline:</strong><a href="#">1900 9999</a>
+                        <div class="Header-info-contact-item-title"><strong>Hotline:</strong><a href="tel:0912 997 500">0912 997 500</a>
                         </div>
                     </div>
                 </div>
@@ -43,11 +42,14 @@
                                 <img
                             src="{{ asset('enduser/thongminhmart/assets/icons/icon-cart-gray.svg') }}" alt=""></div>
                             </a>
+<!--                        --><?php
+//                        dd(session('cart'));
+//                        ?>
                         <div class="Header-info-cart-content">
                             <span><a style="color:black" href="{{route('product.checkout')}}">Giỏ hàng</a> </span>
                             <strong><a href="{{route('product.checkout')}}">
-                                    @if(@session('cart')->totalPrice )
-                                        {!! number_format(session('cart')->totalPrice) ?? "" !!}
+                                    @if (!empty(Session::get('cart')->totalPrice))
+                                        {{number_format(Session::get('cart')->totalPrice)}}
                                     @else
                                         0
                                     @endif đ
