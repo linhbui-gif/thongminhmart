@@ -22,7 +22,7 @@
                     <a href="{{route('product.checkout')}}">
                     <div class="Header-info-cart flex items-center">
                         <div class="Header-info-cart-icon"> <img src="{{ asset('/assets/icons/icon-cart-gray.svg') }}" alt=""></div>
-                        <div class="Header-info-cart-content"><span>Giỏ hàng</span><strong>{{ !empty(Session('Cart')) ? Session('Cart')->totalQuanty.' Sản phẩm' : '' }}</strong></div>
+                        <div class="Header-info-cart-content"><span>Giỏ hàng</span><strong id="totalPrice_prod_detail">@if (!empty(Session::get('Cart')->totalPrice)) {{ number_format(Session::get('Cart')->totalPrice). 'đ'}} @endif</strong></div>
                     </div></a>
 
                 </div>

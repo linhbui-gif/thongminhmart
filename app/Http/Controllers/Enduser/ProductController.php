@@ -9,6 +9,7 @@ use App\Product_tags;
 use App\Comment;
 use Illuminate\Http\Request;
 use App\Product_products;
+use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
@@ -104,7 +105,15 @@ class ProductController extends Controller
                 // return redirect()->route('product.checkout');
                 return json_encode(['status' => 1, 'data' => route('product.checkout'), 'message' => 'Đã thêm vào rỏ hàng']);
             }
-            return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
+            // View::share('totalPrice_prod_detail', Session('Cart')->totalPrice??0);
+            $html = view(config("edushop.end-user.pathView") . "productCart", compact('productId'))->render();
+
+            return response()->json([
+                'status' => true,
+                'html' => $html,
+                'totalPrice_prod_detail' => number_format(Session('Cart')->totalPrice??0). 'đ',
+                'message' => 'Đã thêm vào rỏ hàng',
+            ]);
         } catch (\Exception $e) {
             dd($e);
         }

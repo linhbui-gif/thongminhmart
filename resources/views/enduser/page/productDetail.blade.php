@@ -442,16 +442,20 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: data,
-            dataType: 'HTML',
+            // dataType: 'HTML',
             success: function(data) {
-                $('#add_to_cart').html(data);
-                Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Thêm sản phẩm vào giỏ hàng thành công',
-                showConfirmButton: false,
-                timer: 1500
-                });
+                if (data.status == true) {
+                    $('#add_to_cart').html(data.html);
+                    $('#totalPrice_prod_detail').text(data.totalPrice_prod_detail);
+                    console.log(data.totalPrice_prod_detail);
+                    Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+                }
             }
         });
     });
@@ -604,16 +608,28 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: data,
-            dataType: 'HTML',
+            // dataType: 'HTML',
             success: function(data) {
-                $('#add_to_cart').html(data);
-                Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Thêm sản phẩm vào giỏ hàng thành công',
-                showConfirmButton: false,
-                timer: 1500
-                });
+                // $('#add_to_cart').html(data);
+                // Swal.fire({
+                // position: 'top-end',
+                // icon: 'success',
+                // title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                // showConfirmButton: false,
+                // timer: 1500
+                // });
+                if (data.status == true) {
+                    $('#add_to_cart').html(data.html);
+                    $('#totalPrice_prod_detail').text(data.totalPrice_prod_detail);
+                    console.log(data.totalPrice_prod_detail);
+                    Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+                }
             }
         });
     });
