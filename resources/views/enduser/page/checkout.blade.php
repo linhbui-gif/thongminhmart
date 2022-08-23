@@ -31,13 +31,16 @@
                     </div>
                     <div class="Card-body">
                         <div class="CheckoutPage-list-product">
+<!--                            --><?php
+//                            dd(Session::get('cart'));
+//                            ?>
                             <div class="CheckoutPage-list-product-wrapper">
                                 @if(Session::has('cart') != null)
                                     @foreach(Session::get('cart')->products as $key => $value)
                                         <div class="CheckoutPage-list-product-item flex">
-                                            <div class="CheckoutPage-list-product-item-image"><a href="#"> <img src="{{$value['productInfo']['avatar']??''}}" alt=""></a></div>
+                                            <div class="CheckoutPage-list-product-item-image"><a href="{{route('product.productDetail',['category'=> \Illuminate\Support\Str::slug(@$value['productInfo']['name'])])}}"> <img src="{{$value['productInfo']['avatar']??''}}" alt=""></a></div>
                                             <div class="CheckoutPage-list-product-item-info">
-                                                <div class="CheckoutPage-list-product-item-info-header flex justify-between"><a class="CheckoutPage-list-product-item-info-title" href="#">{{$value['productInfo']['name']??''}}</a>
+                                                <div class="CheckoutPage-list-product-item-info-header flex justify-between"><a class="CheckoutPage-list-product-item-info-title" href="{{route('product.productDetail',['category'=> \Illuminate\Support\Str::slug(@$value['productInfo']['name'])])}}">{{$value['productInfo']['name']??''}}</a>
                                                     <div class="CheckoutPage-list-product-item-info-price">{{ $value['productInfo']['price'] ? number_format($value['quanty'] * $value['productInfo']['price']). 'đ' : '' }}</div>
                                                 </div>
                                                 <div class="CheckoutPage-list-product-item-info-description"><span>Màu sắc: {{$value['productInfo']['color']??''}}</span><span>Kích cỡ: {{$value['productInfo']['size']??''}}</span></div>

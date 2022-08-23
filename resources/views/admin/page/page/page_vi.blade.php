@@ -6,38 +6,19 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="">Khối tiêu đề du thuyền của Aliga</label>
-                    <input value="{{ @$content['duthuyen' ]['name'] }}" name="content[duthuyen][name]"  type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="">Khối các hoạt động </label>
-                    <input value="{{ @$content['activity' ]['name'] }}" name="content[activity][name]"  type="text" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="">Khối đánh giá của khách hàng</label>
-                    <input value="{{ @$content['client' ]['name'] }}" name="content[client][name]"  type="text" class="form-control">
-                </div>
-                <div class="col-12">
-                    <h3>Khối kêu gọi hành động</h3>
-                    <div class="form-group">
-                        <label for="">Mô tả</label>
-                        <input value="{{ @$content['call' ]['name'] }}" name="content[call][name]"  type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Tên Button</label>
-                        <input value="{{ @$content['call' ]['button'] }}" name="content[call][button]"  type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Link Button</label>
-                        <input value="{{ @$content['call' ]['link'] }}" name="content[call][link]"  type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="">Khối đối tác</label>
-                    <input value="{{ @$content['partner' ]['name'] }}" name="content[partner][name]"  type="text" class="form-control">
+                    <label for="">Name</label>
+                    <input value="{{ @$content['doitac']['name'] }}" name="content[doitac][name]" type="text" class="form-control">
                 </div>
             </div>
-
+            <div class="col-md-12">
+                <div class="form-group ">
+                    <label for="">Nội dung:</label>
+                    <textarea  id="content_doitac" name="content[doitac][text]" class="form-control" name="" id="" cols="30" rows="10">{{ @$content['doitac']['text'] }}</textarea>
+                    <script>
+                        CKEDITOR.replace( 'content_doitac' );
+                    </script>
+                </div>
+            </div>
         </div>
 
     @elseif($item->id == 21)
@@ -81,16 +62,16 @@
                 </div>
 
             </div>
-{{--            <div class="col-md-12">--}}
-{{--                <div class="form-group">--}}
-{{--                    <label for="">Địa chỉ 1</label>--}}
-{{--                    <input value="{{ @$content['lienhe']['name'] }}" name="content[lienhe][name]" type="text" class="form-control">--}}
-{{--                </div>--}}
-{{--                <div class="form-group">--}}
-{{--                    <label for="">Description</label>--}}
-{{--                    <input value="{{ @$content['lienhe']['description'] }}" name="content[lienhe][description]" type="text" class="form-control">--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="col-md-12">
+                <div class="form-group ">
+                    <label for="">Nội dung:</label>
+                    <textarea  id="content_lienhe" name="content[lienhe][text]" class="form-control" name="" id="" cols="30" rows="10">{{ @$content['lienhe']['text'] }}</textarea>
+                    <script>
+                        CKEDITOR.replace( 'content_lienhe' );
+                    </script>
+                </div>
+            </div>
+
         </div>
 
     @elseif($item->id == 24)

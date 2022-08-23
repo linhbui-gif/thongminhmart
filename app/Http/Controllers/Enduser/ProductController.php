@@ -60,6 +60,7 @@ class ProductController extends Controller
             $id = $request->id;
             $oldCart = Session('cart') ? Session('cart') : null;
             $newCart = new Cart($oldCart);
+//            dd($newCart);
             $newCart->UpdateItemCartToNumber($id, $quanty);
             $request->session()->put('cart', $newCart);
             return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
@@ -90,6 +91,7 @@ class ProductController extends Controller
             $oldCart = Session('cart') ? Session('cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->AddCart($arrInput);
+//            dd($newCart);
             if ($newCart->checkIsset != 0) {
                 $quanty = $request->quantity;
                 // $oldCart = Session('Cart') ? Session('Cart') : null;
@@ -117,6 +119,7 @@ class ProductController extends Controller
         try {
             $oldCart = Session('cart') ? Session('cart') : null;
             $newCart = new Cart($oldCart);
+//            dd($newCart);
             $newCart->DeleteItemCart($request->id);
             if (count($newCart->products) > 0) {
                 $request->session()->put('cart', $newCart);

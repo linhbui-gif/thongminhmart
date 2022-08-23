@@ -24,6 +24,7 @@ class Cart
         $check = false;
         $id = $input['productId'] . '-' . $input['color'] . '-' . $input['size'];
         $newProduct = ['quanty' => 0, 'price' => $input['price'], 'productInfo' => $input];
+//        dd($newProduct);
         // if ($this->products) {
         //     dd(1);
         if ($this->products && array_key_exists($id, $this->products)) {

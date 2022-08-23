@@ -24,6 +24,7 @@ Route::middleware("locale")->namespace('Enduser')->group(function(){
 //    Route::get('/', 'HomeController@index')->name('siteIndex');
     Route::get('/', 'PageController@getIndex')->name('siteIndex');
     Route::get('/gioi-thieu', 'PageController@about')->name('siteAbout');
+    Route::get('/doi-tac', 'PageController@sitePartner')->name('sitePartner');
     Route::get('/tuyen-dung', 'PageController@tuyendung')->name('siteTuyendung');
     Route::get('/kinh-nghiem', 'PageController@kinhnghiem')->name('siteKinhNghiem');
 //    /* --- AUTH --- */

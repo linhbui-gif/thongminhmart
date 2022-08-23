@@ -9,18 +9,18 @@
 ])
 
 @stop
-@section('head')
-@php
-$locale = app()->getLocale();
+{{--@section('head')--}}
+{{--@php--}}
+{{--$locale = app()->getLocale();--}}
 
-if($locale == "vi") {
-$page_content = unserialize($page->content);
-}
-else{
-$page_content = unserialize($page->content_ko);
-}
-@endphp
-@stop
+{{--if($locale == "vi") {--}}
+{{--$page_content = unserialize($page->content);--}}
+{{--}--}}
+{{--else{--}}
+{{--$page_content = unserialize($page->content_ko);--}}
+{{--}--}}
+{{--@endphp--}}
+{{--@stop--}}
 @php
     $banners = \App\Helper\Common::getFromCache('banner_home');
     if(!$banners) {

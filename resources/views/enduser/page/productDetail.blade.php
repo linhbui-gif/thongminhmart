@@ -26,7 +26,7 @@
                 <div class="ProductCartDrawer-product-info">
                     <div class="ProductCartDrawer-product-info-title">{{$product->name}}</div>
                     <div class="ProductCartDrawer-product-info-price"> <span id="price_final_mb">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
-                        <del id="price_base_mb">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
+{{--                        <del id="price_base_mb">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>--}}
                     </div>
                 </div>
             </div>
@@ -37,7 +37,6 @@
                     <div class="ProductDetailPage-detail-info-options-item-row-control">
                         <div class="Select middle">
                             <select class="Select-control" name="color_id_mb" id="color_id_mb">
-                                <option value="">Chọn màu</option>
                                 @if(!empty($metaColor))
                                     @foreach($metaColor as $c => $color)
                                         @if($color['status'] == 'active' && !empty($color['name']))
@@ -58,7 +57,7 @@
                     <div class="ProductDetailPage-detail-info-options-item-row-control">
                         <div class="Select middle">
                             <select class="Select-control" name="size_id_mb" id="size_id_mb">
-                                <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Size</option>
+{{--                                <option value="" data-price-base="{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}" data-price-final="{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}" data-price-active="{{$product->price_final}}">Size</option>--}}
                                 @if(!empty($metaSize))
                                     @foreach($metaSize as $s => $size)
                                         @if($size['status'] == 'active' && !empty($size['price_final']))
@@ -137,7 +136,7 @@
                                 <div class="ProductDetailPage-detail-info-basic-item">
                                     <div class="ProductDetailPage-detail-info-text">Giá bán </div><br>
                                     <div class="ProductDetailPage-detail-info-basic-price flex items-center" ><span id="price_final">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
-                                        <del id="price_base">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>
+{{--                                        <del id="price_base">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>--}}
                                     </div>
                                 </div>
 
@@ -225,7 +224,7 @@
                                     </div>
 
                                     <div class="ProductDetailPage-detail-info-options-item">
-                                        <div class="ProductDetailPage-detail-info-options-item-title">Các sản phẩm trong giỏ hàng</div>
+                                        <div class="ProductDetailPage-detail-info-options-item-title">Bạn đã chọn</div>
                                         <div class="ProductDetailPage-detail-info-options-item-carts">
 
                                             <div id="add_to_cart">
@@ -444,7 +443,7 @@
                 showConfirmButton: false,
                 timer: 1500
                 });
-                $('.delCartItem').on('click', function() {
+                $(document).on('click', '.delCartItem' , function() {
                     // console.log('123')
                     var url = "{{route('product.delCart')}}";
                     var data = {
@@ -534,8 +533,8 @@
             }
         });
     });
-    $('.delCartItem').on('click', function() {
-        // console.log('123')
+    $(document).on('click', '.delCartItem' , function() {
+        console.log('123')
         var url = "{{route('product.delCart')}}";
         var data = {
             '_token': '{{ csrf_token() }}',
@@ -551,6 +550,7 @@
             data: data,
             dataType: 'HTML',
             success: function(data) {
+                console.log('data dedl',data )
                 $('#add_to_cart').html(data);
                 Swal.fire({
                 position: 'top-end',

@@ -181,7 +181,8 @@ const ProductBox = {
     configAddCartProductDetail: function () {
         const btnOpen = document.querySelector(".ProductActions-item.cart");
         const main = document.querySelector(".ProductCartDrawer");
-
+        const params = new URLSearchParams(window.location.search);
+        const isAutoOpenDrawer = params.get("cart");
         if (btnOpen && main) {
             btnOpen.addEventListener("click", () => {
                 main.classList.add("active");
@@ -192,6 +193,9 @@ const ProductBox = {
             overlay.addEventListener("click", () => {
                 main.classList.remove("active");
             });
+            if (isAutoOpenDrawer) {
+                main.classList.add("active");
+            }
         }
     },
     configProductBoxVideo: function () {

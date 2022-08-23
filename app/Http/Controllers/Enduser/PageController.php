@@ -39,7 +39,7 @@ class PageController extends Controller
             case "siteKinhNghiem":
                 $page_id = 22;
                 break;
-            case "siteIndex":
+            case "sitePartner":
                 $page_id = 19;
                 break;
             case "siteAbout":
@@ -62,6 +62,10 @@ class PageController extends Controller
         $data['products'] = Product_products::where('status', 'active')->orderBy('order_no','asc')->get();
 
         return view(config("edushop.end-user.pathView") . "index")->with($data);;
+    }
+    public function sitePartner()
+    {
+        return view(config("edushop.end-user.pathView") . "doitac");
     }
     public function lienhe(){
 

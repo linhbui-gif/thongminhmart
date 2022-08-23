@@ -55,6 +55,7 @@ class HomeController extends Controller
         {
             if($request->id > 0) {
                 $data = \DB::table('product_products')
+                    ->where('status','active')
                     ->where('stt', '>', $request->id)
                     ->orderBy('stt', 'asc')
                     ->limit(60)
@@ -63,6 +64,7 @@ class HomeController extends Controller
             else
             {
                 $data = \DB::table('product_products')
+                    ->where('status','active')
                     ->orderBy('stt', 'asc')
                     ->limit(60)
                     ->get();
