@@ -32,7 +32,7 @@
                         <div class="col-12">
 
                             <div class="blog_details_content">
-                                <img width="100%" src="{{$new->url_picture}}" alt="">
+{{--                                <img width="100%" src="{{$new->url_picture}}" alt="">--}}
                                 <div class="blog_details_desc blog_details_desc-mb">
                                     {!! $new->content !!}
                                 </div>

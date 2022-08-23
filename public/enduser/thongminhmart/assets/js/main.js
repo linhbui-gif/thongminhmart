@@ -151,7 +151,6 @@ const Amount = {
             const minus = main.querySelector(".Amount-minus");
             const plus = main.querySelector(".Amount-plus");
             const control = main.querySelector(".Amount-control");
-
             const min = control.min || Number.MIN_SAFE_INTEGER;
             const max = control.max || Number.MAX_SAFE_INTEGER;
 

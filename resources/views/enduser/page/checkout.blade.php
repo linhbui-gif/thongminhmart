@@ -31,9 +31,6 @@
                     </div>
                     <div class="Card-body">
                         <div class="CheckoutPage-list-product">
-<!--                            --><?php
-//                            dd(Session::get('cart'));
-//                            ?>
                             <div class="CheckoutPage-list-product-wrapper">
                                 @if(Session::has('cart') != null)
                                     @foreach(Session::get('cart')->products as $key => $value)
@@ -55,12 +52,12 @@
                                                             </button></a>
                                                     </div>
                                                     <div class="Amount flex">
-                                                        <a href="{{ route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] - 1]) }}">
+                                                        <a id="amount-minus" href="{{route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] - 1]) }}">
                                                             <div class="Amount-minus"><svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M0 0H16.8149V2.80248H0V0Z" fill="black" />
                                                                 </svg></div>
                                                         </a>
-                                                        <input class="Amount-control" type="number" value="{{$value['quanty']??''}}" min="1">
+                                                        <input id="check-amount-minus" class="Amount-control" type="number" value="{{$value['quanty']??''}}" min="1">
                                                         <a href="{{ route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] + 1]) }}">
                                                             <div class="Amount-plus">
                                                                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +74,7 @@
                             </div>
                             @if (!empty(Session::get('cart')->totalPrice))
                                 <div class="CheckoutPage-row flex justify-between items-center">
-                                    <div class="CheckoutPage-text">Tạm tính:</div>
+                                    <div class="CheckoutPage-text medium">Tạm tính:</div>
                                     <div class="CheckoutPage-text big color-yellow-sea nowrap">{{ number_format(Session::get('cart')->totalPrice). 'đ'}}</div>
                                 </div>
                             @endif
@@ -297,8 +294,8 @@
                                 <input type="hidden" name="total" id="total" value="{{ (!empty(Session::get('cart')->totalPrice)) ? Session::get('cart')->totalPrice : 0}}">
                             </div>
                             <div class="CheckoutPage-row flex justify-between items-center">
-                                <div class="CheckoutPage-text">Thành tiền:</div>
-                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('cart')->totalPrice)) ? number_format(Session::get('cart')->totalPrice + 30000). 'đ' : '0 đ'}}</div>
+                                <div class="CheckoutPage-text ">Thành tiền:</div>
+                                <div class="CheckoutPage-text big color-yellow-sea nowrap" id="totalPrice">{{ (!empty(Session::get('cart')->totalPrice)) ? number_format(Session::get('cart')->totalPrice). 'đ' : '0 đ'}}</div>
                             </div>
                             <div class="CheckoutPage-row">
                                 <div class="Button primary big">
@@ -533,9 +530,10 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $('#ship_fee').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship)));
+
+                    $('#ship_fee').text(formatNumber(parseInt(data.fee_ship)));
                     $('#ship').val(data.fee_ship);
-                    $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
+                    $('#totalPrice').text(formatNumber(parseInt(data.fee_ship) + parseInt($('#total').val())));
                     console.log(data.fee_ship); return;
                 },
                 error: function () {
@@ -543,6 +541,9 @@
                     $("#overlay").remove();
                 }
             });
+        }
+        function formatNumber (num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
         }
     </script>
     <script>
@@ -596,5 +597,18 @@
         function resetForm() {
             $(".list-atm .form-subitem input[type='radio']").prop("checked", false);
         }
+        let amountMinus = $('#check-amount-minus');
+        $.each(amountMinus , function(index,value) {
+            console.log('value', $(this).val())
+            if(parseInt($(this).val()) === 1){
+                $(this).prev().attr('href', 'javascript:void(0)')
+            }
+        })
+
+        // if(parseInt(amountMinus) === 1){
+        //     console.log('abc')
+        //     $('#amount-minus').attr('href', 'javascript:void(0)');
+        // }
+
     </script>
 @stop

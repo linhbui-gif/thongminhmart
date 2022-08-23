@@ -54,18 +54,21 @@
                                @endforeach
                            @endif
                        </div>
-                       <div class="ProductCategory-list mobile">
-                           <div class="row">
+                       <div  class="ProductCategory-list owl-carousel mobile" id="ProductCategory-carousel-mobile">
                                @if(!empty($categoryProducts))
                                    @foreach($categoryProducts as $k => $cateMobile)
-                               <div class="col-3">
-                                   <div class="ProductCategory-list-item ">
-                                       @include('enduser.page.components.category-list',["data" => $cateMobile ])
-                                   </div>
-                               </div>
+
+                                       <div class="item">
+                                           @if($k%2 == 0)
+                                           <div class="ProductCategory-list-item">
+                                               @endif
+                                               <div class="ProductCategory-list-item-image"><a href="{{ route("product.productListByCategory", ["slug_category" => $cateMobile->slug])  }}"> <img src="{{@$cateMobile->url_picture}}" alt="{{@$cateMobile->name}}"></a></div>
+                                               <a class="ProductCategory-list-item-title" href="{{ route("product.productListByCategory", ["slug_category" => $cateMobile->slug])  }}">{{$cateMobile->name}}</a>
+                                           </div>
+                                           @if($k % 2 == 1)  </div>
+                                   @endif
                                    @endforeach
                                @endif
-                           </div>
                        </div>
                    </div>
                </div>
