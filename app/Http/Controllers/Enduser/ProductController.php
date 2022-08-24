@@ -54,14 +54,17 @@ class ProductController extends Controller
     {
         try {
             $quanty = $request->quanty;
-            $id = $request->id;
-            $oldCart = Session('Cart') ? Session('Cart') : null;
-            $newCart = new Cart($oldCart);
-            $newCart->UpdateItemCartToNumber($id, $quanty);
-            $request->session()->put('Cart', $newCart);
+            if ($quanty >= 0) {
+                $id = $request->id;
+                $oldCart = Session('Cart') ? Session('Cart') : null;
+                $newCart = new Cart($oldCart);
+                $newCart->UpdateItemCartToNumber($id, $quanty, $request->type);
+                $request->session()->put('Cart', $newCart);
+    
+                return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
+            }
 
-            return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
-
+            return redirect()->back();
         } catch (\Exception $e) {
             dd($e->getMessage());
         }

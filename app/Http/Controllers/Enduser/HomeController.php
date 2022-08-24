@@ -232,6 +232,7 @@ class HomeController extends Controller
 
         return response()->json([
             'fee_ship' => $fee_ship * $tong,
+            'fee_ship_vnd' => number_format($fee_ship * $tong),
         ]);
 
     }

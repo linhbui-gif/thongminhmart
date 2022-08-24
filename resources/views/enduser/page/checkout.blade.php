@@ -52,13 +52,13 @@ $fieldValue[$value] = old($value);
                                                 </button></a>
                                         </div>
                                         <div class="Amount flex">
-                                            <a href="{{ route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] - 1]) }}">
+                                            <a href="{{ route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] - 1, 'type' => -1]) }}">
                                                 <div class="Amount-minus"><svg width="17" height="3" viewBox="0 0 17 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M0 0H16.8149V2.80248H0V0Z" fill="black" />
                                                     </svg></div>
                                             </a>
                                             <input class="Amount-control" type="number" value="{{$value['quanty']??''}}" min="1">
-                                            <a href="{{ route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] + 1]) }}">
+                                            <a href="{{ route('product.updateCart', ['id' => $value['productInfo']['productId'] . '-' . $value['productInfo']['color'] . '-' . $value['productInfo']['size'], 'quanty'=> $value['quanty'] + 1, 'type' => 1]) }}">
                                                 <div class="Amount-plus">
                                                     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M9.90497 7.07477V0H7.07504V7.07477H0V9.90469H7.07504V16.9796H9.90497V9.90469H16.9796V7.07477H9.90497Z" fill="black" />
@@ -526,10 +526,12 @@ $fieldValue[$value] = old($value);
                 },
                 dataType: 'json',
                 success: function (data) {
-                    $('#ship_fee').text(data.fee_ship+'đ');
+                    $('#ship_fee').text(data.fee_ship_vnd+'đ');
                     $('#ship').val(data.fee_ship);
-                    $('#totalPrice').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
-                    console.log(data.fee_ship); return;
+                    var ttien = (new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(data.fee_ship) + parseInt($('#total').val())));
+                    ttien = ttien.replace('.', ',');
+                    ttien = ttien.replace('.', ',');
+                    $('#totalPrice').text(ttien.replace('.', ','));
                 },
                 error: function () {
                     // alert('Lỗi tính phí vận chuyển');
