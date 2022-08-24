@@ -30,6 +30,7 @@ class ProductController extends Controller
 
     public function productListByCategory(Request $request, $slug_category)
     {
+
         $category = Product_category::where('slug', $slug_category)->where('status', 'active')->first();
         if (!$category) {
             $category = Product_category::where('id', $slug_category)->where('status', 'active')->first();

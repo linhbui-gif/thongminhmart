@@ -2951,11 +2951,11 @@ ul {
     margin-bottom: 2.5rem
 }
 
-@media (max-width:991px) {
-    .ProductCategory .Card-header {
-        display: none
-    }
-}
+/*@media (max-width:991px) {*/
+/*    .ProductCategory .Card-header {*/
+/*        display: none*/
+/*    }*/
+/*}*/
 
 @media (max-width:991px) {
     .ProductCategory-list.desktop {

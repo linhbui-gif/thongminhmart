@@ -608,13 +608,13 @@
         function resetForm() {
             $(".list-atm .form-subitem input[type='radio']").prop("checked", false);
         }
-        let amountMinus = $('#check-amount-minus');
-        $.each(amountMinus , function(index,value) {
-            console.log('value', $(this).val())
-            if(parseInt($(this).val()) === 1){
-                $(this).prev().attr('href', 'javascript:void(0)')
-            }
-        })
+        // let amountMinus = $('#check-amount-minus');
+        // $.each(amountMinus , function(index,value) {
+        //     console.log('value', $(this).val())
+        //     if(parseInt($(this).val()) === 1){
+        //         $(this).prev().attr('href', 'javascript:void(0)')
+        //     }
+        // })
 
         // if(parseInt(amountMinus) === 1){
         //     console.log('abc')
