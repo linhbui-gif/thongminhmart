@@ -26,7 +26,7 @@
     <!--blog body area start-->
     <div class="blog_details_bg mt-5">
         <div class="container">
-            <div class="blog_details">
+            <div class="blog_details bg-white content">
                 <div class="blog_wrapper_details">
                     <div class="row">
                         <div class="col-12">

@@ -29,7 +29,6 @@ class BlogController extends Controller
         $data['new'] = $course;
 //        $data['related'] = $related_post;
         $data['blogSameCategory'] = blog_posts::where('category_id', $idCategory)->where('status', 'active')->get();
-
         return view(config("edushop.end-user.pathView") . "blogDetail")->with($data);
     }
 
