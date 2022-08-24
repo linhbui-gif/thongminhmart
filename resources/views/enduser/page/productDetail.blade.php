@@ -433,44 +433,47 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: data,
-            dataType: 'HTML',
+            // dataType: 'HTML',
             success: function(data) {
-                $('#add_to_cart').html(data);
-                Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Thêm sản phẩm vào giỏ hàng thành công',
-                showConfirmButton: false,
-                timer: 1500
-                });
-                $(document).on('click', '.delCartItem' , function() {
-                    // console.log('123')
-                    var url = "{{route('product.delCart')}}";
-                    var data = {
-                        '_token': '{{ csrf_token() }}',
-                        'id': $(this).data('id'),
-                        'productId': $('#product_id').val()
-                    }
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: data,
-                        dataType: 'HTML',
-                        success: function(data) {
-                            $('#add_to_cart').html(data);
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Xóa sản phẩm khỏi giỏ hàng thành công',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
+                if (data.status == true) {
+                    $('#add_to_cart').html(data.html);
+                    $('#totalPrice_prod_detail').text(data.totalPrice_prod_detail);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                        showConfirmButton: false,
+                        timer: 1500
                     });
-                });
+                }
+                {{--$(document).on('click', '.delCartItem' , function() {--}}
+                {{--    // console.log('123')--}}
+                {{--    var url = "{{route('product.delCart')}}";--}}
+                {{--    var data = {--}}
+                {{--        '_token': '{{ csrf_token() }}',--}}
+                {{--        'id': $(this).data('id'),--}}
+                {{--        'productId': $('#product_id').val()--}}
+                {{--    }--}}
+                {{--    $.ajax({--}}
+                {{--        type: 'GET',--}}
+                {{--        url: url,--}}
+                {{--        headers: {--}}
+                {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+                {{--        },--}}
+                {{--        data: data,--}}
+                {{--        dataType: 'HTML',--}}
+                {{--        success: function(data) {--}}
+                {{--            $('#add_to_cart').html(data);--}}
+                {{--            Swal.fire({--}}
+                {{--                position: 'top-end',--}}
+                {{--                icon: 'success',--}}
+                {{--                title: 'Xóa sản phẩm khỏi giỏ hàng thành công',--}}
+                {{--                showConfirmButton: false,--}}
+                {{--                timer: 1500--}}
+                {{--            });--}}
+                {{--        }--}}
+                {{--    });--}}
+                {{--});--}}
             }
         });
     });
@@ -622,16 +625,19 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: data,
-            dataType: 'HTML',
+            // dataType: 'HTML',
             success: function(data) {
-                $('#add_to_cart').html(data);
-                Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Thêm sản phẩm vào giỏ hàng thành công',
-                showConfirmButton: false,
-                timer: 1500
-                });
+                if (data.status == true) {
+                    $('#add_to_cart').html(data.html);
+                    $('#totalPrice_prod_detail').text(data.totalPrice_prod_detail);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Thêm sản phẩm vào giỏ hàng thành công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
             }
         });
     });

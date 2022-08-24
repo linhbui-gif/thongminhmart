@@ -226,24 +226,25 @@ class HomeController extends Controller
     }
     public function getPriceShipping(Request $request)
     {
-        $tong = 0;
-        if (Session('cart')) {
-            if(Session('cart')->totalPrice >= 1000000){
-                $tong = 0;
-            }
-            else{
-                foreach(Session('cart')->products as $products) {
-                    if (!empty($products['productInfo']['weight'])){
-//                    $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
-                        $tong +=  $products['productInfo']['weight'];
-                    }
-                }
-            }
-        }
+        $tong = 1;
+//        if (Session('cart')) {
+//            if(Session('cart')->totalPrice >= 1000000){
+//                $tong = 0;
+//            }
+////            else{
+////                foreach(Session('cart')->products as $products) {
+////                    if (!empty($products['productInfo']['weight'])){
+//////                    $tong +=  ($products['quanty'] * $products['productInfo']['weight']);
+////                        $tong +=  $products['productInfo']['weight'];
+////                    }
+////                }
+////            }
+//        }
         $ship_fee_district = \App\Ship_fee_district::where('name','like','%'.($request->province_name).'%')->where('type', $request->type)->first();
         $fee_ship = $ship_fee_district->fee_ship??0;
         return response()->json([
             'fee_ship' => $fee_ship * $tong,
+            'fee_ship_vnd' => number_format($fee_ship * $tong),
         ]);
 
     }

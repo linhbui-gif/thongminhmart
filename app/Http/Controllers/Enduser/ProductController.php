@@ -10,6 +10,7 @@ use App\Comment;
 use Illuminate\Http\Request;
 use App\Product_products;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
@@ -54,16 +55,27 @@ class ProductController extends Controller
     {
         try {
             $quanty = $request->quantity;
-            if(isset($request->quanty)) {
-                $quanty = $request->quanty;
+//            if(isset($request->quanty)) {
+//                $quanty = $request->quanty;
+//            }
+//            $id = $request->id;
+//            $oldCart = Session('cart') ? Session('cart') : null;
+//            $newCart = new Cart($oldCart);
+////            dd($newCart);
+//            $newCart->UpdateItemCartToNumber($id, $quanty);
+//            $request->session()->put('cart', $newCart);
+//            return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
+            if ($quanty >= 0) {
+                $id = $request->id;
+                $oldCart = Session('cart') ? Session('cart') : null;
+                $newCart = new Cart($oldCart);
+                $newCart->UpdateItemCartToNumber($id, $quanty, $request->type);
+                $request->session()->put('cart', $newCart);
+
+                return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
             }
-            $id = $request->id;
-            $oldCart = Session('cart') ? Session('cart') : null;
-            $newCart = new Cart($oldCart);
-//            dd($newCart);
-            $newCart->UpdateItemCartToNumber($id, $quanty);
-            $request->session()->put('cart', $newCart);
-            return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
+
+            return redirect()->back();
 
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -107,9 +119,15 @@ class ProductController extends Controller
             // session()->flash('success', 'Đã thêm vào rỏ hàng');
             if ($request->type == 'checkout') {
                 // return redirect()->route('product.checkout');
-                return json_encode(['status' => 1, 'data' => route('product.checkout'), 'message' => 'Đã thêm vào rỏ hàng']);
+                return json_encode(['status' => 1, 'data' => route('product.checkout'), 'message' => 'Đã thêm vào giỏ hàng']);
             }
-            return view(config("edushop.end-user.pathView") . "productCart", compact('productId'));
+            $html = view(config("edushop.end-user.pathView") . "productCart", compact('productId'))->render();
+            return response()->json([
+                'status' => true,
+                'html' => $html,
+                'totalPrice_prod_detail' => number_format(Session('cart')->totalPrice??0). 'đ',
+                'message' => 'Đã thêm vào giỏ hàng',
+            ]);
         } catch (\Exception $e) {
             dd($e);
         }
