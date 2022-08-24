@@ -54,8 +54,8 @@ class Cart
     public function UpdateItemCart($id, $quanty, $price = 0)
     {
         try {
-            $this->products[$id]['quanty'] = ($quanty + $this->products[$id]['quanty']);
-            $this->products[$id]['price'] = ($quanty + $this->products[$id]['quanty']) * $this->products[$id]['productInfo']['price'];
+            $this->products[$id]['quanty'] = (int) $quanty +  (int) $this->products[$id]['quanty'];
+            $this->products[$id]['price'] = $this->products[$id]['quanty'] * $this->products[$id]['productInfo']['price'];
 
             $this->totalQuanty += $quanty;
             $this->totalPrice += $quanty * $this->products[$id]['productInfo']['price'];
@@ -64,15 +64,19 @@ class Cart
         }
     }
 
-    public function UpdateItemCartToNumber($id, $quanty)
+    public function UpdateItemCartToNumber($id, $quanty, $type)
     {
-        $this->totalQuanty -= $this->products[$id]['quanty'];
-        $this->totalPrice -= $this->products[$id]['price'];
-
-        $this->products[$id]['quanty'] = $quanty;
-        $this->products[$id]['price'] = $quanty * $this->products[$id]['productInfo']['price'];
-
-        $this->totalQuanty += $this->products[$id]['quanty'];
-        $this->totalPrice += $this->products[$id]['price'];
+        if ($type < 0) {
+            $this->totalQuanty = $this->totalQuanty - 1;
+            $this->totalPrice = $this->totalPrice - $this->products[$id]['productInfo']['price'];
+            $this->products[$id]['quanty'] -= 1;
+            $this->products[$id]['price'] -= $this->products[$id]['productInfo']['price'];
+        }
+        if ($type > 0) {
+            $this->totalQuanty = $this->totalQuanty + 1;
+            $this->totalPrice = $this->totalPrice + $this->products[$id]['productInfo']['price'];
+            $this->products[$id]['quanty'] += 1;
+            $this->products[$id]['price'] += $this->products[$id]['productInfo']['price'];
+        }
     }
 }
