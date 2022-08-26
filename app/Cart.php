@@ -79,6 +79,9 @@ class Cart
             $this->totalPrice = $this->totalPrice - $this->products[$id]['productInfo']['price'];
             $this->products[$id]['quanty'] -= 1;
             $this->products[$id]['price'] -= $this->products[$id]['productInfo']['price'];
+//            if ($quanty == 0) {
+//                unset($this->products[$id]);
+//            }
         }
         if ($type > 0) {
             $this->totalQuanty = $this->totalQuanty + 1;
