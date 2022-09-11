@@ -38,7 +38,7 @@
                                             <div class="CheckoutPage-list-product-item-image"><a href="{{route('product.productDetail',['category'=> \Illuminate\Support\Str::slug(@$value['productInfo']['name'])])}}"> <img src="{{$value['productInfo']['avatar']??''}}" alt=""></a></div>
                                             <div class="CheckoutPage-list-product-item-info">
                                                 <div class="CheckoutPage-list-product-item-info-header flex justify-between"><a class="CheckoutPage-list-product-item-info-title" href="{{route('product.productDetail',['category'=> \Illuminate\Support\Str::slug(@$value['productInfo']['name'])])}}">{{$value['productInfo']['name']??''}}</a>
-                                                    <div class="CheckoutPage-list-product-item-info-price">{{ $value['productInfo']['price'] ? number_format($value['quanty'] * $value['productInfo']['price']). 'đ' : '' }}</div>
+                                                    <div class="CheckoutPage-list-product-item-info-price">{{ $value['productInfo']['price'] ? number_format($value['quanty'] * $value['productInfo']['price']). ' đ' : '' }}</div>
                                                 </div>
                                                 <div class="CheckoutPage-list-product-item-info-description"><span>Màu sắc: {{$value['productInfo']['color']??''}}</span><span>Kích cỡ: {{$value['productInfo']['size']??''}}</span></div>
                                                 <div class="CheckoutPage-list-product-item-info-actions flex items-center justify-between">
@@ -241,7 +241,7 @@
                                         <input class="Radio-control" type="radio" name="shippingType" data-key="" value="ship_normal">
                                         <div class="Radio-wrapper flex items-center">
                                             <div class="Radio-wrapper-box"> </div>
-                                            <div class="Radio-wrapper-label">Giao chậm</div>
+                                            <div class="Radio-wrapper-label">Giao thường</div>
                                         </div>
                                     </div>
                                 </div>

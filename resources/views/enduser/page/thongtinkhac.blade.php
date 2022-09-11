@@ -1,5 +1,12 @@
 @extends("enduser.layout")
+
 @section('content')
+    <?php
+
+    $widgetAbout = \App\Widget::where('location','content_about_mb')->first();
+    $widgetChinhsahc= \App\Widget::where('location','content_chinhsach_mb')->first();
+    $widgetLienhe= \App\Widget::where('location','content_contact_mobile')->first();
+    ?>
     <div class="AnotherInfoPage">
     <div class="container">
         <div class="AnotherInfoPage-wrapper">
@@ -10,8 +17,7 @@
                         <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round"></path></svg></div>
                     </div>
                     <div class="Collapse-item-body style-content">
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi quae ab nam sapiente dolores laborum amet fuga velit nemo, voluptatibus reiciendis ratione ipsum a dolor enim dicta perferendis placeat quos!</p>
-                    </div>
+                        {!! @$widgetAbout->content !!}                    </div>
                 </div>
                 <div class="Collapse-item">
                     <div class="Collapse-item-header flex items-center justify-between">
@@ -19,8 +25,7 @@
                         <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round"></path></svg></div>
                     </div>
                     <div class="Collapse-item-body style-content">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima blanditiis qui fuga deleniti deserunt! Modi consectetur reprehenderit nesciunt inventore, nobis voluptatum perspiciatis similique! Pariatur, laudantium quae optio consequuntur necessitatibus beatae?</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, laudantium veritatis! Corporis nihil aliquam ipsam, tempora, nesciunt enim quod id alias nulla magnam voluptas consequatur cumque reprehenderit blanditiis modi tenetur.</p>
+                        {!! @$widgetChinhsahc->content !!}
                     </div>
                 </div>
                 <div class="Collapse-item">
@@ -29,13 +34,7 @@
                         <div class="Collapse-item-header-arrow"><svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 1L7 7L1 0.999999" stroke="black" stroke-width="1.5" stroke-linecap="round"></path></svg></div>
                     </div>
                     <div class="Collapse-item-body style-content">
-                        <p class="color-yellow-sea">CÔNG TY CỔ PHẦN TM&amp;DV SMARTCHOISE</p>
-                        <ul>
-                            <li>Địa chỉ: 130A25 - Nghĩa Tân - Cầu Giấy - Hà Nộ</li>
-                            <li><a href="tel: 0932868585">Điện thoại: Zalo - 093 286 8585</a></li>
-                            <li><a href="mailto: thongminhmart@gmail.com">Email: thongminhmart@gmail.com</a></li>
-                            <li><a href="www.thongminhmart.vn">Website: www.thongminhmart.vn</a></li>
-                        </ul>
+                        {!! @$widgetLienhe->content !!}
                     </div>
                 </div>
                 <div class="Collapse-item">

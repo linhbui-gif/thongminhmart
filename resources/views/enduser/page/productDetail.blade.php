@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="ProductDetailPage-detail-info-basic-item">
                                     <div class="ProductDetailPage-detail-info-text">Giá bán </div><br>
-                                    <div class="ProductDetailPage-detail-info-basic-price flex items-center" ><span id="price_final">{{ $product->price_final ? number_format($product->price_final). 'đ' : '' }}</span>
+                                    <div class="ProductDetailPage-detail-info-basic-price flex items-center" ><span id="price_final">{{ $product->price_final ? number_format($product->price_final). ' đ' : '' }}</span>
 {{--                                        <del id="price_base">{{ $product->price_base ? number_format($product->price_base). 'đ' : '' }}</del>--}}
                                     </div>
                                 </div>

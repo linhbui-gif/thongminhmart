@@ -26,7 +26,7 @@ class WidgetController extends AdminController
 //        [ 'name' => 'content', 'label' => 'Content', 'type' => 'text'],
         [ 'name' => 'location', 'label' => 'Vị trí', 'type' => 'text_in_array', 'data_source' =>  [
             'footer_description' => 'Footer - Mô tả chung',
-            'timeline' => 'Khối TimeLine',
+//            'timeline' => 'Khối TimeLine',
             'footer_block_1' => 'Footer - Khối 1',
             'footer_block_2'  => 'Footer - Khối 2',
             'footer_block_3'  => 'Footer - Khối 3',
@@ -37,6 +37,9 @@ class WidgetController extends AdminController
             'footer_block_bottom'  => 'Footer - Copyright',
             'contact_content_left'  => 'Contact content left',
             'contact_content_right'  => 'Contact content right',
+            'content_about_mb'  => 'Nội dung giới thiệu mobile',
+            'content_chinhsach_mb'  => 'Nội dung chính sách mobile',
+            'content_contact_mobile'  => 'Nội dung liên hệ mobile',
         ] ],
         [ 'name' => 'created_by', 'label' => 'Created by', 'type' => 'text_foreign'],
         [ 'name' => 'updated_by', 'label' => 'Updated by', 'type' => 'text_foreign'],
@@ -52,7 +55,7 @@ class WidgetController extends AdminController
                 [ 'label' => 'Vị trí hiển thị' ,'name' => 'location', 'type' => 'select','data_source' =>
                     [
                         'footer_description' => 'Footer - Mô tả chung',
-                        'timeline' => 'Khối TimeLine',
+//                        'timeline' => 'Khối TimeLine',
                         'footer_block_1' => 'Footer - Khối 1',
                         'footer_block_2'  => 'Footer - Khối 2',
                         'footer_block_3'  => 'Footer - Khối 3',
@@ -63,6 +66,9 @@ class WidgetController extends AdminController
                         'footer_block_bottom'  => 'Footer - Copyright',
                         'contact_content_left'  => 'Contact content left',
                         'contact_content_right'  => 'Contact content right',
+                        'content_about_mb'  => 'Nội dung giới thiệu mobile',
+                        'content_chinhsach_mb'  => 'Nội dung chính sách mobile',
+                        'content_contact_mobile'  => 'Nội dung liên hệ mobile',
                     ]
                 ],
                 [ 'name' => 'order_no', 'label' => 'Số thứ tự hiển thị timeline', 'type' => 'text'],

@@ -56,17 +56,7 @@ class ProductController extends Controller
     {
         try {
             $quanty = $request->quantity;
-//            if(isset($request->quanty)) {
-//                $quanty = $request->quanty;
-//            }
-//            $id = $request->id;
-//            $oldCart = Session('cart') ? Session('cart') : null;
-//            $newCart = new Cart($oldCart);
-////            dd($newCart);
-//            $newCart->UpdateItemCartToNumber($id, $quanty);
-//            $request->session()->put('cart', $newCart);
-//            return redirect()->back()->with('success', 'Cập nhập sản phẩm thành công');
-            if ($quanty >= 0) {
+            if ($quanty > 0) {
                 $id = $request->id;
                 $oldCart = Session('cart') ? Session('cart') : null;
                 $newCart = new Cart($oldCart);
