@@ -54,7 +54,7 @@ class ProductController extends Controller
     {
         try {
             $quanty = $request->quanty;
-            if ($quanty >= 0) {
+            if ($quanty > 0) {
                 $id = $request->id;
                 $oldCart = Session('Cart') ? Session('Cart') : null;
                 $newCart = new Cart($oldCart);
